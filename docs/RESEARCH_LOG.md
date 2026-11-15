@@ -1,3 +1,5 @@
+> Paths in this log predate the repository reorganisation: result files named `artifacts/<name>` are now in `artifacts/research/`, `artifacts/sample.fits` and `artifacts/search_fixture.xml` are in `tests/data/`, modules are under `spherex_lab/` and command-line tools under `scripts/` (see docs/ARCHITECTURE.md, Repository layout).
+
 # Research log (pre-Epoch Lab development history)
 
 > Historical, chronological record of earlier development phases and their measured results, kept verbatim for provenance. Paths and commands are relative to the repository root. The current application is described in the top-level README.

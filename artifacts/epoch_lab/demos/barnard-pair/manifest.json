@@ -3,9 +3,9 @@
   "kind": "compare",
   "title": "Barnard's Star field: full-field matched pair at 0.84 um (31 days)",
   "why": "Same pointing and orientation one month apart: every overlapping pixel samples the same wavelength, with a Gaia DR3 catalog for validation.",
-  "generated_utc": "2026-11-15T14:00:00+00:00",
-  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
-  "reproduce": "python make_demos.py barnard-pair",
+  "generated_utc": "2026-11-15T16:12:07+00:00",
+  "software_sha256": "05fb95e04cd1b22b604cc82b6dfb2f81b1966cc97b340eb76d42bcc788432db2",
+  "reproduce": "python -m scripts.make_demos barnard-pair",
   "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
   "files": [
     "comparison.fits",
@@ -53,5 +53,5 @@
   ],
   "catalog_mode": "stored Gaia DR3 query result",
   "status": "COMPLETED",
-  "elapsed_seconds": 2.54
+  "elapsed_seconds": 2.41
 }

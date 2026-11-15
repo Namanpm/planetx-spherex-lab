@@ -3,9 +3,9 @@
   "kind": "series",
   "title": "Epsilon Indi B: five epochs at 1.107 um over one year",
   "why": "A nearby brown dwarf with large known proper motion; tests same-wavelength photometry and astrometric trajectory on a known mover.",
-  "generated_utc": "2026-11-15T14:00:03+00:00",
-  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
-  "reproduce": "python make_demos.py eps-indi-b-series",
+  "generated_utc": "2026-11-15T16:12:09+00:00",
+  "software_sha256": "05fb95e04cd1b22b604cc82b6dfb2f81b1966cc97b340eb76d42bcc788432db2",
+  "reproduce": "python -m scripts.make_demos eps-indi-b-series",
   "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
   "files": [
     "series.json",
@@ -42,5 +42,5 @@
   ],
   "catalog_mode": "UNAVAILABLE",
   "status": "COMPLETED",
-  "elapsed_seconds": 50.74
+  "elapsed_seconds": 50.81
 }

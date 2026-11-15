@@ -27,7 +27,7 @@ If one selected epoch cannot be downloaded or calibrated, a time-series job cont
 |---|---|---|
 | **Public copy** (GitHub Pages) | Every recorded run below, with images, charts, validation, provenance and downloads. Live analysis is switched off. | A browser. Published by `.github/workflows/pages.yml` once Pages is enabled (see below). |
 | **Local server** | The full application: recorded runs plus live screening, comparisons and time series. | Python 3.12 and, for live runs, NASA/IRSA being up. |
-| **Static copy on your machine** | The same as the public copy, built locally. | `python build_static_demo.py`, then serve the `site/` folder with any web server, e.g. `python -m http.server -d site`. |
+| **Static copy on your machine** | The same as the public copy, built locally. | `python -m scripts.build_static_demo`, then serve the `site/` folder with any web server, e.g. `python -m http.server -d site`. |
 
 Recorded runs never touch the network, so they work during archive outages.
 
@@ -53,7 +53,7 @@ Open http://127.0.0.1:8000/:
 
 ## How to read a result
 
-Every result page starts with a status badge, then says whether it is a **Recorded run** (made by `make_demos.py`, with the command that reproduces it) or a **Live run** (a job this server just ran, with its job ID and finish time).
+Every result page starts with a status badge, then says whether it is a **Recorded run** (made by `scripts/make_demos.py`, with the command that reproduces it) or a **Live run** (a job this server just ran, with its job ID and finish time).
 
 | Status | Meaning |
 |---|---|
@@ -68,7 +68,7 @@ Every result page starts with a status badge, then says whether it is a **Record
 
 ## Real results
 
-Recorded in `artifacts/epoch_lab/demos/`; regenerate with `python make_demos.py`.
+Recorded in `artifacts/epoch_lab/demos/`; regenerate with `python -m scripts.make_demos`.
 
 | Run | Data | Result |
 |---|---|---|
@@ -86,7 +86,7 @@ Recorded in `artifacts/epoch_lab/demos/`; regenerate with `python make_demos.py`
 
 ## What has been verified
 
-`python verify_results.py` re-checks every recorded run from its saved products with independent arithmetic and writes [docs/VERIFICATION.md](docs/VERIFICATION.md). Current result: **84 checks, 0 failed, 3 unverified**. The 3 unverified checks are the gates the reports themselves mark UNVERIFIED. Tests prove the checker catches deliberately corrupted results.
+`python -m scripts.verify_results` re-checks every recorded run from its saved products with independent arithmetic and writes [docs/VERIFICATION.md](docs/VERIFICATION.md). Current result: **84 checks, 0 failed, 3 unverified**. The 3 unverified checks are the gates the reports themselves mark UNVERIFIED. Tests prove the checker catches deliberately corrupted results.
 
 | Claim | Evidence | Status |
 |---|---|---|
@@ -100,13 +100,39 @@ Recorded in `artifacts/epoch_lab/demos/`; regenerate with `python make_demos.py`
 
 **Known variable star: not yet verified.** The two variable presets cannot be measured: RW Aurigae's core is flagged as saturated in its recorded run, and R Draconis (a Mira) is far brighter in the infrared than Barnard's Star, which already saturates. Every attempt to run an R Draconis series failed because IRSA DataLink did not return calibrations (HTTP 502). In the Barnard field, the 8 stars Gaia DR3 flags as variable showed no significant change over 31 days (largest |z| = 1.7). That is consistent with small optical variability, but it does not demonstrate sensitivity. The pipeline's sensitivity is so far shown only by injection–recovery (27 of 31 synthetic S/N-10 sources recovered in the real Barnard difference image) and by the synthetic-sky tests. Doing this properly needs an unsaturated, large-amplitude variable with three or more same-wavelength epochs, run while IRSA is available.
 
+## Repository layout
+
+```
+main.py                 FastAPI app: uvicorn main:app serves the API, the UI and the recorded runs
+spherex_lab/            processing code (one Python package)
+  data/                 archive access: SIA search, DataLink calibration, Gaia DR3, JPL Horizons, preset targets
+  imaging/              cutout reading, ePSF, WCS, source detection, spectral and photometric calibration
+  models/               fitted models: astrometry, motion, spectra, covariance, comparison statistics
+  lab/                  Epoch Lab: screening, difference imaging, time series, /api/lab router
+  repeatability/        earlier paths: pair investigation, Gaia reference-star repeatability, /api/multi-epoch
+scripts/                command-line tools, run as python -m scripts.<name>
+  make_demos.py         regenerate the recorded runs
+  verify_results.py     independent re-check of the recorded runs -> docs/VERIFICATION.md
+  build_static_demo.py  server-free copy of the recorded runs -> site/
+  ...                   earlier-phase tools (validate_multi_epoch, profile_workflow, live_check, visualize, live_calibration)
+static/                 front end (index.html, app.js, app.css; multi_epoch.html for the earlier page)
+tests/                  pytest suite (test_*.py), synthetic_sky.py helper, data/ fixtures
+artifacts/
+  epoch_lab/demos/      recorded runs shown in the UI (committed)
+  catalog_cache/        stored Gaia DR3 query results (committed)
+  rw_empirical/         earlier repeatability baseline report (committed)
+  research/             measured results of earlier phases, cited by docs/RESEARCH_LOG.md (committed)
+  *_cache/, runs        archive caches and job outputs (ignored)
+docs/                   methodology, architecture, data sources, verification, submission, research log
+```
+
 ## Tests
 
 ```powershell
 .\.venv\Scripts\python -m pytest -q          # 270 tests; real-data tests skip if local archive caches are absent
-.\.venv\Scripts\python verify_results.py     # independent re-check of the recorded runs
-.\.venv\Scripts\python make_demos.py         # re-run every recorded demonstration (uses local caches, else the live archive)
-.\.venv\Scripts\python build_static_demo.py  # build the public static copy into site/
+.\.venv\Scripts\python -m scripts.verify_results     # independent re-check of the recorded runs
+.\.venv\Scripts\python -m scripts.make_demos         # re-run every recorded demonstration (uses local caches, else the live archive)
+.\.venv\Scripts\python -m scripts.build_static_demo  # build the public static copy into site/
 ```
 
 Live runs need network access to NASA/IRSA. IRSA intermittently returns HTTP 502. Requests are retried a bounded number of times, and a job then fails with a specific, plain-language error rather than substituting data. Positions with no SPHEREx coverage, invalid coordinates, unknown names, timeouts, catalog outages and missing calibrations each have their own message.

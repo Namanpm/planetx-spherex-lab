@@ -25,7 +25,7 @@ const short = (id) => (id || '').split('?').pop();
 const mjdToDate = (mjd) => new Date((mjd - 40587) * 86400000);
 const isoDay = (mjd) => mjdToDate(mjd).toISOString().slice(0, 10);
 
-/* A static copy (build_static_demo.py) has no server: recorded runs are plain files and live analysis is unavailable. */
+/* A static copy (scripts/build_static_demo.py) has no server: recorded runs are plain files and live analysis is unavailable. */
 const STATIC = document.documentElement.getAttribute('data-static') === 'true';
 function staticPath(path) {
   if (path === '/api/lab/targets') return 'data/targets.json';
@@ -506,8 +506,8 @@ function variabilityPanel(r) {
   })));
   return p;
 }
-/* Where a result came from: a saved run made by make_demos.py, or a job this server just ran. */
-const recordedSource = (run) => ({ kind: 'recorded', label: 'Recorded run', detail: `generated ${(run.generated_utc || '').replace('T', ' ').slice(0, 16)} UTC by make_demos.py`, reproduce: run.reproduce });
+/* Where a result came from: a saved run made by scripts/make_demos.py, or a job this server just ran. */
+const recordedSource = (run) => ({ kind: 'recorded', label: 'Recorded run', detail: `generated ${(run.generated_utc || '').replace('T', ' ').slice(0, 16)} UTC by scripts/make_demos.py`, reproduce: run.reproduce });
 const liveSource = (job) => ({ kind: 'live', label: 'Live run', detail: `job ${String(job.id || '').slice(0, 8)}${job.finished_utc ? ` · finished ${job.finished_utc.replace('T', ' ').slice(0, 16)} UTC` : ''}` });
 function sourceChip(source) { return source ? el('span', { class: 'source ' + source.kind, title: source.detail }, source.label) : null; }
 const hash = (v) => (v ? el('span', { class: 'mono', title: v }, v.slice(0, 12) + '…') : '—');
@@ -884,7 +884,7 @@ async function showRuns(open) {
     index.hidden = false; result.hidden = true;
     cards.replaceChildren(el('div', { class: 'notice error' }, 'Could not load recorded runs: ' + e.message)); return;
   }
-  if (!cards.querySelector('.card')) cards.replaceChildren(...(runs.length ? runs.map(runCard) : [el('div', { class: 'empty' }, 'No recorded runs yet. Generate them with: python make_demos.py')]));
+  if (!cards.querySelector('.card')) cards.replaceChildren(...(runs.length ? runs.map(runCard) : [el('div', { class: 'empty' }, 'No recorded runs yet. Generate them with: python -m scripts.make_demos')]));
   const run = open && runs.find((r) => r.name === open && r.status === 'COMPLETED');
   index.hidden = !!run; result.hidden = !run;
   window.scrollTo({ top: 0 });

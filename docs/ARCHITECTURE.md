@@ -1,6 +1,6 @@
 # Architecture
 
-A flat Python package (FastAPI + NumPy/SciPy/Astropy) with a dependency-free
+A Python package, `spherex_lab` (FastAPI + NumPy/SciPy/Astropy), with a dependency-free
 single-page front end. There is no build step: `uvicorn main:app` serves the API,
 the UI and the recorded demonstrations.
 
@@ -28,6 +28,34 @@ the UI and the recorded demonstrations.
    └──────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
+## Repository layout
+
+```
+main.py                 FastAPI app: uvicorn main:app serves the API, the UI and the recorded runs
+spherex_lab/            processing code (one Python package)
+  data/                 archive access: SIA search, DataLink calibration, Gaia DR3, JPL Horizons, preset targets
+  imaging/              cutout reading, ePSF, WCS, source detection, spectral and photometric calibration
+  models/               fitted models: astrometry, motion, spectra, covariance, comparison statistics
+  lab/                  Epoch Lab: screening, difference imaging, time series, /api/lab router
+  repeatability/        earlier paths: pair investigation, Gaia reference-star repeatability, /api/multi-epoch
+scripts/                command-line tools, run as python -m scripts.<name>
+  make_demos.py         regenerate the recorded runs
+  verify_results.py     independent re-check of the recorded runs -> docs/VERIFICATION.md
+  build_static_demo.py  server-free copy of the recorded runs -> site/
+  ...                   earlier-phase tools (validate_multi_epoch, profile_workflow, live_check, visualize, live_calibration)
+static/                 front end (index.html, app.js, app.css; multi_epoch.html for the earlier page)
+tests/                  pytest suite (test_*.py), synthetic_sky.py helper, data/ fixtures
+artifacts/
+  epoch_lab/demos/      recorded runs shown in the UI (committed)
+  catalog_cache/        stored Gaia DR3 query results (committed)
+  rw_empirical/         earlier repeatability baseline report (committed)
+  research/             measured results of earlier phases, cited by docs/RESEARCH_LOG.md (committed)
+  *_cache/, runs        archive caches and job outputs (ignored)
+docs/                   methodology, architecture, data sources, verification, submission, research log
+```
+
+Modules are named by file below; each lives in the subpackage listed above.
+
 ## Request flow
 
 1. `POST /api/lab/screen {target_id | ra, dec}` → job. `spectral_matching.screen`
@@ -45,7 +73,7 @@ the UI and the recorded demonstrations.
    `light_curve.csv`.
 4. `GET /api/lab/jobs/{id}` returns status and progress; `.../files/{name}` serves
    products (only `.json/.png/.fits/.csv`, no path traversal).
-5. `GET /api/lab/demos` lists recorded runs (`make_demos.py`); their files are
+5. `GET /api/lab/demos` lists recorded runs (`scripts/make_demos.py`); their files are
    served read-only.
 
 Older routes are unchanged: `/api/spherex/search`, `/api/targets`,
@@ -91,17 +119,17 @@ observation's own DataLink calibration file and its SHA-256, the catalog mode an
 retrieval time, and `software_sha256` over `epoch_lab.SOFTWARE_FILES`. That hash is
 taken over LF-normalised text, so identical code gives the same hash on every
 platform. The result page labels each result **Recorded run** (with its
-`make_demos.py` command) or **Live run** (job ID and finish time) and lists these
+`scripts/make_demos.py` command) or **Live run** (job ID and finish time) and lists these
 fields under *Provenance and files*.
 
 ## Static public copy
 
-`build_static_demo.py` writes `site/`: the same `index.html` (marked
+`scripts/build_static_demo.py` writes `site/`: the same `index.html` (marked
 `data-static="true"`, with relative asset paths), `app.js`, `app.css`,
 `data/targets.json`, `data/demos.json` and every file of every completed recorded
 run. In static mode `api()` maps `/api/lab/...` reads to those files and refuses
 anything else. The search bar is replaced by a note that live analysis needs the
-server. `.github/workflows/pages.yml` re-runs `verify_results.py`, builds the copy
+server. `.github/workflows/pages.yml` re-runs `scripts/verify_results.py`, builds the copy
 and publishes it to GitHub Pages on every push to `main`.
 
 ## Front end

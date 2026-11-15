@@ -19524,7 +19524,7 @@
       "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W40_1A/l2b-v27-2026-239/1/level2_2025W40_1A_0441_1D1_spx_l2b-v27-2026-239.fits"
     }
   },
-  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+  "software_sha256": "05fb95e04cd1b22b604cc82b6dfb2f81b1966cc97b340eb76d42bcc788432db2",
   "cutout": {
     "center_deg": [
       269.4463051973687,
@@ -19533,13 +19533,13 @@
     "size_deg": 0.3
   },
   "timings_seconds": {
-    "download_0": 0.013858399999662652,
-    "calibration_0": 0.06312099999922793,
-    "download_1": 0.012120600000343984,
-    "calibration_1": 0.022414900000512716,
-    "comparison": 0.19109470000148576
+    "download_0": 0.012364999998681014,
+    "calibration_0": 0.05770990000019083,
+    "download_1": 0.011255800000071758,
+    "calibration_1": 0.021009500000218395,
+    "comparison": 0.18834069999866188
   },
-  "elapsed_seconds": 0.9054195000007894,
+  "elapsed_seconds": 0.8674204999988433,
   "files": [
     "comparison.fits",
     "report.json",

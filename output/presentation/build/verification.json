@@ -1,0 +1,561 @@
+{
+  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+  "runs": [
+    {
+      "name": "barnard-pair",
+      "kind": "compare",
+      "title": "Barnard's Star field: full-field matched pair at 0.84 um (31 days)",
+      "status": "COMPLETED",
+      "generated_utc": "2026-11-15T14:00:00+00:00",
+      "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+      "reproduce": "python make_demos.py barnard-pair",
+      "catalog_mode": "stored Gaia DR3 query result"
+    },
+    {
+      "name": "eps-indi-b-series",
+      "kind": "series",
+      "title": "Epsilon Indi B: five epochs at 1.107 um over one year",
+      "status": "COMPLETED",
+      "generated_utc": "2026-11-15T14:00:03+00:00",
+      "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+      "reproduce": "python make_demos.py eps-indi-b-series",
+      "catalog_mode": "UNAVAILABLE"
+    },
+    {
+      "name": "eps-indi-b-year-pair",
+      "kind": "compare",
+      "title": "Epsilon Indi B: same pointing one year apart at 2.03 um",
+      "status": "COMPLETED",
+      "generated_utc": "2026-11-15T14:00:53+00:00",
+      "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+      "reproduce": "python make_demos.py eps-indi-b-year-pair",
+      "catalog_mode": "UNAVAILABLE"
+    },
+    {
+      "name": "rw-aurigae-strip",
+      "kind": "compare",
+      "title": "RW Aurigae field: six months apart, opposite orientation",
+      "status": "COMPLETED",
+      "generated_utc": "2026-11-15T14:01:39+00:00",
+      "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+      "reproduce": "python make_demos.py rw-aurigae-strip",
+      "catalog_mode": "stored Gaia DR3 query result"
+    },
+    {
+      "name": "screening-five-targets",
+      "kind": "screen",
+      "title": "Spectral-epoch screening of all preset targets",
+      "status": "COMPLETED",
+      "generated_utc": "2026-11-15T14:01:41+00:00",
+      "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+      "reproduce": "python make_demos.py screening-five-targets",
+      "catalog_mode": null
+    }
+  ],
+  "checks": [
+    {
+      "run": "barnard-pair",
+      "check": "spectral gate holds on every compared pixel",
+      "status": "PASS",
+      "detail": "23265 compared pixels, largest |\u0394\u03bb|/CBAND = 0.0307 (limit 0.1)"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "compared pixel count",
+      "status": "PASS",
+      "detail": "FITS mask 23265, report 23265"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "every pixel left out sampled another wavelength or had no valid data",
+      "status": "PASS",
+      "detail": "7185 left out: 0 different wavelength, 7185 flagged or invalid; median |\u0394\u03bb|/CBAND 0.0047 where compared, 0.005 over the whole overlap"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "time baseline",
+      "status": "PASS",
+      "detail": "31.0497 d from the MJDs, report 31.0497 d"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "significance = difference / \u221avariance",
+      "status": "PASS",
+      "detail": "23265 pixels, max deviation 3.9e-06"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "blank-sky null test: significance spread \u2248 1 after rescaling",
+      "status": "PASS",
+      "detail": "2247 source-free pixels, robust spread 1.000 (raw 1.369, uncertainties \u00d7 1.369)"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "star \u03c3 = \u221a(stat\u00b2 + \u03b2\u00b2 + (\u03b1F)\u00b2) and z = residual / \u03c3",
+      "status": "PASS",
+      "detail": "909 stars, \u03b1 = 0.0502, \u03b2 = 0.1390, max |\u0394z| = 0.0e+00"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "star \u0394F/F = residual / scaled flux in A",
+      "status": "PASS",
+      "detail": "909 stars"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "noise model calibrated (robust spread of z \u2248 1)",
+      "status": "PASS",
+      "detail": "recomputed 0.999, reported 0.999"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "stars beyond the detection threshold",
+      "status": "PASS",
+      "detail": "5 with |z| \u2265 5.0, report 5; 0 passed vetting"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "unmeasurable target is reported with its reason",
+      "status": "PASS",
+      "detail": "TARGET_PIXELS_FLAGGED: Target core pixels carry non-SOURCE quality flag bits [0, 1, 2, 26] (e.g. saturation/non-linearity); excluded by the mask policy."
+    },
+    {
+      "run": "barnard-pair",
+      "check": "status follows the gates (UNVERIFIED never counts as PASS)",
+      "status": "PASS",
+      "detail": "spectral_overlap PASS, photometric_consistency PASS, noise_model PASS, source_noise_model PASS, registration PASS \u2192 VALIDATED"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2025W35_2A_0474_1/D1 \u2192 spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2025W40_1A_0441_1/D1 \u2192 spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W35_2A_0474_1/D1: recorded 8c58499f0d44\u2026, recomputed 8c58499f0d44\u2026"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W40_1A_0441_1/D1: recorded c8cee385baaa\u2026, recomputed c8cee385baaa\u2026"
+    },
+    {
+      "run": "barnard-pair",
+      "check": "produced by the current processing code",
+      "status": "PASS",
+      "detail": "run 0f38955889da\u2026, current 0f38955889da\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "excluded epoch has a stated reason",
+      "status": "PASS",
+      "detail": "2025W40_2B_0304_1/D2: Too few wavelength-matched field stars for a zero point."
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "excluded epoch has a stated reason",
+      "status": "PASS",
+      "detail": "2025W41_2B_0173_1/D2: Too few wavelength-matched field stars for a zero point."
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "light-curve points share one wavelength",
+      "status": "PASS",
+      "detail": "largest |\u0394\u03bb| 0.10 nm, limit 2.59 nm (0.1 \u00d7 CBAND)"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "constant-flux \u03c7\u00b2 and p-value",
+      "status": "PASS",
+      "detail": "weighted mean 14.488 mJy, \u03c7\u00b2 = 1.453 for 2 dof, p = 0.484 (report p = 0.484)"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "quoted errors are the covariance diagonal",
+      "status": "PASS",
+      "detail": "\u03c3(\u03bc) = 0.450, 0.431 \u2033/yr; \u03c3(\u03d6) = 0.164\u2033"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "proper-motion detection significance",
+      "status": "PASS",
+      "detail": "\u221a(\u03bc\u1d40C\u207b\u00b9\u03bc) = 11.31\u03c3, report 11.31\u03c3"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "catalog motion is the independent SIMBAD value",
+      "status": "PASS",
+      "detail": "Epsilon Indi B: 3.9820, -2.4668 \u2033/yr (https://simbad.u-strasbg.fr/simbad/sim-id?Ident=Epsilon+Indi+B)"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "measured motion agrees with SIMBAD (known-mover test)",
+      "status": "PASS",
+      "detail": "measured (4.46 \u00b1 0.45, -2.33 \u00b1 0.43) \u2033/yr vs SIMBAD (3.98, -2.47): 1.12\u03c3 apart, detected at 11.3\u03c3"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "parallax compared with SIMBAD",
+      "status": "PASS",
+      "detail": "0.611 \u00b1 0.164\u2033 vs 0.271\u2033 (2.1\u03c3); Birge ratio 3.40, so the parallax is reported as not reliably constrained"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "requested and unavailable epochs recorded",
+      "status": "PASS",
+      "detail": "5 of 5 requested epochs calibrated; 0 unavailable"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "every measured epoch has a science-file hash",
+      "status": "PASS",
+      "detail": "5 hashes for 5 epochs"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W17_4B_0027_3/D2: recorded cd974a0ecab2\u2026, recomputed cd974a0ecab2\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W23_2B_0241_2/D2: recorded d3bcdaa2dec1\u2026, recomputed d3bcdaa2dec1\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W40_2B_0304_1/D2: recorded ec7506b26952\u2026, recomputed ec7506b26952\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W41_2B_0173_1/D2: recorded 9aa5aea319b3\u2026, recomputed 9aa5aea319b3\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2026W17_2A_0308_3/D2: recorded 74078e585924\u2026, recomputed 74078e585924\u2026"
+    },
+    {
+      "run": "eps-indi-b-series",
+      "check": "produced by the current processing code",
+      "status": "PASS",
+      "detail": "run 0f38955889da\u2026, current 0f38955889da\u2026"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "spectral gate holds on every compared pixel",
+      "status": "PASS",
+      "detail": "19574 compared pixels, largest |\u0394\u03bb|/CBAND = 0.0051 (limit 0.1)"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "compared pixel count",
+      "status": "PASS",
+      "detail": "FITS mask 19574, report 19574"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "every pixel left out sampled another wavelength or had no valid data",
+      "status": "PASS",
+      "detail": "10702 left out: 0 different wavelength, 10702 flagged or invalid; median |\u0394\u03bb|/CBAND 0.0023 where compared, 0.002 over the whole overlap"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "time baseline",
+      "status": "PASS",
+      "detail": "364.1495 d from the MJDs, report 364.1495 d"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "significance = difference / \u221avariance",
+      "status": "PASS",
+      "detail": "19574 pixels, max deviation 4.5e-06"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "blank-sky null test: significance spread \u2248 1 after rescaling",
+      "status": "PASS",
+      "detail": "6084 source-free pixels, robust spread 1.000 (raw 1.654, uncertainties \u00d7 1.654)"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "star \u03c3 = \u221a(stat\u00b2 + \u03b2\u00b2 + (\u03b1F)\u00b2) and z = residual / \u03c3",
+      "status": "PASS",
+      "detail": "11 stars, \u03b1 = 0.0000, \u03b2 = 0.1747, max |\u0394z| = 0.0e+00"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "star \u0394F/F = residual / scaled flux in A",
+      "status": "PASS",
+      "detail": "11 stars"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "noise model calibrated (robust spread of z \u2248 1)",
+      "status": "UNVERIFIED",
+      "detail": "only 11 stars; the source noise model needs \u226530 and the report marks it UNVERIFIED"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "stars beyond the detection threshold",
+      "status": "PASS",
+      "detail": "0 with |z| \u2265 5.0, report 0; 0 passed vetting"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "target significance = \u0394F/F \u00f7 \u03c3",
+      "status": "PASS",
+      "detail": "0.0086 / 0.0101 = 0.847\u03c3, report 0.847\u03c3"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "status follows the gates (UNVERIFIED never counts as PASS)",
+      "status": "PASS",
+      "detail": "spectral_overlap PASS, photometric_consistency PASS, noise_model PASS, source_noise_model UNVERIFIED, registration PASS \u2192 PARTIAL"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2025W18_1B_0238_1/D3 \u2192 spectral_wcs_D3_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2026W18_1A_0457_2/D3 \u2192 spectral_wcs_D3_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W18_1B_0238_1/D3: recorded 230b04cb0049\u2026, recomputed 230b04cb0049\u2026"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2026W18_1A_0457_2/D3: recorded c7406cbf231c\u2026, recomputed c7406cbf231c\u2026"
+    },
+    {
+      "run": "eps-indi-b-year-pair",
+      "check": "produced by the current processing code",
+      "status": "PASS",
+      "detail": "run 0f38955889da\u2026, current 0f38955889da\u2026"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "spectral gate holds on every compared pixel",
+      "status": "PASS",
+      "detail": "1483 compared pixels, largest |\u0394\u03bb|/CBAND = 0.1000 (limit 0.1)"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "compared pixel count",
+      "status": "PASS",
+      "detail": "FITS mask 1483, report 1483"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "every pixel left out sampled another wavelength or had no valid data",
+      "status": "PASS",
+      "detail": "28751 left out: 28030 different wavelength, 721 flagged or invalid; median |\u0394\u03bb|/CBAND 0.0536 where compared, 0.698 over the whole overlap"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "time baseline",
+      "status": "PASS",
+      "detail": "181.6057 d from the MJDs, report 181.6057 d"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "significance = difference / \u221avariance",
+      "status": "PASS",
+      "detail": "1483 pixels, max deviation 1.9e-06"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "blank-sky null test",
+      "status": "UNVERIFIED",
+      "detail": "only 141 source-free pixels (needs \u2265200); the report marks the noise gate UNVERIFIED"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "star \u03c3 = \u221a(stat\u00b2 + \u03b2\u00b2 + (\u03b1F)\u00b2) and z = residual / \u03c3",
+      "status": "PASS",
+      "detail": "12 stars, \u03b1 = 0.0346, \u03b2 = 0.0000, max |\u0394z| = 0.0e+00"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "star \u0394F/F = residual / scaled flux in A",
+      "status": "PASS",
+      "detail": "12 stars"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "noise model calibrated (robust spread of z \u2248 1)",
+      "status": "UNVERIFIED",
+      "detail": "only 12 stars; the source noise model needs \u226530 and the report marks it UNVERIFIED"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "stars beyond the detection threshold",
+      "status": "PASS",
+      "detail": "1 with |z| \u2265 5.0, report 1; 0 passed vetting"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "unmeasurable target is reported with its reason",
+      "status": "PASS",
+      "detail": "TARGET_PIXELS_FLAGGED: Target core pixels carry non-SOURCE quality flag bits [1, 28] (e.g. saturation/non-linearity); excluded by the mask policy."
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "status follows the gates (UNVERIFIED never counts as PASS)",
+      "status": "PASS",
+      "detail": "spectral_overlap PASS, photometric_consistency PASS, noise_model UNVERIFIED, source_noise_model UNVERIFIED, registration PASS \u2192 PARTIAL"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2025W36_1A_0606_3/D1 \u2192 spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "own calibration recorded for the epoch",
+      "status": "PASS",
+      "detail": "2026W10_1A_0445_3/D1 \u2192 spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits (UUID equality unverified)"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2025W36_1A_0606_3/D1: recorded 5f96d4cf2926\u2026, recomputed 5f96d4cf2926\u2026"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "science file SHA-256",
+      "status": "PASS",
+      "detail": "2026W10_1A_0445_3/D1: recorded 0244b771aed0\u2026, recomputed 0244b771aed0\u2026"
+    },
+    {
+      "run": "rw-aurigae-strip",
+      "check": "produced by the current processing code",
+      "status": "PASS",
+      "detail": "run 0f38955889da\u2026, current 0f38955889da\u2026"
+    },
+    {
+      "run": "screening-five-targets / barnards-star",
+      "check": "every pair: same detector, \u22651 day apart, |\u0394\u03bb| \u2264 0.1 \u00d7 CBAND",
+      "status": "PASS",
+      "detail": "70 pairs re-derived from the observation list, 0 break the rule"
+    },
+    {
+      "run": "screening-five-targets / barnards-star",
+      "check": "wavelength at target = DataLink CWAVE map at the detector pixel",
+      "status": "PASS",
+      "detail": "239 records looked up in 6 maps (SHA-256 matches), 0 disagree"
+    },
+    {
+      "run": "screening-five-targets / barnards-star",
+      "check": "summary counts match the file",
+      "status": "PASS",
+      "detail": "70 pairs, 3 groups of \u22653 epochs"
+    },
+    {
+      "run": "screening-five-targets / epsilon-indi-b",
+      "check": "every pair: same detector, \u22651 day apart, |\u0394\u03bb| \u2264 0.1 \u00d7 CBAND",
+      "status": "PASS",
+      "detail": "200 pairs re-derived from the observation list, 0 break the rule"
+    },
+    {
+      "run": "screening-five-targets / epsilon-indi-b",
+      "check": "wavelength at target = DataLink CWAVE map at the detector pixel",
+      "status": "PASS",
+      "detail": "338 records looked up in 6 maps (SHA-256 matches), 0 disagree"
+    },
+    {
+      "run": "screening-five-targets / epsilon-indi-b",
+      "check": "summary counts match the file",
+      "status": "PASS",
+      "detail": "200 pairs, 31 groups of \u22653 epochs"
+    },
+    {
+      "run": "screening-five-targets / r-draconis",
+      "check": "every pair: same detector, \u22651 day apart, |\u0394\u03bb| \u2264 0.1 \u00d7 CBAND",
+      "status": "PASS",
+      "detail": "171 pairs re-derived from the observation list, 0 break the rule"
+    },
+    {
+      "run": "screening-five-targets / r-draconis",
+      "check": "wavelength at target = DataLink CWAVE map at the detector pixel",
+      "status": "PASS",
+      "detail": "413 records looked up in 6 maps (SHA-256 matches), 0 disagree"
+    },
+    {
+      "run": "screening-five-targets / r-draconis",
+      "check": "summary counts match the file",
+      "status": "PASS",
+      "detail": "171 pairs, 18 groups of \u22653 epochs"
+    },
+    {
+      "run": "screening-five-targets / rw-aurigae",
+      "check": "every pair: same detector, \u22651 day apart, |\u0394\u03bb| \u2264 0.1 \u00d7 CBAND",
+      "status": "PASS",
+      "detail": "17 pairs re-derived from the observation list, 0 break the rule"
+    },
+    {
+      "run": "screening-five-targets / rw-aurigae",
+      "check": "wavelength at target = DataLink CWAVE map at the detector pixel",
+      "status": "PASS",
+      "detail": "226 records looked up in 6 maps (SHA-256 matches), 0 disagree"
+    },
+    {
+      "run": "screening-five-targets / rw-aurigae",
+      "check": "summary counts match the file",
+      "status": "PASS",
+      "detail": "17 pairs, 0 groups of \u22653 epochs"
+    },
+    {
+      "run": "screening-five-targets / wise-0855",
+      "check": "every pair: same detector, \u22651 day apart, |\u0394\u03bb| \u2264 0.1 \u00d7 CBAND",
+      "status": "PASS",
+      "detail": "83 pairs re-derived from the observation list, 0 break the rule"
+    },
+    {
+      "run": "screening-five-targets / wise-0855",
+      "check": "wavelength at target = DataLink CWAVE map at the detector pixel",
+      "status": "PASS",
+      "detail": "258 records looked up in 6 maps (SHA-256 matches), 0 disagree"
+    },
+    {
+      "run": "screening-five-targets / wise-0855",
+      "check": "summary counts match the file",
+      "status": "PASS",
+      "detail": "83 pairs, 7 groups of \u22653 epochs"
+    },
+    {
+      "run": "screening-five-targets",
+      "check": "produced by the current processing code",
+      "status": "PASS",
+      "detail": "run 0f38955889da\u2026, current 0f38955889da\u2026"
+    }
+  ]
+}

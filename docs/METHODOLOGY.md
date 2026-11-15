@@ -18,7 +18,7 @@ colour, and a red star would look "variable". The lab compares only what was
 measured at the same wavelength, and rejects the rest instead of correcting it
 with an assumed spectrum.
 
-## 2. Screening every archive record (`spectral_matching.py`)
+## 2. Screening every archive record (`spherex_lab/lab/spectral_matching.py`)
 
 For each DR1 record whose footprint contains the target (via `pair_discovery`,
 with proper motion applied for preset targets):
@@ -30,7 +30,7 @@ with proper motion applied for preset targets):
    bandwidth at that pixel.
 
 The homography ignores optical distortion. Against 26 real downloaded cutouts
-(`tests_data/footprint_ground_truth.json`) its error is median 3.1 px and maximum
+(`tests/data/footprint_ground_truth.json`) its error is median 3.1 px and maximum
 5.7 px, i.e. a few per cent of a bandwidth on D1. Screening only nominates
 candidates; every comparison re-reads the wavelength maps from the downloaded
 cutouts' own calibration associations.
@@ -41,7 +41,7 @@ cutouts' own calibration associations.
 21×21 grid; pairs are ranked by that area. **Groups** chain three or more
 distinct epochs at one wavelength (light-curve and trajectory candidates).
 
-## 3. Matched-wavelength difference imaging (`difference_imaging.py`)
+## 3. Matched-wavelength difference imaging (`spherex_lab/lab/difference_imaging.py`)
 
 Inputs: two real cutouts (0.3°) with `IMAGE`, `VARIANCE`, `FLAGS`, `ZODI`, `EPSF`,
 and each observation's own `CWAVE`/`CBAND` sampled onto the cutout grid.
@@ -127,7 +127,7 @@ within 4 px, at least half an aperture plus 2 px from the region boundary, no
 second catalog source in the aperture, a residual explained by a scaled copy of
 the source (R² ≥ 0.5), and a noise model calibrated on ≥ 30 stars.
 
-## 4. Same-wavelength time series (`epoch_series.py`)
+## 4. Same-wavelength time series (`spherex_lab/lab/epoch_series.py`)
 
 For a group of ≥ 2 epochs on one detector at one wavelength:
 
@@ -177,10 +177,10 @@ For a group of ≥ 2 epochs on one detector at one wavelength:
 
 ## 7. Verification
 
-`verify_results.py` re-checks every recorded run from its saved products, using
+`scripts/verify_results.py` re-checks every recorded run from its saved products, using
 its own arithmetic rather than the pipeline's functions, and writes
 [VERIFICATION.md](VERIFICATION.md). A check is UNVERIFIED when its input is missing,
-never a pass. `test_verify_results.py` corrupts saved results (pixel counts,
+never a pass. `tests/test_verify_results.py` corrupts saved results (pixel counts,
 z-scores, gate logic, baselines, proper-motion significance, χ² p-values,
 pair membership) and asserts the checker reports each one.
 

@@ -219,14 +219,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Generated run output; keep only fixtures and recorded summary files
+# Generated run output; keep only the research records and recorded summary files
 artifacts/*
-!artifacts/sample.fits
-!artifacts/search_fixture.xml
-!artifacts/search.json
-!artifacts/sky.png
-!artifacts/*.json
-!artifacts/*.md
+!artifacts/research/
 !artifacts/rw_empirical/
 artifacts/rw_empirical/*
 !artifacts/rw_empirical/report.json
@@ -238,6 +233,10 @@ artifacts/epoch_lab/*
 !artifacts/catalog_cache/
 artifacts/catalog_cache/queries/
 .gstack/
+.playwright-cli/
 
-# Static public copy (python build_static_demo.py); published by .github/workflows/pages.yml
+# Static public copy (python -m scripts.build_static_demo); published by .github/workflows/pages.yml
 site/
+
+# Presentation build dependencies
+output/presentation/build/node_modules/

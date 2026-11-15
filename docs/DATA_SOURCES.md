@@ -1,7 +1,7 @@
 # Data sources
 
 All science data are real and retrieved at run time from public archives. Nothing
-is simulated in the archive pipeline; `synthetic_sky.py` is used only by the tests.
+is simulated in the archive pipeline; `tests/synthetic_sky.py` is used only by the tests.
 
 | Source | What is used | How | Notes |
 |---|---|---|---|
@@ -11,7 +11,7 @@ is simulated in the archive pipeline; `synthetic_sky.py` is used only by the tes
 | ESA Gaia DR3 | `gaiadr3.gaia_source` positions, proper motions, G, BP−RP, variability and duplicate flags (G ≤ 19, r = 0.2°) | TAP `https://gea.esac.esa.int/tap-server/tap/sync` | Stored query results are reused when their circle covers the field (DR3 is a fixed release) |
 | JPL Horizons | Barycentric ICRF vectors of SPHEREx (`-163182`) at observation times (TDB) | `https://ssd.jpl.nasa.gov/api/horizons.api` | Used for annual-parallax factors |
 | CDS Sesame (official and CfA mirror) | Object-name resolution | `nph-sesame/-oI/SNV` | Optional; presets and coordinates do not need it |
-| SIMBAD | Preset target positions, proper motions, parallaxes (`targets.py`) | Static values with source links | J2000 positions |
+| SIMBAD | Preset target positions, proper motions, parallaxes (`spherex_lab/data/targets.py`) | Static values with source links | J2000 positions |
 
 ## Preset targets
 
@@ -28,7 +28,7 @@ is simulated in the archive pipeline; `synthetic_sky.py` is used only by the tes
 On 2026-11-15 IRSA SIA and DataLink intermittently returned HTTP 502, and the ESA
 Gaia TAP and CDS TAP services timed out from this machine. The code retries
 idempotent requests a bounded number of times and otherwise fails the job with a
-specific error. `make_demos.py` was retried until the archive responded. The
+specific error. `scripts/make_demos.py` was retried until the archive responded. The
 recorded demonstrations use only data actually returned by the archives.
 
 Later on 2026-11-15 the recorded runs were regenerated with the current processing

@@ -682,8 +682,8 @@
       "response_sha256": "83d46e6754a36c6d9ad0942a19edbff438b4a8b39e728d5bef97b89980f04567"
     }
   },
-  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
-  "elapsed_seconds": 4.961218500000541,
+  "software_sha256": "05fb95e04cd1b22b604cc82b6dfb2f81b1966cc97b340eb76d42bcc788432db2",
+  "elapsed_seconds": 4.952792000000045,
   "files": [
     "series.json",
     "series.png",

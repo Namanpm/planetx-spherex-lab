@@ -25,7 +25,7 @@ Time-domain science needs like-for-like measurements. SPHEREx's all-sky, 102-col
 
 ## What is verified, and what is not
 
-`python verify_results.py` independently re-checks every recorded result (84 checks,
+`python -m scripts.verify_results` independently re-checks every recorded result (84 checks,
 0 failed, 3 unverified; see `docs/VERIFICATION.md`). The motion workflow is verified on
 one known mover (ε Indi B, 1.1σ from SIMBAD). Variability detection is **not yet
 verified on a real variable star**: the variable presets saturate, and IRSA was down

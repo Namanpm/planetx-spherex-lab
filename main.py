@@ -10,9 +10,9 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from pair_discovery import discover_pairs
-from spherex import search
-from targets import targets
+from spherex_lab.data.pair_discovery import discover_pairs
+from spherex_lab.data.spherex import search
+from spherex_lab.data.targets import targets
 
 ROOT = Path(__file__).resolve().parent
 RUNS = ROOT / 'artifacts' / 'runs'
@@ -23,7 +23,7 @@ app = FastAPI(title='SPHEREx Epoch Lab', description='Planet X x SPHEREx: same-s
 
 def _upstream_error(exc):
     """Map archive/catalog failures to HTTP; never turn them into empty results."""
-    from reference_catalog import GaiaArchiveUnavailable
+    from spherex_lab.data.reference_catalog import GaiaArchiveUnavailable
     if isinstance(exc, requests.Timeout):
         return HTTPException(status_code=504, detail='Archive request timed out')
     if isinstance(exc, GaiaArchiveUnavailable):
@@ -73,7 +73,7 @@ def pairs(ra: float = Query(ge=0, lt=360), dec: float = Query(ge=-90, le=90)):
 
 @app.post('/api/comparisons')
 def submit_comparison(body: ComparisonRequest):
-    from scientific_pipeline import run
+    from spherex_lab.repeatability.scientific_pipeline import run
     run_id = str(uuid.uuid4())
     try:
         report = run(ra=body.ra, dec=body.dec, max_pairs=body.max_pairs, output=RUNS / run_id)
@@ -114,8 +114,8 @@ def submit_repeatability(body: RepeatabilityRequest):
     if not _repeatability_slots.acquire(blocking=False):
         raise HTTPException(status_code=429, detail='Repeatability worker is busy')
     try:
-        from empirical_comparison import run
-        from repeatability_products import export
+        from spherex_lab.repeatability.empirical_comparison import run
+        from spherex_lab.repeatability.repeatability_products import export
         run_id = str(uuid.uuid4())
         report = run(body.target, RUNS / run_id, body.max_observations)
         export(RUNS / run_id / 'report.json')
@@ -129,8 +129,8 @@ def submit_repeatability(body: RepeatabilityRequest):
         _repeatability_slots.release()
 
 
-from multi_epoch_api import router as multi_epoch_router  # noqa: E402
-from epoch_lab_api import router as epoch_lab_router  # noqa: E402
+from spherex_lab.repeatability.multi_epoch_api import router as multi_epoch_router  # noqa: E402
+from spherex_lab.lab.epoch_lab_api import router as epoch_lab_router  # noqa: E402
 app.include_router(multi_epoch_router)
 app.include_router(epoch_lab_router)
 app.mount('/static', StaticFiles(directory=STATIC), name='static')
