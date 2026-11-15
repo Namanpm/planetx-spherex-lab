@@ -60,7 +60,7 @@ def query_references(ra,dec,radius=.05,cache_dir='artifacts/reference_catalog',l
         content=cached['csv'].encode('utf-8');retrieved=cached['retrieved_utc']
     else:
         try:
-            with retry_session(total=3, backoff=0.5) as client,client.get(ENDPOINT,params=parameters,timeout=(10,60),stream=True) as response:
+            with session() as client,client.get(ENDPOINT,params=parameters,timeout=(10,60),stream=True) as response:
                 response.raise_for_status();chunks=[];size=0
                 for chunk in response.iter_content(65536):
                     size+=len(chunk)

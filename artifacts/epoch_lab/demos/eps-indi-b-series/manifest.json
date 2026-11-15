@@ -1,0 +1,46 @@
+{
+  "name": "eps-indi-b-series",
+  "kind": "series",
+  "title": "Epsilon Indi B: five epochs at 1.107 um over one year",
+  "why": "A nearby brown dwarf with large known proper motion; tests same-wavelength photometry and astrometric trajectory on a known mover.",
+  "generated_utc": "2026-11-15T09:08:41+00:00",
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "reproduce": "python make_demos.py eps-indi-b-series",
+  "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
+  "files": [
+    "series.json",
+    "series.png",
+    "light_curve.csv"
+  ],
+  "summary": {
+    "photometry_status": "CONSISTENT_WITH_CONSTANT",
+    "used_epochs": 3,
+    "astrometry_status": "MOTION_MEASURED",
+    "proper_motion_arcsec_per_year": [
+      4.464473643596593,
+      -2.331326932813121
+    ],
+    "proper_motion_sigma": [
+      0.4500277530036859,
+      0.4313753643169817
+    ],
+    "catalog_proper_motion": [
+      3.9819769999999997,
+      -2.4668319999999997
+    ]
+  },
+  "target": {
+    "id": "epsilon-indi-b",
+    "name": "Epsilon Indi B"
+  },
+  "observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2"
+  ],
+  "catalog_mode": "UNAVAILABLE",
+  "status": "COMPLETED",
+  "elapsed_seconds": 49.12
+}

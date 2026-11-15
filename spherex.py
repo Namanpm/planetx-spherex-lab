@@ -1,17 +1,26 @@
 import argparse
+import hashlib
 import io
 import json
+import os
+import tempfile
+import threading
 import time
 from collections import OrderedDict
 
 import numpy as np
-import requests
 from astropy.io.votable import parse
 from archive_http import retry_session
 
 ENDPOINT = 'https://irsa.ipac.caltech.edu/SIA'
 COLLECTIONS = ('spherex_dr1', 'spherex_qr3')
 _cache = OrderedDict()
+_cache_lock = threading.Lock()
+# Optional on-disk cache of raw SIA VOTables (DR1 records change rarely). Disabled
+# unless a directory is set; entries older than DISK_TTL are refetched, and a failed
+# request never falls back to a stale entry.
+DISK_CACHE_DIR = None
+DISK_TTL = 86400
 TTL = 900
 _session = retry_session(total=3, backoff=0.5)
 
@@ -34,14 +43,33 @@ def search(ra, dec, radius, collection='spherex_dr1'):
         raise ValueError('unsupported collection')
     key = (ra, dec, radius, collection)
     now = time.monotonic()
-    if key in _cache and now - _cache[key][0] < TTL:
-        _cache.move_to_end(key)
-        return _cache[key][1]
+    with _cache_lock:
+        entry = _cache.get(key)
+        if entry is not None and now - entry[0] < TTL:
+            _cache.move_to_end(key)
+            return entry[1]
     # SIA discovery uses a bounded idempotent-GET policy: initial try + 3
     # retries for connection, timeout, rate-limit, and upstream 5xx failures.
-    response = _get(ENDPOINT, params={'COLLECTION': collection, 'POS': f'CIRCLE {ra} {dec} {radius}'}, timeout=(10, 60))
-    response.raise_for_status()
-    votable = parse(io.BytesIO(response.content))
+    params = {'COLLECTION': collection, 'POS': f'CIRCLE {ra} {dec} {radius}'}
+    content = None; disk = None
+    if DISK_CACHE_DIR is not None:
+        disk = os.path.join(DISK_CACHE_DIR, hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest() + '.xml')
+        try:
+            if time.time() - os.path.getmtime(disk) < DISK_TTL:
+                with open(disk, 'rb') as f:
+                    content = f.read()
+        except OSError:
+            content = None
+    if content is None:
+        response = _get(ENDPOINT, params=params, timeout=(10, 60))
+        response.raise_for_status()
+        content = response.content
+        if disk is not None:
+            os.makedirs(DISK_CACHE_DIR, exist_ok=True)
+            with tempfile.NamedTemporaryFile(dir=DISK_CACHE_DIR, suffix='.part', delete=False) as f:
+                f.write(content); temporary = f.name
+            os.replace(temporary, disk)
+    votable = parse(io.BytesIO(content))
     check_query_status(votable)
     table = votable.get_first_table().to_table(use_names_over_ids=True)
     fields = ('obs_id', 's_ra', 's_dec', 't_min', 't_max', 'em_min', 'em_max', 'energy_bandpassname', 'access_url', 'access_format', 's_region', 'obs_publisher_did')
@@ -56,9 +84,10 @@ def search(ra, dec, radius, collection='spherex_dr1'):
         return v
     records = [{field: value(row[field]) for field in fields} for row in table]
     result = {'query': {'ra_deg': ra, 'dec_deg': dec, 'radius_deg': radius, 'collection': collection}, 'count': len(records), 'units': {'t_min': 'MJD days', 't_max': 'MJD days', 'em_min': 'm', 'em_max': 'm', 's_ra': 'deg', 's_dec': 'deg'}, 'observations': records}
-    _cache[key] = (now, result)
-    _cache.move_to_end(key)
-    while len(_cache) > 32: _cache.popitem(last=False)
+    with _cache_lock:
+        _cache[key] = (now, result)
+        _cache.move_to_end(key)
+        while len(_cache) > 32: _cache.popitem(last=False)
     return result
 
 

@@ -230,3 +230,11 @@ artifacts/*
 !artifacts/rw_empirical/
 artifacts/rw_empirical/*
 !artifacts/rw_empirical/report.json
+# Epoch Lab: recorded real-data demos and Gaia DR3 query snapshots are kept;
+# raw archive caches (science cutouts, calibration maps, SIA responses) and per-job outputs are not.
+!artifacts/epoch_lab/
+artifacts/epoch_lab/*
+!artifacts/epoch_lab/demos/
+!artifacts/catalog_cache/
+artifacts/catalog_cache/queries/
+.gstack/

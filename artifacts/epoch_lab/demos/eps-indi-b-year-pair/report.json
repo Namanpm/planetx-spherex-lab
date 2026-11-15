@@ -1,0 +1,695 @@
+{
+  "status": "PARTIAL",
+  "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W18_1B_0238_1/D3",
+  "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W18_1A_0457_2/D3",
+  "policy": {
+    "spectral_tolerance_fraction": 0.1,
+    "spectral_slope_bound": 4.0,
+    "background_clip_sigma": 3.0,
+    "background_max_iterations": 10,
+    "catalog_mask_radius_px": 2.5,
+    "aperture_half_width_px": 2,
+    "star_min_snr": 20.0,
+    "registration_tolerance_px": 0.3,
+    "registration_min_stars": 3,
+    "detection_sigma": 5.0,
+    "detection_min_pixels": 2,
+    "association_radius_px": 1.5,
+    "edge_margin_px": 2,
+    "min_matched_pixels": 200,
+    "min_null_pixels": 200,
+    "psf_min_kernel_coverage": 0.95,
+    "max_noise_scale": 3.0,
+    "vet_isolation_radius_px": 4,
+    "vet_blend_radius_px": 2.5,
+    "vet_min_shape_r2": 0.5,
+    "min_noise_model_stars": 30,
+    "injection_count": 40,
+    "injection_snr": 10.0,
+    "injection_seed": 20261115
+  },
+  "epochs": {
+    "a": {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W18_1B_0238_1/D3",
+      "date": "2025-04-30T01:59:04.365",
+      "mjd": 60795.08268940972,
+      "detector": 3,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W18_1B_0238_1/D3",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/3/spectral_wcs_D3_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "51750c8f948a30541d391e54930279aa067c62c398a7cc2679e592bc6044427a",
+        "detector": 3,
+        "science_calibration_uuid": "019f4f99-19af-763f-8f2e-b7dc6cd00055",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "psf_fwhm_arcsec": 7.448130062949859,
+      "zodi_median_mjy_sr": 0.11873878911137581,
+      "science_valid_fraction": 0.9504545454545454
+    },
+    "b": {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W18_1A_0457_2/D3",
+      "date": "2026-04-29T05:34:17.143",
+      "mjd": 61159.2321428588,
+      "detector": 3,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W18_1A_0457_2/D3",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/3/spectral_wcs_D3_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "51750c8f948a30541d391e54930279aa067c62c398a7cc2679e592bc6044427a",
+        "detector": 3,
+        "science_calibration_uuid": "019f4f99-19af-763f-8f2e-b7dc6cd00055",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "psf_fwhm_arcsec": 7.448130062949859,
+      "zodi_median_mjy_sr": 0.11949396133422852,
+      "science_valid_fraction": 0.9443265306122449
+    }
+  },
+  "separation_days": 364.14945344907755,
+  "spectral": {
+    "overlap_pixels": 19574,
+    "matched_pixels": 19574,
+    "interior_pixels": 6855,
+    "matched_fraction_of_overlap": 1.0,
+    "median_delta_over_band_matched": 0.002329537683923773,
+    "median_delta_over_band_overlap": 0.002329537683923773,
+    "wavelength_range_um": [
+      1.9890488386154175,
+      2.059511184692383
+    ]
+  },
+  "background": {
+    "a": {
+      "coefficients_mjy_sr": [
+        0.1493351358567709,
+        0.01811634831958471,
+        0.009786653581158334
+      ],
+      "blank_pixels": 7542,
+      "iterations": 2,
+      "robust_residual_scale": 1.0579007252120045
+    },
+    "b": {
+      "coefficients_mjy_sr": [
+        0.1503360215434859,
+        0.017838283007508712,
+        0.0101671355143485
+      ],
+      "blank_pixels": 7332,
+      "iterations": 3,
+      "robust_residual_scale": 1.0838890321104748
+    }
+  },
+  "psf": {
+    "interpolation_smoothing_variance_px2": [
+      0.23861072609060793,
+      0.20186994715032844
+    ],
+    "matched": true,
+    "method": "masked normalised cross-convolution with projected measured ePSFs",
+    "kernel_coverage_policy": 0.95,
+    "zone_a": 202,
+    "zone_b": 202,
+    "kernel_shape": [
+      15,
+      15
+    ],
+    "center_deg": [
+      331.0441465885212,
+      -56.78284419511611
+    ]
+  },
+  "calibration_sources": "image-detected sources in epoch A (Gaia unavailable; assumed mostly constant and stationary)",
+  "difference_background": {
+    "applied": true,
+    "blank_pixels": 5687,
+    "median_mjy_sr": 0.006434946236225444,
+    "coefficients_mjy_sr": [
+      0.005538009455760701,
+      0.01737893780590319,
+      0.004647891087665522
+    ]
+  },
+  "photometry": {
+    "stars": 11,
+    "scale_stars": 11,
+    "scale_star_selection": "aperture S/N>=20",
+    "median_ratio_b_over_a": 0.976711127876648,
+    "median_ratio_standard_error": 0.030259563495103767,
+    "decision": "Consistent with unity; no rescaling applied.",
+    "scale_applied": 1.0,
+    "scale_variance": 0.0
+  },
+  "null_test": {
+    "pixels": 6084,
+    "median_sigma": 0.08358650387509181,
+    "robust_std_sigma": 1.653638780222181,
+    "noise_scale_applied": 1.653638780222181,
+    "tail_count": 344,
+    "gaussian_expected_tail": 0.0034879572,
+    "tail_count_after_rescale": 122
+  },
+  "systematic_floor": {
+    "stars": 11,
+    "alpha_fractional": null,
+    "beta_aperture_mjy_sr_px": 0.17470367740689588,
+    "median_fractional_change": -0.023288872123352008,
+    "calibration_check": {
+      "all": {
+        "stars": 11,
+        "robust_std_z": 0.9348810772112154
+      }
+    },
+    "stars_beyond_threshold": 0,
+    "method": "Catalog stars (aperture S/N>=20) in the matched region, assumed mostly constant: robust excess scatter beyond propagated errors; multiplicative term from S/N>=100 stars, additive term from fainter stars."
+  },
+  "registration": {
+    "stars": 7,
+    "median_offset_px": [
+      -0.06447023298369459,
+      0.03660453933386876
+    ],
+    "median_offset_arcsec": [
+      -0.3966254937798777,
+      0.22519374936263267
+    ],
+    "robust_scatter_px": [
+      0.08238619983356807,
+      0.06413672295789243
+    ]
+  },
+  "candidates": [
+    {
+      "x": 86.04582665276749,
+      "y": 86.47552056157663,
+      "sign": "brightening",
+      "pixel_count": 6,
+      "peak_sigma": 54.65210506751052,
+      "catalog_source_id": "TARGET",
+      "catalog_g_mag": null,
+      "catalog_separation_px": 0.5467411871003357,
+      "catalog_motion_px": 0.7472650354255409,
+      "classification": "KNOWN_PROPER_MOTION_RESIDUAL",
+      "reason": "The requested target moves 0.75 px between epochs; the residual is expected motion, not variability.",
+      "ra_deg": 331.0988079264084,
+      "dec_deg": -56.80136061965569,
+      "difference_sum_mjy_sr_px": 1.789221045707797,
+      "id": 1
+    },
+    {
+      "x": 87.0764778299582,
+      "y": 88.0680335936817,
+      "sign": "fading",
+      "pixel_count": 8,
+      "peak_sigma": -47.837846493031876,
+      "catalog_source_id": "TARGET",
+      "catalog_g_mag": null,
+      "catalog_separation_px": 0.6054964008871792,
+      "catalog_motion_px": 0.7472650354255409,
+      "classification": "KNOWN_PROPER_MOTION_RESIDUAL",
+      "reason": "The requested target moves 0.75 px between epochs; the residual is expected motion, not variability.",
+      "ra_deg": 331.09379031536054,
+      "dec_deg": -56.79954761494169,
+      "difference_sum_mjy_sr_px": -1.1516575573157748,
+      "id": 2
+    },
+    {
+      "x": 156.0,
+      "y": 91.74144137046417,
+      "sign": "brightening",
+      "pixel_count": 2,
+      "peak_sigma": 24.491930503423124,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.88976964061897,
+      "dec_deg": -56.838205286505996,
+      "difference_sum_mjy_sr_px": 5.355522610314036,
+      "id": 3
+    },
+    {
+      "x": 126.22178993048853,
+      "y": 26.000000000000004,
+      "sign": "fading",
+      "pixel_count": 2,
+      "peak_sigma": -11.068364869396685,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 331.0601757385728,
+      "dec_deg": -56.92149314235159,
+      "difference_sum_mjy_sr_px": -0.22868802560766263,
+      "id": 4
+    },
+    {
+      "x": 4.136163185368675,
+      "y": 62.19211389918339,
+      "sign": "fading",
+      "pixel_count": 3,
+      "peak_sigma": -10.421470073855104,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 331.36625569194854,
+      "dec_deg": -56.78582662307828,
+      "difference_sum_mjy_sr_px": -0.24134652414565264,
+      "id": 5
+    },
+    {
+      "x": 122.29375829875026,
+      "y": 124.38773563036189,
+      "sign": "brightening",
+      "pixel_count": 3,
+      "peak_sigma": 10.285377821785994,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.9456329638137,
+      "dec_deg": -56.765672926708135,
+      "difference_sum_mjy_sr_px": 1.2822237875539706,
+      "id": 6
+    },
+    {
+      "x": 128.5261577227057,
+      "y": 106.86993744912075,
+      "sign": "brightening",
+      "pixel_count": 38,
+      "peak_sigma": 10.026435051299265,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.9499692208036,
+      "dec_deg": -56.79698561743705,
+      "difference_sum_mjy_sr_px": 9.86312768366028,
+      "id": 7
+    },
+    {
+      "x": 82.0,
+      "y": 137.650234996929,
+      "sign": "brightening",
+      "pixel_count": 2,
+      "peak_sigma": 9.82036893391404,
+      "classification": "DIPOLE_PSF_OR_REGISTRATION",
+      "reason": "Adjacent opposite-sign residual: PSF or sub-pixel registration mismatch, not a flux change.",
+      "ra_deg": 331.04499488334375,
+      "dec_deg": -56.71903823649661,
+      "difference_sum_mjy_sr_px": 0.16019408685857012,
+      "id": 8
+    },
+    {
+      "x": 151.64353829302578,
+      "y": 91.18086716659728,
+      "sign": "brightening",
+      "pixel_count": 14,
+      "peak_sigma": 9.359376798664885,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.9031003831461,
+      "dec_deg": -56.83628628575734,
+      "difference_sum_mjy_sr_px": 6.943678562856022,
+      "id": 9
+    },
+    {
+      "x": 157.96495156914344,
+      "y": 100.0217910504533,
+      "sign": "brightening",
+      "pixel_count": 28,
+      "peak_sigma": 9.329720663322401,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.87352230373057,
+      "dec_deg": -56.82655275172384,
+      "difference_sum_mjy_sr_px": 10.133243195084454,
+      "id": 10
+    },
+    {
+      "x": 164.0,
+      "y": 59.26308468736092,
+      "sign": "fading",
+      "pixel_count": 2,
+      "peak_sigma": -8.494379188790331,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.9080481236478,
+      "dec_deg": -56.89396822602223,
+      "difference_sum_mjy_sr_px": -0.2968413531146131,
+      "id": 11
+    },
+    {
+      "x": 135.2465844982702,
+      "y": 116.467794266585,
+      "sign": "brightening",
+      "pixel_count": 12,
+      "peak_sigma": 7.669279238288067,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.91829456347216,
+      "dec_deg": -56.78634121497997,
+      "difference_sum_mjy_sr_px": 13.148093678242379,
+      "id": 12
+    },
+    {
+      "x": 80.99999999999999,
+      "y": 138.26905430063297,
+      "sign": "fading",
+      "pixel_count": 2,
+      "peak_sigma": -7.398314808748614,
+      "classification": "DIPOLE_PSF_OR_REGISTRATION",
+      "reason": "Adjacent opposite-sign residual: PSF or sub-pixel registration mismatch, not a flux change.",
+      "ra_deg": 331.0470872618721,
+      "dec_deg": -56.71742815842094,
+      "difference_sum_mjy_sr_px": 0.10305134416196723,
+      "id": 13
+    },
+    {
+      "x": 20.282589371777267,
+      "y": 135.49247256520385,
+      "sign": "brightening",
+      "pixel_count": 3,
+      "peak_sigma": 6.360309468204729,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 331.2254563045236,
+      "dec_deg": -56.68236623677455,
+      "difference_sum_mjy_sr_px": 0.8666716813030411,
+      "id": 14
+    },
+    {
+      "x": 129.6870923485439,
+      "y": 114.6608666462724,
+      "sign": "brightening",
+      "pixel_count": 3,
+      "peak_sigma": 5.388678447500736,
+      "classification": "UNCLASSIFIED_NO_CATALOG",
+      "reason": "No Gaia catalog available for association; only the requested target is checked.",
+      "ra_deg": 330.93667197165774,
+      "dec_deg": -56.785587418259745,
+      "difference_sum_mjy_sr_px": 5.760770324999424,
+      "id": 15
+    }
+  ],
+  "variability_candidates": [],
+  "variability_summary": {
+    "stars_tested": 11,
+    "beyond_threshold": 0,
+    "passed_vetting": 0
+  },
+  "candidate_summary": {
+    "DIPOLE_PSF_OR_REGISTRATION": 2,
+    "KNOWN_PROPER_MOTION_RESIDUAL": 2,
+    "UNCLASSIFIED_NO_CATALOG": 11
+  },
+  "injection_recovery": {
+    "status": "COMPLETED",
+    "seed": 20261115,
+    "injected": 30,
+    "recovered": 14,
+    "completeness": 0.4666666666666667,
+    "aperture_snr": 10.0,
+    "median_position_offset_px": 0.17805927091618545,
+    "method": "PSF-shaped sources added to the real difference image at blank interior positions; detection rerun with the production threshold."
+  },
+  "target": {
+    "position_epoch_a_px": [
+      86.78693320739346,
+      87.53625374916786
+    ],
+    "position_epoch_b_px": [
+      86.3620469669431,
+      86.92153697223274
+    ],
+    "status": "MEASURED",
+    "fractional_change": 0.008584182653127914,
+    "fractional_change_sigma": 0.010136761837405127,
+    "change_z": 0.8468367700474008,
+    "snr_a": 304.97761284486756
+  },
+  "gates": {
+    "spectral_overlap": "PASS",
+    "photometric_consistency": "PASS",
+    "noise_model": "PASS",
+    "source_noise_model": "UNVERIFIED",
+    "registration": "PASS"
+  },
+  "reason": "Comparison computed; unverified gates: source_noise_model",
+  "limitations": [
+    "Only pixels whose own-calibration CWAVE values agree within the policy tolerance are compared; elsewhere the epochs sample different wavelengths.",
+    "Bilinear reprojection and PSF cross-convolution correlate neighbouring pixels; per-pixel variances are marginal and the blank-sky null test only inflates them.",
+    "The spectral-mismatch term bounds |dlnF/dlnlambda| by the policy value; extreme spectra can exceed it.",
+    "Single detector-zone ePSFs are used at the field centre; PSF variation across the cutout contributes to the empirical systematic floor.",
+    "Catalog association is positional (Gaia DR3, G<=19, proper motion propagated, no parallax); candidates require independent follow-up."
+  ],
+  "measured_stars": [
+    {
+      "source_id": "IMG0002",
+      "g_mag": null,
+      "x_a": 4.465739187293934,
+      "y_a": 63.21549093497357,
+      "x_b": 4.465739187293934,
+      "y_b": 63.21549093497357,
+      "flux_a": 14.953844899929228,
+      "var_a": 0.004258165569308901,
+      "flux_b": 14.71344971228057,
+      "var_b": 0.0032950179803958105,
+      "snr_a": 229.1614702173892,
+      "scaled_flux_a": 14.953844899929228,
+      "residual": -0.24039518764865875,
+      "stat_sigma": 0.14371618092925723,
+      "fractional_change": -0.016075811221620766,
+      "total_sigma": 0.22622050207791453,
+      "change_z": -1.0626587132489973
+    },
+    {
+      "source_id": "IMG0004",
+      "g_mag": null,
+      "x_a": 125.76981753415134,
+      "y_a": 26.39296357785134,
+      "x_b": 125.76981753415134,
+      "y_b": 26.39296357785134,
+      "flux_a": 9.81962648926883,
+      "var_a": 0.0032363881803772485,
+      "flux_b": 9.590938463661168,
+      "var_b": 0.002469657188463135,
+      "snr_a": 172.60948848687195,
+      "scaled_flux_a": 9.81962648926883,
+      "residual": -0.22868802560766177,
+      "stat_sigma": 0.12491317831774629,
+      "fractional_change": -0.023288872123352008,
+      "total_sigma": 0.21476656401063415,
+      "change_z": -1.0648213638894846
+    },
+    {
+      "source_id": "IMG0011",
+      "g_mag": null,
+      "x_a": 112.03665159797507,
+      "y_a": 12.742246182645,
+      "x_b": 112.03665159797507,
+      "y_b": 12.742246182645,
+      "flux_a": 4.849479376347884,
+      "var_a": 0.002039204899215596,
+      "flux_b": 4.629594762969385,
+      "var_b": 0.0015778201082607324,
+      "snr_a": 107.39020806058045,
+      "scaled_flux_a": 4.849479376347884,
+      "residual": -0.21988461337849863,
+      "stat_sigma": 0.099452660194558,
+      "fractional_change": -0.04534190091640157,
+      "total_sigma": 0.20102787498072738,
+      "change_z": -1.0938016103467196
+    },
+    {
+      "source_id": "IMG0017",
+      "g_mag": null,
+      "x_a": 25.014322799447985,
+      "y_a": 11.015041091625834,
+      "x_b": 25.014322799447985,
+      "y_b": 11.015041091625834,
+      "flux_a": 3.984804813060123,
+      "var_a": 0.0017913583862956878,
+      "flux_b": 4.107225379969237,
+      "var_b": 0.001402192347105151,
+      "snr_a": 94.14902192591569,
+      "scaled_flux_a": 3.984804813060123,
+      "residual": 0.12242056690911429,
+      "stat_sigma": 0.09344962403945518,
+      "fractional_change": 0.030721847782326298,
+      "total_sigma": 0.19812674512192507,
+      "change_z": 0.6178901633587025
+    },
+    {
+      "source_id": "IMG0022",
+      "g_mag": null,
+      "x_a": 39.638773946923024,
+      "y_a": 70.91553639465914,
+      "x_b": 39.638773946923024,
+      "y_b": 70.91553639465914,
+      "flux_a": 2.3446291271105246,
+      "var_a": 0.0014619054927057997,
+      "flux_b": 2.0480347778788106,
+      "var_b": 0.0010966340533807085,
+      "snr_a": 61.3217452990139,
+      "scaled_flux_a": 2.3446291271105246,
+      "residual": -0.296594349231714,
+      "stat_sigma": 0.08364437021912116,
+      "fractional_change": -0.1264994731159171,
+      "total_sigma": 0.1936950065666282,
+      "change_z": -1.5312441682883031
+    },
+    {
+      "source_id": "IMG0023",
+      "g_mag": null,
+      "x_a": 64.49909318300669,
+      "y_a": 161.21975919154258,
+      "x_b": 64.49909318300669,
+      "y_b": 161.21975919154258,
+      "flux_a": 2.728744784131659,
+      "var_a": 0.0015807058507796372,
+      "flux_b": 2.426402724569498,
+      "var_b": 0.0012098262350279906,
+      "snr_a": 68.6336962272869,
+      "scaled_flux_a": 2.728744784131659,
+      "residual": -0.30234205956216087,
+      "stat_sigma": 0.08735427402851002,
+      "fractional_change": -0.11079895097568537,
+      "total_sigma": 0.1953257384231294,
+      "change_z": -1.5478864280917481
+    },
+    {
+      "source_id": "IMG0029",
+      "g_mag": null,
+      "x_a": 43.743763673743096,
+      "y_a": 107.00661642054257,
+      "x_b": 43.743763673743096,
+      "y_b": 107.00661642054257,
+      "flux_a": 2.3082635280352557,
+      "var_a": 0.0014492799369747072,
+      "flux_b": 2.358955408331005,
+      "var_b": 0.0011566914710738527,
+      "snr_a": 60.63302689758212,
+      "scaled_flux_a": 2.3082635280352557,
+      "residual": 0.050691880295749225,
+      "stat_sigma": 0.08441613650349766,
+      "fractional_change": 0.021961045469923907,
+      "total_sigma": 0.19402953126178987,
+      "change_z": 0.26125858247502737
+    },
+    {
+      "source_id": "IMG0030",
+      "g_mag": null,
+      "x_a": 114.92263694620618,
+      "y_a": 21.17688861142133,
+      "x_b": 114.92263694620618,
+      "y_b": 21.17688861142133,
+      "flux_a": 1.424444761347291,
+      "var_a": 0.0012517143870996142,
+      "flux_b": 1.3301539248159422,
+      "var_b": 0.0009885981638883847,
+      "snr_a": 40.261781755533654,
+      "scaled_flux_a": 1.424444761347291,
+      "residual": -0.09429083653134884,
+      "stat_sigma": 0.07826993164636167,
+      "fractional_change": -0.06619480031094023,
+      "total_sigma": 0.19143551681811521,
+      "change_z": -0.49254620092746687
+    },
+    {
+      "source_id": "IMG0031",
+      "g_mag": null,
+      "x_a": 76.84692005647271,
+      "y_a": 53.989341581296436,
+      "x_b": 76.84692005647271,
+      "y_b": 53.989341581296436,
+      "flux_a": 1.5328650696878623,
+      "var_a": 0.0012829156186235846,
+      "flux_b": 1.6293538875927573,
+      "var_b": 0.0010402258259600435,
+      "snr_a": 42.79616779205489,
+      "scaled_flux_a": 1.5328650696878623,
+      "residual": 0.09648881790489505,
+      "stat_sigma": 0.07970369857613896,
+      "fractional_change": 0.06294671319279466,
+      "total_sigma": 0.19202618172064131,
+      "change_z": 0.5024774071968294
+    },
+    {
+      "source_id": "IMG0043",
+      "g_mag": null,
+      "x_a": 18.307388614348664,
+      "y_a": 44.27358566948696,
+      "x_b": 18.307388614348664,
+      "y_b": 44.27358566948696,
+      "flux_a": 1.2428889356498691,
+      "var_a": 0.0012306371631062485,
+      "flux_b": 1.333724041574672,
+      "var_b": 0.0009681989592436609,
+      "snr_a": 35.42968645571709,
+      "scaled_flux_a": 1.2428889356498691,
+      "residual": 0.09083510592480293,
+      "stat_sigma": 0.07754201458482994,
+      "fractional_change": 0.07308384789611792,
+      "total_sigma": 0.1911390565147969,
+      "change_z": 0.47523048183389455
+    },
+    {
+      "source_id": "IMG0044",
+      "g_mag": null,
+      "x_a": 88.56651804520158,
+      "y_a": 170.71124451518926,
+      "x_b": 88.56651804520158,
+      "y_b": 170.71124451518926,
+      "flux_a": 1.3901509054163639,
+      "var_a": 0.001301552550138958,
+      "flux_b": 1.217138518917514,
+      "var_b": 0.0010308069987833657,
+      "snr_a": 38.532846568008175,
+      "scaled_flux_a": 1.3901509054163639,
+      "residual": -0.17301238649884998,
+      "stat_sigma": 0.07986167208740658,
+      "fractional_change": -0.1244558312516662,
+      "total_sigma": 0.19209180505187928,
+      "change_z": -0.900675520499813
+    }
+  ],
+  "catalog": {
+    "mode": "UNAVAILABLE",
+    "errors": [
+      "GaiaArchiveUnavailable: Gaia DR3 catalog service did not respond after bounded retries; retry later, or select saved replay data."
+    ],
+    "consequence": "Residuals cannot be associated with catalog sources; classification is limited."
+  },
+  "science_files": {
+    "ivo://irsa.ipac/spherex_dr1?2025W18_1B_0238_1/D3": {
+      "path": "artifacts\\science_cache\\b309a3dc675cc9b87bfa95fe15b189a0084ae2a107221aa27a760a65bb2b5fcf.fits",
+      "sha256": "230b04cb0049f2d0c81ceae6ce5f5a9c189fa70a9204f15c3cccb6e8ba661bf8",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W18_1B/l2b-v27-2026-196/3/level2_2025W18_1B_0238_1D3_spx_l2b-v27-2026-196.fits"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2026W18_1A_0457_2/D3": {
+      "path": "artifacts\\science_cache\\74170cf9e7b0302285fc9a7eacd3f50b0dbccbe40b485a87fd43db8ce6fb4c97.fits",
+      "sha256": "c7406cbf231c3f310dc7401070bb33175c4f59634826b99b1d539019284465d0",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W18_1A/l2b-v27-2026-244/3/level2_2026W18_1A_0457_2D3_spx_l2b-v27-2026-244.fits"
+    }
+  },
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "cutout": {
+    "center_deg": [
+      331.0963312519921,
+      -56.80053487677649
+    ],
+    "size_deg": 0.3
+  },
+  "timings_seconds": {
+    "download_0": 0.011693400003423449,
+    "calibration_0": 0.05446500000107335,
+    "download_1": 0.011324799997964874,
+    "calibration_1": 0.02125030000024708,
+    "comparison": 0.10537330000079237
+  },
+  "elapsed_seconds": 0.44831669999985024,
+  "files": [
+    "comparison.fits",
+    "report.json",
+    "viewer.json",
+    "comparison.png",
+    "candidates.csv"
+  ]
+}

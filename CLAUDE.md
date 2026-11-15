@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Flat, single-directory Python project (no package, no pyproject) that queries NASA/IRSA SPHEREx spectral-image archives, downloads real FITS cutouts, and runs conservative, heavily-validated comparison/photometry experiments. It is a research pipeline, not a discovery tool: the README repeatedly stresses that nothing here establishes a detection, and that rejections are not proof of absence. Preserve that conservative framing when editing code or docs.
+SPHEREx Epoch Lab (Planet X × SPHEREx): a flat, single-directory Python project (no package, no pyproject) that compares real NASA/IRSA SPHEREx observations of the same sky **at the same wavelength** across epochs. SPHEREx uses linear variable filters, so two images of one star are only comparable where their per-pixel CWAVE agree; the code screens, gates and validates on that basis. It is a conservative research instrument: residuals are candidates, never discoveries, and unverifiable gates are reported as UNVERIFIED rather than passed. Preserve that framing in code and docs.
 
 ## Commands
 
@@ -14,41 +14,36 @@ Windows/PowerShell; use the venv interpreter.
 python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements.txt
 
-.\.venv\Scripts\python -m pytest -q                       # full suite (offline; uses saved fixtures)
-.\.venv\Scripts\python -m pytest test_pair_discovery.py -q            # one file
-.\.venv\Scripts\python -m pytest test_pipeline.py::test_name -q       # one test
-
-.\.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000   # API, docs at /docs
-
-.\.venv\Scripts\python spherex.py --ra 127.69444 --dec -39.17760 --radius 0.01   # IRSA search -> JSON
-.\.venv\Scripts\python visualize.py --ra 127.69444 --dec -39.17760                # sample FITS + PNG
-.\.venv\Scripts\python live_check.py                                              # live target coverage checks
-.\.venv\Scripts\python live_calibration.py                                        # DataLink calibration lookup
-.\.venv\Scripts\python scientific_pipeline.py --target barnards-star --max-pairs 2 --output artifacts/barnard_comparison
-.\.venv\Scripts\python repeatability_products.py --target rw-aurigae --max-observations 8 --output artifacts/rw_empirical
-.\.venv\Scripts\python inference_validation.py                                    # synthetic coverage experiment
-.\.venv\Scripts\python profile_workflow.py --mode wall --output artifacts/<fresh_dir>
+.\.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000   # UI at /, API docs at /docs
+.\.venv\Scripts\python -m pytest -q                                       # full suite (offline)
+.\.venv\Scripts\python -m pytest test_difference_imaging.py -q           # one file
+.\.venv\Scripts\python -m pytest test_epoch_lab_api.py::test_job_lifecycle_progress_and_files -q   # one test
+.\.venv\Scripts\python make_demos.py                  # regenerate recorded real-data demos (network)
+.\.venv\Scripts\python make_demos.py barnard-pair     # one demo
 ```
 
-No linter or formatter is configured. Tests need no network; live scripts do and can fail from IRSA 502/503s independent of the code. Live scripts download large files (the response bundle is ~437 MB, cached under `artifacts/response_calibration/`).
+No linter or formatter is configured. Tests need no network; a few real-data tests skip when the local archive caches (`artifacts/science_cache`, `artifacts/calibration_cache`, `artifacts/rw_empirical/*`) are absent. IRSA, Gaia TAP and CDS intermittently fail (502/timeouts); network code retries a bounded number of times and otherwise fails with a specific error. Never substitute data on failure.
 
-## Architecture
+## Architecture (see docs/ARCHITECTURE.md, docs/METHODOLOGY.md)
 
-Two largely independent scientific paths share the same data-access and calibration layers.
+**Epoch Lab (current app)**
+- `spectral_matching.py`: footprint-polygon homography (vertex order = detector corners, validated against `tests_data/footprint_ground_truth.json`) + per-detector DataLink CWAVE/CBAND map → wavelength at target for every archive record; same-wavelength pairs (ranked by predicted matched area) and multi-epoch groups.
+- `difference_imaging.py`: `load_epoch` (real cutout + own calibration) and `compare`: clipped background planes, masked normalised ePSF cross-convolution, bilinear reprojection with matched interpolation smoothing, per-pixel spectral gate, difference pedestal, photometric scale, empirical noise model (alpha/beta), blank-sky null test (inflate-only), injection–recovery, residual classification + vetting. `write_products` writes FITS/PNG/JSON/viewer payload.
+- `epoch_series.py`: ePSF position/flux fits, field-star zero points, same-wavelength light curve, frame solution and PM+parallax astrometric solution (JPL Horizons observer vectors).
+- `epoch_lab.py` orchestrates (catalog snapshot reuse, downloads, provenance hashes); `epoch_lab_api.py` is the `/api/lab/*` router (validation, one worker + bounded queue, atomic job state, demo serving); `make_demos.py` regenerates `artifacts/epoch_lab/demos/*`.
+- Front end: `static/index.html`, `static/app.js`, `static/app.css` (no build step, no external assets).
+- `synthetic_sky.py` builds exact-truth synthetic epochs for tests only.
 
-**Data access / calibration layer**
-- `spherex.py` (IRSA SIA search, XML -> records), `archive_http.py` / `calibration_resolver.py` (HTTP session with retries, DataLink association, validated + atomically written cache, 128 MiB shared CWAVE/CBAND LRU), `fits_pipeline.read_cutout` (validates IMAGE/VARIANCE/FLAG shapes+units; conservative mask excludes all nonzero flags unless `allow_source=True`), `spectral_calibration.py`, `response_calibration.py` (official response bundle), `spacecraft_ephemeris.py` (JPL Horizons), `reference_catalog.py` (Gaia DR3 TAP), `targets.py` (SIMBAD target presets).
-- `main.py` is the FastAPI app; it is just thin routes over the modules above. Run outputs go to `artifacts/runs/<uuid>/`. Repeatability uses a single-slot semaphore (429 if busy); search results are cached in-process for 15 min.
+**Earlier paths (still served, tested)**: `scientific_pipeline.py` (pair investigation that rejects unvalidated subtraction), the Gaia reference-star repeatability experiment (`empirical_comparison.py`, `native_photometry.py`, `empirical_repeatability.py`, `repeatability_products.py`) and its multi-epoch API (`multi_epoch*.py`, page `/multi-epoch`). `native_photometry` optimisations were verified bit-identical; keep numerical behaviour unchanged when refactoring it.
 
-**Path A: pixel-level pair comparison** (`scientific_pipeline.py`) — `pair_discovery` -> download cutouts + calibration -> `wcs_geometry.reproject_bilinear` -> `comparison_engine` / `covariance_processing` / `psf_processing` / `spectral_model`. It intentionally **rejects real subtraction** unless response equivalence and PSF/background controls hold; the reports record rejection reasons. Checkpointed, locks its output dir, validates cached artifact hashes.
-
-**Path B: source-level empirical repeatability** (`empirical_comparison.py`, `empirical_repeatability.py`, `native_photometry.py`, `repeatability_products.py`) — Gaia reference stars, native ePSF photometry, response-shape-ranked pair selection, and a color-dependent log-flux-ratio model with train/validation/confirmation splits (confirmation tested once, no fallback pair). `native_photometry` keeps a per-run `observation_cache` of prepared observations and uses batched WCS pixel-area geometry (`prepare_pixel_areas`); optimizations were verified to give exactly identical measurements, so keep numerical behavior bit-identical when refactoring.
-
-Downstream/experimental: `source_detection.py`, `motion_inference.py`, `astrometry_model.py`, `inference_validation.py`, `benchmark_verification.py`. Real automatic motion inference is not integrated.
+**Shared data layer**: `spherex.py` (SIA search; locked in-process cache, optional disk cache enabled by `epoch_lab`), `pair_discovery.py`, `calibration_resolver.py` (DataLink, validated caches), `fits_pipeline.read_cutout` (all non-SOURCE flags invalid with `allow_source=True`), `psf_processing.py`, `wcs_geometry.py`, `reference_catalog.py` (Gaia DR3), `spacecraft_ephemeris.py` (Horizons), `targets.py`.
 
 ## Conventions worth knowing
 
-- Cache keys and checkpoints include processing config and software hashes; changing helper code invalidates measured-flux caches by design.
+- Every policy number lives in a module-level `POLICY` dict and is copied into each report; change policies there, not inline.
+- Reports carry `software_sha256` of the processing files and SHA-256 of each science FITS; keep `epoch_lab.SOFTWARE_FILES` current when adding processing modules.
+- Gaia DR3 query results in `artifacts/catalog_cache/*.json` are reused when their circle covers the field (DR3 is fixed); label that mode, never fabricate a catalog.
 - Direct science-vs-calibration UUID equality is explicitly unverified throughout; do not claim it.
-- `artifacts/` holds saved fixtures (e.g. `search_fixture.xml`) that tests depend on alongside many recorded live-run outputs; don't delete or regenerate it casually.
-- Tests are flat `test_*.py` files at the repo root, one per module, using synthetic data.
+- `artifacts/` mostly holds ignored caches; committed items are the fixtures tests read, `artifacts/epoch_lab/demos/`, and the catalog snapshots. Don't delete those.
+- `docs/RESEARCH_LOG.md` is the verbatim history of earlier phases and their measured results.
+- Tests are flat `test_*.py` files at the repo root.

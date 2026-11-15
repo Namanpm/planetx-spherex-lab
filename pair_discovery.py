@@ -1,5 +1,4 @@
 """Preliminary pair discovery. Ranking never establishes spectral equivalence."""
-import re
 import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
@@ -68,7 +67,9 @@ def discover_pairs(ra=None,dec=None,target_id=None,radius=.05,epoch_days=1,limit
     result=search(ra,dec,radius,'spherex_dr1')
     accepted=[]; rejected=[]
     for r in result['observations']:
-        position = barycentric_position(target_id,Time(r['t_min'],format='mjd')) if target_id and r.get('t_min') is not None else dict(ra_deg=ra,dec_deg=dec)
+        if r.get('t_min') is None or not np.isfinite(r['t_min']):
+            rejected.append(dict(obs_id=r['obs_id'],reason='missing or invalid observation time')); continue
+        position = barycentric_position(target_id,Time(r['t_min'],format='mjd')) if target_id else dict(ra_deg=ra,dec_deg=dec)
         try:
             if not contains(r.get('s_region'),position['ra_deg'],position['dec_deg']):
                 rejected.append(dict(obs_id=r['obs_id'],reason='target outside footprint')); continue

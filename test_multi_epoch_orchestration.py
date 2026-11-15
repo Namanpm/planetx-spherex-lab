@@ -29,6 +29,20 @@ def test_readiness_does_not_accept_missing_calibration_validation(tmp_path):
     assert state['status']!='READY'
 
 
+def _replay_inputs_present():
+    """The replay snapshot needs ~150 MB of locally cached real cutouts/calibrations."""
+    report=Path('artifacts/rw_empirical/report.json')
+    if not report.is_file():
+        return False
+    observations=json.loads(report.read_text(encoding='utf-8'))['observations']
+    return all(Path(o['measurement_file']).is_file() for o in observations)
+
+
+requires_replay=pytest.mark.skipif(not _replay_inputs_present(),
+    reason='Local RW Aurigae replay snapshot (measurement packets, cached science/calibration FITS) is not '
+           'present; regenerate with: python repeatability_products.py --target rw-aurigae --output artifacts/rw_empirical')
+
+
 def _two_packet_snapshot(tmp_path):
     baseline=Path('artifacts/rw_empirical/report.json')
     data=json.loads(baseline.read_text())
@@ -41,6 +55,7 @@ def _two_packet_snapshot(tmp_path):
     return report,data
 
 
+@requires_replay
 def test_snapshot_rejects_science_detector_observation_identity_mismatch(tmp_path,monkeypatch):
     import calibration_resolver
     monkeypatch.setattr(calibration_resolver,'discover',_no_network)
@@ -55,6 +70,7 @@ def test_snapshot_rejects_science_detector_observation_identity_mismatch(tmp_pat
     assert 'identity' in failed['error']['reason'] or 'observation' in failed['error']['reason']
 
 
+@requires_replay
 def test_snapshot_missing_calibration_is_explicit_in_readiness(tmp_path,monkeypatch):
     import calibration_resolver
     monkeypatch.setattr(calibration_resolver,'discover',_no_network)
@@ -74,6 +90,7 @@ def test_replay_rejects_wrong_target_without_discovery(tmp_path,monkeypatch):
         multi_epoch.run_analysis(target_id='rw-aurigae',selection_mode='replay',
                                  replay_report=tmp_path/'snapshot.json',output=tmp_path/'run')
 
+@requires_replay
 def test_valid_real_snapshot_replay_preserves_selected_pair_offline(tmp_path,monkeypatch):
     import pair_discovery
     import calibration_resolver

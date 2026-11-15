@@ -31,7 +31,8 @@ def select_observations(records, selected_ids=None, *, maximum=8, mode='best_pai
             if record != indexed[ident]:
                 raise ValueError('Conflicting archive records for the same observation')
             continue
-        if not np.isfinite(record.get('t_min', np.nan)):
+        t_min = record.get('t_min')
+        if not isinstance(t_min, (int, float, np.integer, np.floating)) or not np.isfinite(t_min):
             raise ValueError('Observation timestamp is missing or invalid')
         detector = int(ident[-1])
         if record.get('energy_bandpassname') != f'SPHEREx-D{detector}':

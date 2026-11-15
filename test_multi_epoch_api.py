@@ -82,6 +82,10 @@ def test_discovery_declares_replay_and_live_failures(client,monkeypatch,tmp_path
     monkeypatch.setattr(api,'discover_pairs',fail)
     live=client.get('/api/multi-epoch/discovery')
     assert live.status_code==502 and live.json()['detail']['code']=='ARCHIVE_UNAVAILABLE'
+    from reference_catalog import GaiaArchiveUnavailable
+    monkeypatch.setattr(api,'discover_pairs',lambda **kw:(_ for _ in ()).throw(GaiaArchiveUnavailable('Gaia timed out after bounded retries')))
+    gaia=client.get('/api/multi-epoch/discovery')
+    assert gaia.status_code==503 and gaia.json()['detail']['code']=='GAIA_CATALOG_UNAVAILABLE'
 
 
 def test_artifact_symlink_and_bad_ids_rejected(client,tmp_path):

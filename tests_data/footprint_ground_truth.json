@@ -1,0 +1,291 @@
+{
+ "description": "Ground truth for spectral_matching.footprint_pixel: real SPHEREx DR1 archive footprints and true detector pixels from downloaded cutouts.",
+ "cases": [
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+   "s_region": "POLYGON ICRS 266.7643233863632 7.9981728954136075 270.2723978849165 8.135402669985845 270.2808821290077 4.651423912737151 266.76672745336344 4.508226406490517 266.7643233863632 7.9981728954136075",
+   "ra_deg": 269.4464131168501,
+   "dec_deg": 4.773362518699672,
+   "detector_xy": [
+    1554,
+    1955
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+   "s_region": "POLYGON ICRS 266.81434541621064 6.433074273741319 270.3103472650191 6.56363030799369 270.31511253576554 3.0796465055049422 266.80714962037723 2.9431579281414697 266.81434541621064 6.433074273741319",
+   "ra_deg": 269.44705782420453,
+   "dec_deg": 4.767600869042027,
+   "detector_xy": [
+    1533,
+    1040
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+   "s_region": "POLYGON ICRS 271.42690948767506 2.196705234146759 267.94859601098227 2.2775496178895014 268.14035113887394 5.756858575283374 271.66341166194377 5.679228361754527 271.42690948767506 2.196705234146759",
+   "ra_deg": 269.44664737640295,
+   "dec_deg": 4.768249491685593,
+   "detector_xy": [
+    1247,
+    1485
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+   "s_region": "POLYGON ICRS 271.4771528823666 3.56659480908424 267.9948146416915 3.653118359446808 268.19020411634256 7.132214432820673 271.72257249465787 7.048608531754401 271.4771528823666 3.56659480908424",
+   "ra_deg": 269.4462686601684,
+   "dec_deg": 4.7678944034901125,
+   "detector_xy": [
+    1228,
+    680
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+   "s_region": "POLYGON ICRS 266.820225552941 6.433443292213887 270.31623387570204 6.563970801179491 270.3209843747357 3.0800111272006334 266.81307028478443 2.9435523372126884 266.820225552941 6.433443292213887",
+   "ra_deg": 269.446035583986,
+   "dec_deg": 4.766042481112417,
+   "detector_xy": [
+    1529,
+    1041
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+   "s_region": "POLYGON ICRS 268.3762570497069 5.168644925490256 271.8628379793226 5.33584615294204 271.9066616923105 1.8520672042446433 268.4034705655111 1.6787546748129496 268.3762570497069 5.168644925490256",
+   "ra_deg": 269.44630434503347,
+   "dec_deg": 4.7666020428608995,
+   "detector_xy": [
+    621,
+    272
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+   "s_region": "POLYGON ICRS 271.51581121654095 4.544282927141381 268.0292968804139 4.634860831565553 268.22739106916634 8.113969791946705 271.76773461632024 8.02592543664442 271.51581121654095 4.544282927141381",
+   "ra_deg": 269.446150901843,
+   "dec_deg": 4.769406087047669,
+   "detector_xy": [
+    1215,
+    105
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+   "s_region": "POLYGON ICRS 268.38372614026446 5.16830831604526 271.87026580020296 5.335484759674283 271.914066909167 1.8518045180436713 268.41098861037517 1.67847407190114 268.38372614026446 5.16830831604526",
+   "ra_deg": 269.44692262525524,
+   "dec_deg": 4.767593226457563,
+   "detector_xy": [
+    617,
+    271
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0645_1/D1",
+   "s_region": "POLYGON ICRS 75.61634354258891 32.5323143904872 79.72373943418143 32.90897386355414 79.94919774030828 29.43039139099709 75.95446460742619 29.05453139667263 75.61634354258891 32.5323143904872",
+   "ra_deg": 76.95670683920616,
+   "dec_deg": 30.401101977479815,
+   "detector_xy": [
+    564,
+    1326
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W10_1A_0445_3/D1",
+   "s_region": "POLYGON ICRS 75.67749961013189 32.0806457625342 79.76469077511219 32.453809459879956 79.98640960466625 28.975226735863103 76.0088224896522 28.60249373889966 75.67749961013189 32.0806457625342",
+   "ra_deg": 76.95581798419815,
+   "dec_deg": 30.400432690726294,
+   "detector_xy": [
+    557,
+    1060
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W10_2B_0137_4/D1",
+   "s_region": "POLYGON ICRS 75.8092414122862 31.10827088633511 79.8544046258904 31.473975933429806 80.0684110447522 27.995077157671126 76.1263865005503 27.6293804478993 75.8092414122862 31.10827088633511",
+   "ra_deg": 76.95694507055903,
+   "dec_deg": 30.40139700799499,
+   "detector_xy": [
+    542,
+    485
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0095_1/D1",
+   "s_region": "POLYGON ICRS 77.2503153570916 30.00243749238915 73.26502422330879 29.638364956231037 72.8937692791407 33.108478351825504 77.06432081491849 33.48939928602037 77.2503153570916 30.00243749238915",
+   "ra_deg": 76.95700874651007,
+   "dec_deg": 30.40215687824901,
+   "detector_xy": [
+    136,
+    248
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0606_3/D1",
+   "s_region": "POLYGON ICRS 77.3811184842524 28.57370862134389 73.45088745076858 28.208583130553492 73.08818325398589 31.67895681622737 77.19272857452643 32.0605199037662 77.3811184842524 28.57370862134389",
+   "ra_deg": 76.95617733495469,
+   "dec_deg": 30.401497771692704,
+   "detector_xy": [
+    162,
+    1088
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_1/D1",
+   "s_region": "POLYGON ICRS 77.48177758955447 27.402286198465 73.59394995299245 27.03592135566506 73.23742735232723 30.50646504728926 77.29110442379424 30.888880387046143 77.48177758955447 27.402286198465",
+   "ra_deg": 76.95596450505693,
+   "dec_deg": 30.40212330594953,
+   "detector_xy": [
+    180,
+    1775
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0095_1/D4",
+   "s_region": "POLYGON ICRS 77.25507942695674 30.017954931310854 73.26488905956701 29.65971758213109 72.90111219450763 33.13359904914021 77.0778416835868 33.50886025436643 77.25507942695674 30.017954931310854",
+   "ra_deg": 76.95545954492998,
+   "dec_deg": 30.402417133277194,
+   "detector_xy": [
+    140,
+    239
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_4/D4",
+   "s_region": "POLYGON ICRS 77.43934233338808 28.00429747759875 73.52585499732547 27.644601502374663 73.1738768834072 31.11870226799927 77.25826394049918 31.494600416252986 77.43934233338808 28.00429747759875",
+   "ra_deg": 76.95645215695022,
+   "dec_deg": 30.40160253544473,
+   "detector_xy": [
+    178,
+    1421
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0233_2/D1",
+   "s_region": "POLYGON ICRS 77.51816019373926 27.012154199370105 73.64387422764482 26.64538939423263 73.28932355207921 30.115924339140996 77.32670007309204 30.49859282176103 77.51816019373926 27.012154199370105",
+   "ra_deg": 76.95945554328725,
+   "dec_deg": 30.356881527504104,
+   "detector_xy": [
+    187,
+    1977
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_2/D1",
+   "s_region": "POLYGON ICRS 77.46680018817726 27.597928339606515 73.57199002837977 27.231719530751608 73.21459801803398 30.702230462457702 77.2766329101234 31.084521219141177 77.46680018817726 27.597928339606515",
+   "ra_deg": 76.95581559111677,
+   "dec_deg": 30.402818520772396,
+   "detector_xy": [
+    178,
+    1661
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_2/D4",
+   "s_region": "POLYGON ICRS 77.47135811228489 27.613474576058948 73.57198191221227 27.25315373478166 73.22199586062413 30.727335795505645 77.28960909475319 31.103970112091744 77.47135811228489 27.613474576058948",
+   "ra_deg": 76.955907316977,
+   "dec_deg": 30.400374798155333,
+   "detector_xy": [
+    184,
+    1649
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_4/D1",
+   "s_region": "POLYGON ICRS 77.43472983812381 27.988810739317188 73.52601579670714 27.623181328876466 73.16657885029062 31.09352890301165 77.24525360903662 31.47544129930704 77.43472983812381 27.988810739317188",
+   "ra_deg": 76.95735625274169,
+   "dec_deg": 30.40279703019015,
+   "detector_xy": [
+    172,
+    1432
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0663_4/D1",
+   "s_region": "POLYGON ICRS 77.27271777222313 29.807701704525122 73.29519681150904 29.443720810622878 72.92531495083189 32.91386652229908 77.08660233793672 33.294533936612744 77.27271777222313 29.807701704525122",
+   "ra_deg": 76.95459254249747,
+   "dec_deg": 30.402100447684404,
+   "detector_xy": [
+    143,
+    363
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W10_2B_0626_4/D1",
+   "s_region": "POLYGON ICRS 75.9108868113409 30.330251970504214 79.92396973803655 30.690073269838 80.13200323137367 27.210953571728677 76.21697782846648 26.850751324747325 75.9108868113409 30.330251970504214",
+   "ra_deg": 76.96179737088885,
+   "dec_deg": 30.34817220737907,
+   "detector_xy": [
+    530,
+    56
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0233_3/D1",
+   "s_region": "POLYGON ICRS 77.50243714318694 27.207769069026014 73.6212807088093 26.841271034626036 73.26594038337116 30.31182568880988 77.31140491883897 30.694294391041886 77.50243714318694 27.207769069026014",
+   "ra_deg": 76.95596473079713,
+   "dec_deg": 30.402052513506693,
+   "detector_xy": [
+    185,
+    1889
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0155_1/D1",
+   "s_region": "POLYGON ICRS 77.2157416525372 30.392221644633977 73.21470095037813 30.028400165135047 72.84084371983634 33.498488250581794 77.03030210430273 33.87928653562731 77.2157416525372 30.392221644633977",
+   "ra_deg": 76.95436748716739,
+   "dec_deg": 30.435473263591692,
+   "detector_xy": [
+    130,
+    38
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0095_2/D1",
+   "s_region": "POLYGON ICRS 77.2355323180962 30.198284699162024 73.24229463693084 29.834353362772752 72.8699154378625 33.30444975144675 77.04996155301225 33.68526202651669 77.2355323180962 30.198284699162024",
+   "ra_deg": 76.95731062795683,
+   "dec_deg": 30.400827933176643,
+   "detector_xy": [
+    134,
+    132
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  },
+  {
+   "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0285_4/D1",
+   "s_region": "POLYGON ICRS 75.59022453802253 32.7261167588926 79.70569202477935 33.10427159780667 79.93273074283361 29.62568228117126 75.93149511314917 29.248767339842686 75.59022453802253 32.7261167588926",
+   "ra_deg": 76.95683416642864,
+   "dec_deg": 30.40157101793288,
+   "detector_xy": [
+    567,
+    1440
+   ],
+   "source": "pixel-centre of a downloaded IRSA cutout; detector_xy from the cutout alternate WCS (CRPIX1A/2A)"
+  }
+ ]
+}

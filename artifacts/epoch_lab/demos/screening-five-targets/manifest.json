@@ -1,0 +1,51 @@
+{
+  "name": "screening-five-targets",
+  "kind": "screen",
+  "title": "Spectral-epoch screening of all preset targets",
+  "why": "Every archive record screened for the wavelength sampled at the target; lists same-wavelength pairs and multi-epoch groups.",
+  "generated_utc": "2026-11-15T09:10:17+00:00",
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "reproduce": "python make_demos.py screening-five-targets",
+  "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
+  "files": [
+    "screening_rw-aurigae.json",
+    "screening_barnards-star.json",
+    "screening_r-draconis.json",
+    "screening_epsilon-indi-b.json",
+    "screening_wise-0855.json"
+  ],
+  "summary": {
+    "rw-aurigae": {
+      "observations": 226,
+      "screened": 226,
+      "matched_pairs": 17,
+      "groups_3plus": 0
+    },
+    "barnards-star": {
+      "observations": 239,
+      "screened": 239,
+      "matched_pairs": 70,
+      "groups_3plus": 3
+    },
+    "r-draconis": {
+      "observations": 413,
+      "screened": 413,
+      "matched_pairs": 171,
+      "groups_3plus": 18
+    },
+    "epsilon-indi-b": {
+      "observations": 338,
+      "screened": 338,
+      "matched_pairs": 200,
+      "groups_3plus": 31
+    },
+    "wise-0855": {
+      "observations": 258,
+      "screened": 258,
+      "matched_pairs": 83,
+      "groups_3plus": 7
+    }
+  },
+  "status": "COMPLETED",
+  "elapsed_seconds": 9.18
+}

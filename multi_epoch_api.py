@@ -14,9 +14,10 @@ from observation_selection import MAX_OBSERVATIONS, PID, validate_coordinates
 from pair_discovery import discover_pairs
 
 router = APIRouter()
-RUN_ROOT = Path('artifacts/multi_epoch_runs')
-REPLAY_REPORT = Path('artifacts/rw_empirical/report.json')
-CACHE_ROOT = Path('artifacts/rw_empirical')
+_ROOT = Path(__file__).resolve().parent
+RUN_ROOT = _ROOT / 'artifacts' / 'multi_epoch_runs'
+REPLAY_REPORT = _ROOT / 'artifacts' / 'rw_empirical' / 'report.json'
+CACHE_ROOT = _ROOT / 'artifacts' / 'rw_empirical'
 _slots = threading.BoundedSemaphore(1)
 _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='multi-epoch')
 _lock = threading.RLock()

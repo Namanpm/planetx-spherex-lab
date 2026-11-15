@@ -1,0 +1,650 @@
+{
+  "policy": {
+    "tolerance_fraction": 0.1,
+    "stamp_half_width_px": 3,
+    "search_radius_px": 2.0,
+    "field_star_threshold_sigma": 15.0,
+    "field_star_isolation_px": 6.0,
+    "max_field_stars": 60,
+    "min_field_stars": 8,
+    "min_zero_point_stars": 3,
+    "min_frame_stars_per_epoch": 3,
+    "detection_sigma": 5.0
+  },
+  "epoch_count": 5,
+  "detector": 2,
+  "observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2"
+  ],
+  "field_stars_detected": 27,
+  "photometry": {
+    "status": "CONSISTENT_WITH_CONSTANT",
+    "points": [
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+        "date": "2025-04-24T22:09:58.776",
+        "mjd": 60789.92359694444,
+        "status": "USED",
+        "wavelength_um": 1.1064611673355103,
+        "measured_flux_jy": 0.014629460951330043,
+        "calibrated_flux_jy": 0.014629460951330043,
+        "flux_sigma_jy": 0.00020612075665032626,
+        "statistical_sigma_jy": 0.00020612075665032626,
+        "zero_point": 1.0
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+        "date": "2025-06-06T15:38:02.021",
+        "mjd": 60832.651412280095,
+        "status": "USED",
+        "wavelength_um": 1.1065647602081299,
+        "measured_flux_jy": 0.014546937340756166,
+        "calibrated_flux_jy": 0.014266099613126929,
+        "flux_sigma_jy": 0.00023232848681485876,
+        "statistical_sigma_jy": 0.00014616265354434673,
+        "zero_point": 1.0196856698919181
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+        "date": "2025-10-03T18:49:21.087",
+        "mjd": 60951.784271840275,
+        "status": "EXCLUDED",
+        "reason": "Too few wavelength-matched field stars for a zero point."
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+        "date": "2025-10-10T05:41:16.354",
+        "mjd": 60958.236994837964,
+        "status": "EXCLUDED",
+        "reason": "Too few wavelength-matched field stars for a zero point."
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2",
+        "date": "2026-04-24T21:20:02.532",
+        "mjd": 61154.88891819445,
+        "status": "USED",
+        "wavelength_um": 1.1063905954360962,
+        "measured_flux_jy": 0.014741507003543838,
+        "calibrated_flux_jy": 0.01457582696159288,
+        "flux_sigma_jy": 0.00033164955544880923,
+        "statistical_sigma_jy": 0.0002873469899246263,
+        "zero_point": 1.0113667678950582
+      }
+    ],
+    "zero_points": [
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+        "stars": 24,
+        "ratio": 1.0,
+        "ratio_standard_error": 0.0,
+        "method": "reference epoch (gauge)"
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+        "stars": 10,
+        "ratio": 1.0196856698919181,
+        "ratio_standard_error": 0.012907926060579293,
+        "robust_scatter": 0.03256877540929956,
+        "method": "median of wavelength-matched field-star ratios"
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+        "stars": 1,
+        "ratio": null,
+        "reason": "Too few wavelength-matched field stars for a zero point."
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+        "stars": 1,
+        "ratio": null,
+        "reason": "Too few wavelength-matched field stars for a zero point."
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2",
+        "stars": 24,
+        "ratio": 1.0113667678950582,
+        "ratio_standard_error": 0.011490370334803593,
+        "robust_scatter": 0.04491429709707414,
+        "method": "median of wavelength-matched field-star ratios"
+      }
+    ],
+    "fractional_floor": 0.0,
+    "used_epochs": 3,
+    "constant_flux_test": {
+      "constant_flux": 0.014488333174677119,
+      "variance_constant": 1.954824612724152e-08,
+      "chi2_constant": 1.4533770944029747,
+      "dof": 2,
+      "limitations": [
+        "Requires already established band and photometric compatibility.",
+        "Independent errors; calibration covariance and intrinsic source model absent."
+      ],
+      "pvalue": 0.48350745412246965
+    },
+    "max_abs_deviation_sigma": 0.9565489131226821,
+    "interpretation": "No flux change detected beyond the empirical noise model at this wavelength."
+  },
+  "astrometry": {
+    "status": "MOTION_MEASURED",
+    "field_stars": 25,
+    "field_stars_per_epoch": [
+      24,
+      11,
+      3,
+      8,
+      25
+    ],
+    "frame_offsets_arcsec": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.13719383053040168,
+        -1.3660397257808654e-05
+      ],
+      [
+        0.4199962954183434,
+        0.12032457581899791
+      ],
+      [
+        0.13712789087119504,
+        0.26306860417049016
+      ],
+      [
+        0.1371279749799612,
+        -1.3783876141815199e-05
+      ]
+    ],
+    "astrometric_floor_arcsec": 0.0840905656262672,
+    "frame_method": "Alternating robust medians over field stars measured in >=2 epochs; reference epoch frame fixed at zero.",
+    "positions": [
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+        "date": "2025-04-24T22:09:58.776",
+        "mjd": 60789.92359694444,
+        "east_arcsec": -115.36776067534798,
+        "north_arcsec": 91.04658804097713,
+        "sigma_east_arcsec": 0.09634245888148305,
+        "sigma_north_arcsec": 0.09472204856452207,
+        "expected_east_arcsec": -115.66258003005531,
+        "expected_north_arcsec": 90.69604110515614
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+        "date": "2025-06-06T15:38:02.021",
+        "mjd": 60832.651412280095,
+        "east_arcsec": -115.31320129702132,
+        "north_arcsec": 89.93361857694069,
+        "sigma_east_arcsec": 0.08911050593497694,
+        "sigma_north_arcsec": 0.08970794632852845,
+        "expected_east_arcsec": -115.18236859645302,
+        "expected_north_arcsec": 90.27616451719595
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+        "date": "2025-10-03T18:49:21.087",
+        "mjd": 60951.784271840275,
+        "east_arcsec": -114.85577871943386,
+        "north_arcsec": 89.42252299955629,
+        "sigma_east_arcsec": 0.10379675806642749,
+        "sigma_north_arcsec": 0.10154346012882913,
+        "expected_east_arcsec": -114.2967674137186,
+        "expected_north_arcsec": 89.2771915778093
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+        "date": "2025-10-10T05:41:16.354",
+        "mjd": 60958.236994837964,
+        "east_arcsec": -114.37075422170304,
+        "north_arcsec": 88.95724652336328,
+        "sigma_east_arcsec": 0.09615958899470585,
+        "sigma_north_arcsec": 0.09659387478475473,
+        "expected_east_arcsec": -114.24604786282745,
+        "expected_north_arcsec": 89.2436973090346
+      },
+      {
+        "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2",
+        "date": "2026-04-24T21:20:02.532",
+        "mjd": 61154.88891819445,
+        "east_arcsec": -111.1078813982474,
+        "north_arcsec": 88.44923639616489,
+        "sigma_east_arcsec": 0.10693305777822425,
+        "sigma_north_arcsec": 0.1025803476638671,
+        "expected_east_arcsec": -111.68060205666356,
+        "expected_north_arcsec": 88.23771313337993
+      }
+    ],
+    "catalog_model": {
+      "coordinate_kind": "observer-relative geometric direction",
+      "constant_offset_arcsec": [
+        0.16091027370583783,
+        -0.49399835840176987
+      ],
+      "residual_arcsec": [
+        [
+          0.29481935470732884,
+          0.35054693582098817
+        ],
+        [
+          -0.13083270056830537,
+          -0.34254594025526164
+        ],
+        [
+          -0.5590113057152593,
+          0.14533142174698976
+        ],
+        [
+          -0.12470635887558496,
+          -0.28645078567131865
+        ],
+        [
+          0.5727206584161593,
+          0.2115232627849667
+        ]
+      ],
+      "chi2": 114.26347344569096,
+      "dof": 8,
+      "pvalue": 5.0521988805890685e-21,
+      "predicted_displacement_arcsec": 4.679692831521575
+    },
+    "linear_motion_fit": {
+      "reference_mjd": 60937.49703881944,
+      "position_arcsec": [
+        -114.20045259829591,
+        89.55072032048267
+      ],
+      "velocity_arcsec_per_year": [
+        4.182455690331379,
+        -2.3552333859205734
+      ],
+      "covariance_x": [
+        [
+          0.0019352674710515164,
+          0.000581420378001263
+        ],
+        [
+          0.000581420378001263,
+          0.016999808852151955
+        ]
+      ],
+      "covariance_y": [
+        [
+          0.001880900530829484,
+          0.0004285026396332724
+        ],
+        [
+          0.0004285026396332724,
+          0.01607406300428494
+        ]
+      ],
+      "chi2_motion": 217.49194152088694,
+      "chi2_static": 1591.597556027391,
+      "delta_chi2_static_minus_motion": 1374.105614506504,
+      "additional_parameters": 2,
+      "dof_motion": 6,
+      "limitations": [
+        "Already-associated common tangent-plane measurements required.",
+        "Independent Gaussian position errors; no cross-coordinate covariance.",
+        "No parallax, acceleration, catalog confirmation or discovery classification."
+      ],
+      "speed_arcsec_per_year": 4.800006239968884,
+      "velocity_significance": 37.06893058218058,
+      "catalog_velocity_arcsec_per_year": [
+        3.9819769999999997,
+        -2.4668319999999997
+      ],
+      "difference_significance": 1.7717360659439465
+    },
+    "astrometric_solution": {
+      "status": "SOLVED",
+      "reference_mjd": 60937.49703881944,
+      "pm_east_arcsec_per_year": 4.464473643596593,
+      "pm_north_arcsec_per_year": -2.331326932813121,
+      "pm_sigma_arcsec_per_year": [
+        0.4500277530036859,
+        0.4313753643169817
+      ],
+      "parallax_arcsec": 0.610655320924181,
+      "parallax_sigma_arcsec": 0.16443522794986504,
+      "chi2": 57.87064046225692,
+      "dof": 5,
+      "birge_ratio_applied": 3.402077026237264,
+      "covariance": [
+        [
+          0.02447125768604014,
+          -0.0003595048620750731,
+          0.00327247807489773,
+          -0.0002930435885402626,
+          -0.007485369151189539
+        ],
+        [
+          -0.0003595048620750731,
+          0.021832153253046393,
+          0.0005997384396405239,
+          0.005010383822583441,
+          0.0012986175705802033
+        ],
+        [
+          0.0032724780748977314,
+          0.0005997384396405239,
+          0.20252497847354653,
+          0.0004888654454445075,
+          0.012487351600630824
+        ],
+        [
+          -0.00029304358854026263,
+          0.00501038382258344,
+          0.0004888654454445073,
+          0.18608470493960869,
+          0.0010585435502254552
+        ],
+        [
+          -0.0074853691511895405,
+          0.0012986175705802033,
+          0.012487351600630824,
+          0.0010585435502254552,
+          0.027038944190924077
+        ]
+      ],
+      "model": "Linear proper motion plus annual parallax from observer barycentric vectors; tangent-plane offsets.",
+      "catalog_pm_arcsec_per_year": [
+        3.9819769999999997,
+        -2.4668319999999997
+      ],
+      "catalog_parallax_arcsec": 0.270658,
+      "pm_significance": 11.309003803597955,
+      "pm_difference_from_catalog_sigma": 1.116462211282572,
+      "parallax_difference_from_catalog_sigma": 2.067667160882602
+    }
+  },
+  "epochs": [
+    {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+      "date": "2025-04-24T22:09:58.776",
+      "mjd": 60789.92359694444,
+      "detector": 2,
+      "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/2/spectral_wcs_D2_spx_cal-swcs-v5-2026-191.fits",
+      "target": {
+        "x": 87.69832763820807,
+        "y": 87.50464308610688,
+        "position_covariance_px2": [
+          [
+            7.539580107279914e-05,
+            -1.104300687872763e-05
+          ],
+          [
+            -1.1043006878727628e-05,
+            3.303296095487401e-05
+          ]
+        ],
+        "flux_jy": 0.014629460951330043,
+        "flux_variance_jy2": 4.248576632210302e-08,
+        "reduced_chi2": 2.0636406168704964,
+        "core_flag_values": [
+          2097152
+        ],
+        "psf_zone": 432,
+        "wavelength_um": 1.1064611673355103,
+        "bandwidth_um": 0.025892306119203568,
+        "ra_deg": 331.0956295263105,
+        "dec_deg": -56.80017946874891,
+        "position_covariance_arcsec2": [
+          [
+            0.002210646155984701,
+            0.0008852001133089148
+          ],
+          [
+            0.0008852001133089148,
+            0.0019010432569141287
+          ]
+        ],
+        "status": "MEASURED"
+      }
+    },
+    {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+      "date": "2025-06-06T15:38:02.021",
+      "mjd": 60832.651412280095,
+      "detector": 2,
+      "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/2/spectral_wcs_D2_spx_cal-swcs-v5-2026-191.fits",
+      "target": {
+        "x": 87.54353975011543,
+        "y": 86.86393035886697,
+        "position_covariance_px2": [
+          [
+            1.7645103911051013e-05,
+            3.1590996778181863e-06
+          ],
+          [
+            3.1590996778181863e-06,
+            3.087121559944792e-05
+          ]
+        ],
+        "flux_jy": 0.014546937340756166,
+        "flux_variance_jy2": 2.221291065824392e-08,
+        "reduced_chi2": 1.1998209486671247,
+        "core_flag_values": [
+          2097152
+        ],
+        "psf_zone": 432,
+        "wavelength_um": 1.1065647602081299,
+        "bandwidth_um": 0.02490239031612873,
+        "ra_deg": 331.0957263207993,
+        "dec_deg": -56.80048867599697,
+        "position_covariance_arcsec2": [
+          [
+            0.0008694590406420099,
+            -0.0002772468379819141
+          ],
+          [
+            -0.0002772468379819141,
+            0.0009762924071365916
+          ]
+        ],
+        "status": "MEASURED"
+      }
+    },
+    {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+      "date": "2025-10-03T18:49:21.087",
+      "mjd": 60951.784271840275,
+      "detector": 2,
+      "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/2/spectral_wcs_D2_spx_cal-swcs-v5-2026-191.fits",
+      "target": {
+        "x": 43.110483261151956,
+        "y": 87.28816339628291,
+        "position_covariance_px2": [
+          [
+            0.00010903498079919418,
+            -4.683207438913266e-06
+          ],
+          [
+            -4.683207438913267e-06,
+            7.338830975769498e-05
+          ]
+        ],
+        "flux_jy": 0.014567879116080736,
+        "flux_variance_jy2": 7.154570983387814e-08,
+        "reduced_chi2": 3.6480851427481276,
+        "core_flag_values": [
+          2097152
+        ],
+        "psf_zone": 420,
+        "wavelength_um": 1.107917070388794,
+        "bandwidth_um": 0.026139313355088234,
+        "ra_deg": 331.09610167203925,
+        "dec_deg": -56.800597394521446,
+        "position_covariance_arcsec2": [
+          [
+            0.0037025437577549313,
+            0.0006740705790093401
+          ],
+          [
+            0.0006740705790093404,
+            0.0032398510675895617
+          ]
+        ],
+        "status": "MEASURED"
+      }
+    },
+    {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+      "date": "2025-10-10T05:41:16.354",
+      "mjd": 60958.236994837964,
+      "detector": 2,
+      "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/2/spectral_wcs_D2_spx_cal-swcs-v5-2026-191.fits",
+      "target": {
+        "x": 42.53501649075124,
+        "y": 87.58959848565858,
+        "position_covariance_px2": [
+          [
+            6.160250686249083e-05,
+            -2.9604463606279484e-06
+          ],
+          [
+            -2.9604463606279484e-06,
+            5.4911031909363976e-05
+          ]
+        ],
+        "flux_jy": 0.014450589604738039,
+        "flux_variance_jy2": 4.7681204150552345e-08,
+        "reduced_chi2": 2.4328413705167082,
+        "core_flag_values": [
+          2097152
+        ],
+        "psf_zone": 420,
+        "wavelength_um": 1.107848048210144,
+        "bandwidth_um": 0.02579718455672264,
+        "ra_deg": 331.09620408847456,
+        "dec_deg": -56.800687034373496,
+        "position_covariance_arcsec2": [
+          [
+            0.0021754433282852054,
+            0.0001908320208703909
+          ],
+          [
+            0.00019083202087039105,
+            0.0022591534185873244
+          ]
+        ],
+        "status": "MEASURED"
+      }
+    },
+    {
+      "observation_id": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2",
+      "date": "2026-04-24T21:20:02.532",
+      "mjd": 61154.88891819445,
+      "detector": 2,
+      "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/2/spectral_wcs_D2_spx_cal-swcs-v5-2026-191.fits",
+      "target": {
+        "x": 88.11394668792954,
+        "y": 87.56194360175948,
+        "position_covariance_px2": [
+          [
+            0.00013951534298610108,
+            -1.2826102036886702e-05
+          ],
+          [
+            -1.2826102036886702e-05,
+            6.647952315802089e-05
+          ]
+        ],
+        "flux_jy": 0.014741507003543838,
+        "flux_variance_jy2": 8.445602995928102e-08,
+        "reduced_chi2": 4.123581778948616,
+        "core_flag_values": [
+          2097152
+        ],
+        "psf_zone": 432,
+        "wavelength_um": 1.1063905954360962,
+        "bandwidth_um": 0.02661317028105259,
+        "ra_deg": 331.09785904508334,
+        "dec_deg": -56.800901982730785,
+        "position_covariance_arcsec2": [
+          [
+            0.004363455618455496,
+            0.0013825564378740847
+          ],
+          [
+            0.001382556437874085,
+            0.0034515044994942964
+          ]
+        ],
+        "status": "MEASURED"
+      }
+    }
+  ],
+  "limitations": [
+    "Only epochs whose target wavelength agrees within the tolerance are photometrically comparable; others are reported, not used.",
+    "Per-epoch zero points use field stars that are wavelength-matched to the reference epoch; their median ratio assumes most are constant.",
+    "Astrometric floor is the epoch-to-epoch repeatability of image-detected field stars (their own small proper motions are absorbed).",
+    "Expected positions use SIMBAD astrometry; light-time, aberration and gravitational deflection are omitted.",
+    "A trajectory consistent with catalog motion validates the method on a known mover; it is not a discovery."
+  ],
+  "catalog": {
+    "mode": "UNAVAILABLE",
+    "errors": [
+      "GaiaArchiveUnavailable: Gaia DR3 catalog service did not respond after bounded retries; retry later, or select saved replay data."
+    ],
+    "consequence": "Residuals cannot be associated with catalog sources; classification is limited."
+  },
+  "observer_ephemeris": {
+    "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2": {
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "target": "SPHEREx (-163182)",
+      "epoch_jd_tdb": 2460790.424397703,
+      "frame": "ICRF",
+      "origin": "Solar System Barycenter",
+      "unit": "AU",
+      "correction": "geometric NONE",
+      "response_sha256": "8f082ae3a1c726aa7b0a6d31c9460ae9926c5b49107732ae2310ba19536d301f"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2": {
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "target": "SPHEREx (-163182)",
+      "epoch_jd_tdb": 2460833.1522130296,
+      "frame": "ICRF",
+      "origin": "Solar System Barycenter",
+      "unit": "AU",
+      "correction": "geometric NONE",
+      "response_sha256": "b840d89d41c815d25486184405480d72d5480d9edffcae98b6563056fac76ec4"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2": {
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "target": "SPHEREx (-163182)",
+      "epoch_jd_tdb": 2460952.2850725623,
+      "frame": "ICRF",
+      "origin": "Solar System Barycenter",
+      "unit": "AU",
+      "correction": "geometric NONE",
+      "response_sha256": "c4eca40d5260b2357a9adb42fc5585c515024ce07527e7613b066b7f61d71fcd"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2": {
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "target": "SPHEREx (-163182)",
+      "epoch_jd_tdb": 2460958.7377955597,
+      "frame": "ICRF",
+      "origin": "Solar System Barycenter",
+      "unit": "AU",
+      "correction": "geometric NONE",
+      "response_sha256": "5a9b6cfb9406a96a243719a41b6fa887e7c94fe3561817e45eeea48ee3b579e1"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2": {
+      "source": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "target": "SPHEREx (-163182)",
+      "epoch_jd_tdb": 2461155.389718953,
+      "frame": "ICRF",
+      "origin": "Solar System Barycenter",
+      "unit": "AU",
+      "correction": "geometric NONE",
+      "response_sha256": "83d46e6754a36c6d9ad0942a19edbff438b4a8b39e728d5bef97b89980f04567"
+    }
+  },
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "elapsed_seconds": 3.73629620000429
+}

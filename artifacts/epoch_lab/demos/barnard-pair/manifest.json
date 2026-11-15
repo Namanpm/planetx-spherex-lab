@@ -1,0 +1,57 @@
+{
+  "name": "barnard-pair",
+  "kind": "compare",
+  "title": "Barnard's Star field: full-field matched pair at 0.84 um (31 days)",
+  "why": "Same pointing and orientation one month apart: every overlapping pixel samples the same wavelength, with a Gaia DR3 catalog for validation.",
+  "generated_utc": "2026-11-15T09:08:39+00:00",
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "reproduce": "python make_demos.py barnard-pair",
+  "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
+  "files": [
+    "comparison.fits",
+    "report.json",
+    "viewer.json",
+    "comparison.png",
+    "candidates.csv"
+  ],
+  "summary": {
+    "status": "VALIDATED",
+    "reason": "All validation gates passed.",
+    "gates": {
+      "spectral_overlap": "PASS",
+      "photometric_consistency": "PASS",
+      "noise_model": "PASS",
+      "source_noise_model": "PASS",
+      "registration": "PASS"
+    },
+    "matched_pixels": 23265,
+    "separation_days": 31.04970001157926,
+    "wavelength_range_um": [
+      0.8269649744033813,
+      0.857925534248352
+    ],
+    "candidate_summary": {
+      "CATALOG_SOURCE_UNMEASURED": 2,
+      "CONSISTENT_WITH_SYSTEMATIC_FLOOR": 21,
+      "DIPOLE_PSF_OR_REGISTRATION": 78,
+      "PERSISTENT_SOURCE_RESIDUAL": 2
+    },
+    "variability_summary": {
+      "stars_tested": 909,
+      "beyond_threshold": 5,
+      "passed_vetting": 0
+    },
+    "target_status": "TARGET_PIXELS_FLAGGED"
+  },
+  "target": {
+    "id": "barnards-star",
+    "name": "Barnard's Star"
+  },
+  "observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_1/D1",
+    "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0441_1/D1"
+  ],
+  "catalog_mode": "stored Gaia DR3 query result",
+  "status": "COMPLETED",
+  "elapsed_seconds": 2.4
+}

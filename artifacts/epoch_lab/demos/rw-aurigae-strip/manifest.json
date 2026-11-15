@@ -1,0 +1,54 @@
+{
+  "name": "rw-aurigae-strip",
+  "kind": "compare",
+  "title": "RW Aurigae field: six months apart, opposite orientation",
+  "why": "Field rotation between visits leaves only a narrow strip where wavelengths agree; shows why whole-image differencing would be wrong.",
+  "generated_utc": "2026-11-15T09:10:16+00:00",
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "reproduce": "python make_demos.py rw-aurigae-strip",
+  "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
+  "files": [
+    "comparison.fits",
+    "report.json",
+    "viewer.json",
+    "comparison.png",
+    "candidates.csv"
+  ],
+  "summary": {
+    "status": "PARTIAL",
+    "reason": "Comparison computed; unverified gates: noise_model, source_noise_model",
+    "gates": {
+      "spectral_overlap": "PASS",
+      "photometric_consistency": "PASS",
+      "noise_model": "UNVERIFIED",
+      "source_noise_model": "UNVERIFIED",
+      "registration": "PASS"
+    },
+    "matched_pixels": 1483,
+    "separation_days": 181.60572347222478,
+    "wavelength_range_um": [
+      0.8979559540748596,
+      0.9008138179779053
+    ],
+    "candidate_summary": {
+      "DIPOLE_PSF_OR_REGISTRATION": 3
+    },
+    "variability_summary": {
+      "stars_tested": 12,
+      "beyond_threshold": 1,
+      "passed_vetting": 0
+    },
+    "target_status": "TARGET_PIXELS_FLAGGED"
+  },
+  "target": {
+    "id": "rw-aurigae",
+    "name": "RW Aurigae"
+  },
+  "observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0606_3/D1",
+    "ivo://irsa.ipac/spherex_dr1?2026W10_1A_0445_3/D1"
+  ],
+  "catalog_mode": "stored Gaia DR3 query result",
+  "status": "COMPLETED",
+  "elapsed_seconds": 1.54
+}

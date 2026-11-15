@@ -1,0 +1,56 @@
+{
+  "name": "eps-indi-b-year-pair",
+  "kind": "compare",
+  "title": "Epsilon Indi B: same pointing one year apart at 2.03 um",
+  "why": "A 364-day full-field match; the brown dwarf moves ~4.7 arcsec, so its residual must be recognised as known motion, not change.",
+  "generated_utc": "2026-11-15T09:09:30+00:00",
+  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "reproduce": "python make_demos.py eps-indi-b-year-pair",
+  "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
+  "files": [
+    "comparison.fits",
+    "report.json",
+    "viewer.json",
+    "comparison.png",
+    "candidates.csv"
+  ],
+  "summary": {
+    "status": "PARTIAL",
+    "reason": "Comparison computed; unverified gates: source_noise_model",
+    "gates": {
+      "spectral_overlap": "PASS",
+      "photometric_consistency": "PASS",
+      "noise_model": "PASS",
+      "source_noise_model": "UNVERIFIED",
+      "registration": "PASS"
+    },
+    "matched_pixels": 19574,
+    "separation_days": 364.14945344907755,
+    "wavelength_range_um": [
+      1.9890488386154175,
+      2.059511184692383
+    ],
+    "candidate_summary": {
+      "DIPOLE_PSF_OR_REGISTRATION": 2,
+      "KNOWN_PROPER_MOTION_RESIDUAL": 2,
+      "UNCLASSIFIED_NO_CATALOG": 11
+    },
+    "variability_summary": {
+      "stars_tested": 11,
+      "beyond_threshold": 0,
+      "passed_vetting": 0
+    },
+    "target_status": "MEASURED"
+  },
+  "target": {
+    "id": "epsilon-indi-b",
+    "name": "Epsilon Indi B"
+  },
+  "observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W18_1B_0238_1/D3",
+    "ivo://irsa.ipac/spherex_dr1?2026W18_1A_0457_2/D3"
+  ],
+  "catalog_mode": "UNAVAILABLE",
+  "status": "COMPLETED",
+  "elapsed_seconds": 45.65
+}
