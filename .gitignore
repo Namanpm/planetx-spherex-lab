@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Generated run output; keep only fixtures and recorded summary files
+artifacts/*
+!artifacts/sample.fits
+!artifacts/search_fixture.xml
+!artifacts/search.json
+!artifacts/sky.png
+!artifacts/*.json
+!artifacts/*.md
+!artifacts/rw_empirical/
+artifacts/rw_empirical/*
+!artifacts/rw_empirical/report.json

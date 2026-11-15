@@ -1,0 +1,813 @@
+{
+  "baseline_total_seconds": 36.84008259999973,
+  "baseline_without_archive_discovery_seconds": 31.495682799999486,
+  "cold_calibration_seconds": 55.99813609999546,
+  "warm_seconds": [
+    14.048300799986464,
+    11.010991399991326
+  ],
+  "comparable_processing_speedup_range": [
+    2.2419567496753654,
+    2.860385741471408
+  ],
+  "scope": "Same eight real archived records, 2296 source attempts, 520 accepted measurements, 26 pairs. New runs replay archive records, excluding SIA discovery. Raw science, catalog and response files already cached. Cold calibration directory initially absent; warm reuses persistent calibration cache in a fresh process. All measured source caches bypassed.",
+  "cold_peak_rss_bytes": 261492736,
+  "warm_peak_rss_bytes": 253952000,
+  "baseline_peak_rss_bytes": null,
+  "cold_scientific_verification": {
+    "passed": true,
+    "accepted_sources_checked": 520,
+    "selected_pair_identical": true,
+    "confirmation_exactly_identical": true,
+    "tolerance": {
+      "relative": 1e-10,
+      "absolute": 1e-14
+    },
+    "differences": [],
+    "numeric_maxima_by_field": {
+      "fit_bounds": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pixel_solid_angle_sr": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "bad_pixel_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "background_coefficients": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dropped_zero_nuisance_columns": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "wave_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dof": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "y": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nuisance_columns": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "reduced_chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "snr": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "band_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "variance_jy2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "variance": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "flux_jy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "flag_values": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "x": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "fit_pvalue": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "valid_fraction": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "condition": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nuisance_rank": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "neighbor_amplitudes": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "amplitude": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dec_deg": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "0": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "1": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "3": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "4": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "5": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "6": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "7": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "8": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "9": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "neighbor_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "central_flag": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "detector": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "zone_center_detector_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "oversampling_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "requested_detector_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "zone_index": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nstar": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "fit_pixels": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "ra_deg": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "10": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "11": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "12": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "13": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "14": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "15": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_rms_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "max_fractional_measurement_error": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_dof": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "coefficients": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "outlier_sigma_policy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "reference_color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "scale_at_reference_color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "excess_log_scatter_upper_95_profile": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "excess_log_scatter": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "rms_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "coverage_95_fraction": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_chi2_approximate": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "extrapolated_color_source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutation_null_mean": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutation_null_std": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "moran_I": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "expected_exchangeable_I": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "directed_edge_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutations": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_permutation_positive": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_permutation_two_sided": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "seed": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "residual_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "standardized_residual": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "validation": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "confirmation": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "normalized_l2_distance": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "signed_normalized_inner_product": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "negative_sample_counts": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "common_independent_screened_sources": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "16": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "17": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "18": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "19": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "median_wavelength_delta_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      }
+    }
+  },
+  "warm_scientific_verification": {
+    "passed": true,
+    "accepted_sources_checked": 520,
+    "selected_pair_identical": true,
+    "confirmation_exactly_identical": true,
+    "tolerance": {
+      "relative": 1e-10,
+      "absolute": 1e-14
+    },
+    "differences": [],
+    "numeric_maxima_by_field": {
+      "detector": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nuisance_rank": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "central_flag": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "zone_index": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "zone_center_detector_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "oversampling_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "band_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nstar": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "wave_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "requested_detector_xy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "0": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "1": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "3": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "4": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "5": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "6": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "7": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "8": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "9": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dof": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "reduced_chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "variance_jy2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "condition": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "background_coefficients": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "y": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "flag_values": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "bad_pixel_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dropped_zero_nuisance_columns": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "neighbor_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "snr": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "x": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "nuisance_columns": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "flux_jy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "ra_deg": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pixel_solid_angle_sr": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "fit_pvalue": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "variance": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "amplitude": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "fit_bounds": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "dec_deg": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "valid_fraction": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "fit_pixels": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "neighbor_amplitudes": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "10": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "11": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "12": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "13": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "14": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "15": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "outlier_sigma_policy": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_dof": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "excess_log_scatter": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "coefficients": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_chi2": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "reference_color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_chi2_approximate": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "residual_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "coverage_95_fraction": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "standardized_residual": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "rms_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "moran_I": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "expected_exchangeable_I": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutation_null_std": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_permutation_two_sided": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutations": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "directed_edge_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "seed": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "permutation_null_mean": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "pvalue_permutation_positive": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "extrapolated_color_source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "max_fractional_measurement_error": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_source_count": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "excess_log_scatter_upper_95_profile": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training_rms_log_ratio": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "scale_at_reference_color": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "validation": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "training": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "confirmation": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "median_wavelength_delta_um": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "negative_sample_counts": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "signed_normalized_inner_product": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "normalized_l2_distance": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "common_independent_screened_sources": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "16": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "17": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "18": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      },
+      "19": {
+        "max_absolute": 0.0,
+        "max_relative": 0.0
+      }
+    }
+  },
+  "cold_calibration_counters": {
+    "association_hits": 0,
+    "association_misses": 8,
+    "datalink_requests": 8,
+    "downloads": 1,
+    "array_hits": 7,
+    "array_misses": 1,
+    "validations": 1,
+    "digests": 1,
+    "evictions": 0,
+    "array_entries": 1,
+    "array_bytes": 33292800,
+    "max_bytes": 134217728
+  },
+  "warm_calibration_counters": {
+    "association_hits": 8,
+    "association_misses": 0,
+    "datalink_requests": 0,
+    "downloads": 0,
+    "array_hits": 7,
+    "array_misses": 1,
+    "validations": 1,
+    "digests": 1,
+    "evictions": 0,
+    "array_entries": 1,
+    "array_bytes": 33292800,
+    "max_bytes": 134217728
+  },
+  "pixel_area_counters": {
+    "hits": 1352,
+    "misses": 0,
+    "batch_points": 1581,
+    "entries": 1581
+  },
+  "tests": "137 passed, 2 existing warnings",
+  "evidence": {
+    "baseline": "artifacts/profile_observation_cache_02/profile_summary.json",
+    "cold": "artifacts/profile_calibration_batch_cold_05/profile_summary.json",
+    "warm": "artifacts/profile_calibration_batch_warm_03/profile_summary.json",
+    "second_warm": "artifacts/profile_calibration_batch_warm_02/profile_summary.json"
+  },
+  "failed_attempts": "Earlier cold runs and live SIA discovery attempts returned gateway502 failures. Their reports remain under artifacts/profile_calibration_batch_cold*, fill, warm_01, warm_live_01. Failed partial workloads are excluded from speed comparisons."
+}

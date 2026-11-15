@@ -1,0 +1,1726 @@
+{
+  "status": "INSUFFICIENT_OR_FAILED_REFERENCE_VALIDATION",
+  "observations": [
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "measurement_count": 29,
+      "rejected_count": 271,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\19baffc09321e8ba144b88d0a711a961b1a2f5e65bd121682fc7a878f13dfb76.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "measurement_count": 20,
+      "rejected_count": 280,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\8424bf44272c947820f812a0febe7adae401eb124bf9d74b1db26d7c1e56c2b2.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "measurement_count": 18,
+      "rejected_count": 282,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\36c6a5d13feb835b6ffa3941456d3253ea2a35715b300a4cec2077c30a1549ff.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "measurement_count": 22,
+      "rejected_count": 278,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\749f43c20baf8c3578e801a9a07bb59a3412fdfa7fc14b8a115f6d73d4ed6bd0.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "measurement_count": 16,
+      "rejected_count": 284,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\fe83a1c6313f1785e963cc90e55ef867464cbb64fb2c219585b9b688d498ddae.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "measurement_count": 28,
+      "rejected_count": 272,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\fffebfa2d88ddaa55c5deeeb6cec0037c4fdf70068c2d2a07e5b104f80e80d6e.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "measurement_count": 20,
+      "rejected_count": 280,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\b37156aed1d6af22269f48dcc2b31e1847a2ac217c9461202e67007b9eeb411d.json"
+    },
+    {
+      "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "measurement_count": 29,
+      "rejected_count": 271,
+      "error": null,
+      "calibration": {
+        "publisher_id": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+        "datalink_url": "https://irsa.ipac.caltech.edu/datalink/links/spherex",
+        "calibration_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/spectral_wcs/cal-swcs-v5-2026-191/1/spectral_wcs_D1_spx_cal-swcs-v5-2026-191.fits",
+        "calibration_sha256": "44fb48b236e25a99d42c8986da0064cc58359527e1fc76e182eda52371a1ae23",
+        "detector": 1,
+        "science_calibration_uuid": "019f4f98-edf0-744b-9600-424841d46dc0",
+        "uuid_match": "unverified",
+        "association": "IRSA DataLink #calibration",
+        "unit": "um"
+      },
+      "measurement_file": "artifacts\\barnard_empirical\\bb61884b629eb9f5989d4edfd9d57d6195db938311720eb9908a4a8acbac7cd5.json"
+    }
+  ],
+  "pairs": [
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "common_independent_screened_sources": 5,
+      "median_wavelength_delta_um": 8.398294448852539e-05,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 0.05964971485668981,
+        "signed_normalized_inner_product": 0.9982209557587578,
+        "negative_sample_counts": [
+          41,
+          41
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 0,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "common_independent_screened_sources": 6,
+      "median_wavelength_delta_um": 9.781122207641602e-05,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 0.08896870880964593,
+        "signed_normalized_inner_product": 0.9960422844263722,
+        "negative_sample_counts": [
+          21,
+          21
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 3,
+        "validation": 1,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "common_independent_screened_sources": 7,
+      "median_wavelength_delta_um": 0.009663105010986328,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.3932897985181958,
+        "signed_normalized_inner_product": 0.029371768672562776,
+        "negative_sample_counts": [
+          21,
+          22
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.010978241379339563,
+          -0.08742816306060754
+        ],
+        "coefficient_covariance": [
+          [
+            0.0008327131437245426,
+            6.998814605237348e-05
+          ],
+          [
+            6.998814605237348e-05,
+            0.01701578858864809
+          ]
+        ],
+        "reference_color": 1.3854050500000001,
+        "scale_at_reference_color": 1.0110387233973306,
+        "excess_log_scatter": 0.05084736034252745,
+        "excess_log_scatter_upper_95_profile": 0.13486008273279831,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472844367296884224",
+          "4472838457421885568",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 4,
+        "training_rms_log_ratio": 0.053231613415423255,
+        "training_chi2": 3.6836090469487757,
+        "training_dof": 2,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03267008798899901,
+        "heldout": {
+          "source_ids": [
+            "4472839350775098752",
+            "4472838010745293568"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.0020087646738802725,
+            -0.042264922020626705
+          ],
+          "standardized_residual": [
+            0.029227297708225748,
+            -0.5226188324792511
+          ],
+          "predictive_covariance": [
+            [
+              0.004723683575862693,
+              -0.0008199215017575648
+            ],
+            [
+              -0.0008199215017575648,
+              0.006540185000410736
+            ]
+          ],
+          "chi2": 0.2754726562293087,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.8713284062634722,
+          "rms_log_ratio": 0.029919548533731966,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "common_independent_screened_sources": 7,
+      "median_wavelength_delta_um": 0.0126417875289917,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.3967118988273222,
+        "signed_normalized_inner_product": 0.02459793583708808,
+        "negative_sample_counts": [
+          21,
+          22
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          -0.0013544533173338365,
+          0.13734253840357893
+        ],
+        "coefficient_covariance": [
+          [
+            0.00027945789047487536,
+            -0.0007309943790909504
+          ],
+          [
+            -0.0007309943790909504,
+            0.006235151622479978
+          ]
+        ],
+        "reference_color": 1.15016365,
+        "scale_at_reference_color": 0.9986464635405667,
+        "excess_log_scatter": 0.0,
+        "excess_log_scatter_upper_95_profile": 0.04062637779470699,
+        "retained_training_ids": [
+          "4472844367296884224",
+          "4472838938458584832",
+          "4472833062943293952",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 4,
+        "training_rms_log_ratio": 0.014665206524056024,
+        "training_chi2": 0.8198850469369641,
+        "training_dof": 2,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03267008798899901,
+        "heldout": {
+          "source_ids": [
+            "4472839140318491136",
+            "4472832410108266368"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.025018500837166013,
+            -0.019083882166052567
+          ],
+          "standardized_residual": [
+            0.7202312537866196,
+            -0.6305122791587466
+          ],
+          "predictive_covariance": [
+            [
+              0.001206642556055945,
+              0.00016629728111107388
+            ],
+            [
+              0.00016629728111107388,
+              0.0009161073235716829
+            ]
+          ],
+          "chi2": 1.0871303074444305,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.580674364334404,
+          "rms_log_ratio": 0.022249943175961774,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "common_independent_screened_sources": 13,
+      "median_wavelength_delta_um": 0.3336496949195862,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4078833622347173,
+        "signed_normalized_inner_product": 0.008932219171333761,
+        "negative_sample_counts": [
+          64,
+          22
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 10,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.36824683790682633,
+          0.6905408764321384
+        ],
+        "coefficient_covariance": [
+          [
+            0.00021151479251286352,
+            3.344070645909616e-05
+          ],
+          [
+            3.344070645909616e-05,
+            0.004556328305299647
+          ]
+        ],
+        "reference_color": 1.29494285,
+        "scale_at_reference_color": 1.4451987247784517,
+        "excess_log_scatter": 0.034795864796818864,
+        "excess_log_scatter_upper_95_profile": 0.06754766785094457,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472836361478195200",
+          "4472834402972720000",
+          "4472808873687491328",
+          "4472838938458584832",
+          "4472838457421885568",
+          "4472833062943293952",
+          "4472884430752193664",
+          "4472812996856118144",
+          "4472887007732575616"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 10,
+        "training_rms_log_ratio": 0.04033124517207039,
+        "training_chi2": 8.671651269654713,
+        "training_dof": 8,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03336357382856991,
+        "heldout": {
+          "source_ids": [
+            "4472832410108266368",
+            "4472838079464746880"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.011940030750719643,
+            -0.08688228407274018
+          ],
+          "standardized_residual": [
+            0.24636155033956678,
+            -1.751586617868827
+          ],
+          "predictive_covariance": [
+            [
+              0.0023489027358799563,
+              0.00021093085960203751
+            ],
+            [
+              0.00021093085960203751,
+              0.002460363198476683
+            ]
+          ],
+          "chi2": 3.229336876185313,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.1989566259444259,
+          "rms_log_ratio": 0.06201248108253875,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.2537745237350464,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4082308302474489,
+        "signed_normalized_inner_product": 0.008442964370290445,
+        "negative_sample_counts": [
+          21,
+          45
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 2,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          -0.2876385143426171,
+          -0.5248034082502936
+        ],
+        "coefficient_covariance": [
+          [
+            0.00064049708485902,
+            0.00011891038974575147
+          ],
+          [
+            0.00011891038974575147,
+            0.012840347374819842
+          ]
+        ],
+        "reference_color": 1.3854050500000001,
+        "scale_at_reference_color": 0.750032669293374,
+        "excess_log_scatter": 0.04370588473263418,
+        "excess_log_scatter_upper_95_profile": 0.12090525875405461,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472844367296884224",
+          "4472838457421885568",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 4,
+        "training_rms_log_ratio": 0.05014800139186379,
+        "training_chi2": 3.929344298157907,
+        "training_dof": 2,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03781268041369746,
+        "heldout": {
+          "source_ids": [
+            "4472838010745293568",
+            "4472884258953497984"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            -0.010405228216749357,
+            0.013417512578450697
+          ],
+          "standardized_residual": [
+            -0.14900878522922584,
+            0.23258977494064337
+          ],
+          "predictive_covariance": [
+            [
+              0.004876177111069763,
+              0.00030830757167695676
+            ],
+            [
+              0.00030830757167695676,
+              0.0033278426643337136
+            ]
+          ],
+          "chi2": 0.08208758898003234,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.9597870956409924,
+          "rms_log_ratio": 0.012006215432756479,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "common_independent_screened_sources": 8,
+      "median_wavelength_delta_um": 0.24812626838684082,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4082477669292697,
+        "signed_normalized_inner_product": 0.00841911346936265,
+        "negative_sample_counts": [
+          21,
+          45
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 5,
+        "validation": 0,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.15552163124084473,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4086203330387994,
+        "signed_normalized_inner_product": 0.007894378674830917,
+        "negative_sample_counts": [
+          64,
+          41
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 7,
+        "validation": 1,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "common_independent_screened_sources": 13,
+      "median_wavelength_delta_um": 0.153825581073761,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4086514171688047,
+        "signed_normalized_inner_product": 0.00785059245415924,
+        "negative_sample_counts": [
+          64,
+          41
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 8,
+        "validation": 3,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.17623174767992256,
+          0.37814522794084104
+        ],
+        "coefficient_covariance": [
+          [
+            0.00040367999530955406,
+            -8.20625089936316e-05
+          ],
+          [
+            -8.20625089936316e-05,
+            0.013847923007483949
+          ]
+        ],
+        "reference_color": 1.2149978,
+        "scale_at_reference_color": 1.1927144354278145,
+        "excess_log_scatter": 0.050600519077731346,
+        "excess_log_scatter_upper_95_profile": 0.0995563407549127,
+        "retained_training_ids": [
+          "4472832513187484544",
+          "4472885564623569408",
+          "4472883674837946880",
+          "4472834402972720000",
+          "4472836395837941632",
+          "4472833062943293952",
+          "4472884430752193664",
+          "4472844470376440448"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 8,
+        "training_rms_log_ratio": 0.058328631874306223,
+        "training_chi2": 8.193811907184694,
+        "training_dof": 6,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.02660813783914202,
+        "heldout": {
+          "source_ids": [
+            "4472832410108266368",
+            "4472819697005045632",
+            "4472837632788148224"
+          ],
+          "source_count": 3,
+          "residual_log_ratio": [
+            0.06688829955949521,
+            0.12429241677740835,
+            0.0012697450689474754
+          ],
+          "standardized_residual": [
+            1.0714451157882117,
+            1.8686939493812387,
+            0.018265737548228266
+          ],
+          "predictive_covariance": [
+            [
+              0.003897269618766887,
+              0.0002639586406147082,
+              0.00017916160097023552
+            ],
+            [
+              0.0002639586406147082,
+              0.004423977469221364,
+              0.0008234751690328054
+            ],
+            [
+              0.00017916160097023555,
+              0.0008234751690328054,
+              0.004832352908723144
+            ]
+          ],
+          "chi2": 4.525011842944622,
+          "dof": 3,
+          "pvalue_chi2_approximate": 0.21007010893839212,
+          "rms_log_ratio": 0.08149491137257153,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "common_independent_screened_sources": 14,
+      "median_wavelength_delta_um": 0.0664166510105133,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4089028946923325,
+        "signed_normalized_inner_product": 0.007496316663783012,
+        "negative_sample_counts": [
+          64,
+          45
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 8,
+        "validation": 3,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.14028091465079207,
+          0.24837357739610075
+        ],
+        "coefficient_covariance": [
+          [
+            0.0004934461638376875,
+            0.00024069025222894905
+          ],
+          [
+            0.00024069025222894905,
+            0.009303515526014102
+          ]
+        ],
+        "reference_color": 1.29494285,
+        "scale_at_reference_color": 1.1505969730098005,
+        "excess_log_scatter": 0.05540786181554627,
+        "excess_log_scatter_upper_95_profile": 0.10687708780946853,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472836361478195200",
+          "4472838938458584832",
+          "4472838457421885568",
+          "4472833062943293952",
+          "4472884430752193664",
+          "4472812996856118144",
+          "4472834226875454592"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 8,
+        "training_rms_log_ratio": 0.06031757186336612,
+        "training_chi2": 7.706073881660739,
+        "training_dof": 6,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.049646305770444626,
+        "heldout": {
+          "source_ids": [
+            "4472838079464746880",
+            "4472819697005045632",
+            "4472837632788148224"
+          ],
+          "source_count": 3,
+          "residual_log_ratio": [
+            -0.07859302900252049,
+            0.1203019622103321,
+            0.07813528413279638
+          ],
+          "standardized_residual": [
+            -1.170900889573111,
+            1.6910739256030525,
+            1.0579977880867657
+          ],
+          "predictive_covariance": [
+            [
+              0.004505342188816846,
+              0.00047487361817557107,
+              0.0004693065351441657
+            ],
+            [
+              0.00047487361817557107,
+              0.005060812363489627,
+              0.0009516565914294651
+            ],
+            [
+              0.00046930653514416564,
+              0.0009516565914294652,
+              0.005454122299811308
+            ]
+          ],
+          "chi2": 5.4319044174687425,
+          "dof": 3,
+          "pvalue_chi2_approximate": 0.14276869371522571,
+          "rms_log_ratio": 0.09443613176103029,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "common_independent_screened_sources": 11,
+      "median_wavelength_delta_um": 0.21941673755645752,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4089550870017615,
+        "signed_normalized_inner_product": 0.007422781405929476,
+        "negative_sample_counts": [
+          64,
+          36
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 7,
+        "validation": 1,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.15370160341262817,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.409180763307791,
+        "signed_normalized_inner_product": 0.007104788161635629,
+        "negative_sample_counts": [
+          41,
+          21
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 6,
+        "validation": 0,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.3097086548805237,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4091923914239373,
+        "signed_normalized_inner_product": 0.007088401976442297,
+        "negative_sample_counts": [
+          64,
+          21
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 6,
+        "validation": 1,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "common_independent_screened_sources": 5,
+      "median_wavelength_delta_um": 0.15368247032165527,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4092013925662858,
+        "signed_normalized_inner_product": 0.007075717594620392,
+        "negative_sample_counts": [
+          41,
+          21
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 3,
+        "validation": 1,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "common_independent_screened_sources": 11,
+      "median_wavelength_delta_um": 0.15333819389343262,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.40921411846629,
+        "signed_normalized_inner_product": 0.007057784157638333,
+        "negative_sample_counts": [
+          21,
+          41
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 7,
+        "validation": 3,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          -0.06958069589609013,
+          -0.31487003220706977
+        ],
+        "coefficient_covariance": [
+          [
+            0.00018537165900579382,
+            -0.00037340786635090185
+          ],
+          [
+            -0.00037340786635090185,
+            0.003165146358983206
+          ]
+        ],
+        "reference_color": 1.0317736,
+        "scale_at_reference_color": 0.9327848584373962,
+        "excess_log_scatter": 0.018106080985400903,
+        "excess_log_scatter_upper_95_profile": 0.055382757157627825,
+        "retained_training_ids": [
+          "4472838182543956480",
+          "4472885976940415104",
+          "4472883674837946880",
+          "4472844367296884224",
+          "4472836395837941632",
+          "4472833062943293952",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 7,
+        "training_rms_log_ratio": 0.03360345448169045,
+        "training_chi2": 7.437400143865448,
+        "training_dof": 5,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.023407225786605666,
+        "heldout": {
+          "source_ids": [
+            "4472833509619497984",
+            "4472839140318491136",
+            "4472832410108266368"
+          ],
+          "source_count": 3,
+          "residual_log_ratio": [
+            0.013855174665179049,
+            0.0075940156837422945,
+            0.04494162843802352
+          ],
+          "standardized_residual": [
+            0.5089365977294815,
+            0.2309276508033396,
+            1.3051069849473518
+          ],
+          "predictive_covariance": [
+            [
+              0.0007411338438714761,
+              0.00015460210521722008,
+              0.00010059916884696185
+            ],
+            [
+              0.00015460210521722008,
+              0.0010814118005554388,
+              0.0001197943467293633
+            ],
+            [
+              0.00010059916884696186,
+              0.00011979434672936332,
+              0.0011857834417778516
+            ]
+          ],
+          "chi2": 1.8420731168578917,
+          "dof": 3,
+          "pvalue_chi2_approximate": 0.6058224299715604,
+          "rms_log_ratio": 0.02750384764518659,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "common_independent_screened_sources": 6,
+      "median_wavelength_delta_um": 0.15358597040176392,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4092281909820163,
+        "signed_normalized_inner_product": 0.0070379528707766766,
+        "negative_sample_counts": [
+          21,
+          41
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 0,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "common_independent_screened_sources": 7,
+      "median_wavelength_delta_um": 0.3104163408279419,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4094141924800523,
+        "signed_normalized_inner_product": 0.006775817017901194,
+        "negative_sample_counts": [
+          64,
+          21
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 0,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "common_independent_screened_sources": 8,
+      "median_wavelength_delta_um": 0.1690061092376709,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4095306543876323,
+        "signed_normalized_inner_product": 0.00661166717078666,
+        "negative_sample_counts": [
+          41,
+          22
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 3,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.12619096715064043,
+          0.27578705623156485
+        ],
+        "coefficient_covariance": [
+          [
+            0.0005073414578017179,
+            -0.0007557301317431228
+          ],
+          [
+            -0.0007557301317431228,
+            0.005783362884533548
+          ]
+        ],
+        "reference_color": 1.21278285,
+        "scale_at_reference_color": 1.1344987996007987,
+        "excess_log_scatter": 0.0266746793010273,
+        "excess_log_scatter_upper_95_profile": 0.11555531344236086,
+        "retained_training_ids": [
+          "4472834402972720000",
+          "4472838457421885568",
+          "4472884430752193664",
+          "4472887007732575616"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 4,
+        "training_rms_log_ratio": 0.056291149080894526,
+        "training_chi2": 5.528310673979968,
+        "training_dof": 2,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03336357382856991,
+        "heldout": {
+          "source_ids": [
+            "4472834402972715136",
+            "4472839350775098752",
+            "4472838079464746880"
+          ],
+          "source_count": 3,
+          "residual_log_ratio": [
+            -0.002778375980159231,
+            0.01533603694661606,
+            -0.020548071898574716
+          ],
+          "standardized_residual": [
+            -0.07162128334423885,
+            0.3577974823014102,
+            -0.44789228280100496
+          ],
+          "predictive_covariance": [
+            [
+              0.0015048660139728616,
+              0.00015713882212401513,
+              0.0004669929517553503
+            ],
+            [
+              0.0001571388221240151,
+              0.0018371800966124718,
+              0.0002960482124020389
+            ],
+            [
+              0.00046699295175535026,
+              0.0002960482124020389,
+              0.002104723228585869
+            ]
+          ],
+          "chi2": 0.3861410589213219,
+          "dof": 3,
+          "pvalue_chi2_approximate": 0.9430903113165555,
+          "rms_log_ratio": 0.014890004041460101,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0587_1/D1",
+      "common_independent_screened_sources": 10,
+      "median_wavelength_delta_um": 0.17631545662879944,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4096898226259247,
+        "signed_normalized_inner_product": 0.006387301992444405,
+        "negative_sample_counts": [
+          41,
+          22
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 6,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.1040963530087927,
+          0.32509055882083876
+        ],
+        "coefficient_covariance": [
+          [
+            0.0003404687077167779,
+            -0.0004436069062523082
+          ],
+          [
+            -0.0004436069062523082,
+            0.009917687244050575
+          ]
+        ],
+        "reference_color": 1.19671395,
+        "scale_at_reference_color": 1.109707373408848,
+        "excess_log_scatter": 0.0346962005417935,
+        "excess_log_scatter_upper_95_profile": 0.08283364405202039,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472841274920403712",
+          "4472844367296884224",
+          "4472834402972720000",
+          "4472833062943293952",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 6,
+        "training_rms_log_ratio": 0.043043972729140234,
+        "training_chi2": 5.774481351898776,
+        "training_dof": 4,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.03267008798899901,
+        "heldout": {
+          "source_ids": [
+            "4472839140318491136",
+            "4472832410108266368"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.027924720586069443,
+            -0.029183380304864587
+          ],
+          "standardized_residual": [
+            0.5484693020074193,
+            -0.608953393902336
+          ],
+          "predictive_covariance": [
+            [
+              0.0025922269566506537,
+              0.00024809748393564836
+            ],
+            [
+              0.0002480974839356484,
+              0.0022966936986941635
+            ]
+          ],
+          "chi2": 0.7472893295631791,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.6882214176934052,
+          "rms_log_ratio": 0.028560984802947612,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "common_independent_screened_sources": 6,
+      "median_wavelength_delta_um": 0.08918598294258118,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4112307215173385,
+        "signed_normalized_inner_product": 0.004213925322826081,
+        "negative_sample_counts": [
+          41,
+          45
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 3,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0511_2/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.08800989389419556,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4113388978054753,
+        "signed_normalized_inner_product": 0.004061257770612962,
+        "negative_sample_counts": [
+          41,
+          45
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 5,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          -0.03932295031166615,
+          -0.3473691791583242
+        ],
+        "coefficient_covariance": [
+          [
+            0.00021500607119993045,
+            -0.0006136408690130396
+          ],
+          [
+            -0.0006136408690130396,
+            0.003751656707801931
+          ]
+        ],
+        "reference_color": 1.0662022,
+        "scale_at_reference_color": 0.9614401616035148,
+        "excess_log_scatter": 0.0,
+        "excess_log_scatter_upper_95_profile": 0.028678662665881163,
+        "retained_training_ids": [
+          "4472885564623569408",
+          "4472841274920403712",
+          "4472844367296884224",
+          "4472833062943293952",
+          "4472884430752193664"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 5,
+        "training_rms_log_ratio": 0.010695274440289879,
+        "training_chi2": 0.843816510795208,
+        "training_dof": 3,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.02581523786055102,
+        "heldout": {
+          "source_ids": [
+            "4472819697005045632",
+            "4472837632788148224"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.0026170684609939307,
+            0.065272573765846
+          ],
+          "standardized_residual": [
+            0.07480074271432356,
+            1.7369613527179761
+          ],
+          "predictive_covariance": [
+            [
+              0.0012241040847915572,
+              0.0002406797669139378
+            ],
+            [
+              0.00024067976691393784,
+              0.001412151086081775
+            ]
+          ],
+          "chi2": 3.0782139741777983,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.2145726320253685,
+          "rms_log_ratio": 0.046191762974297355,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0474_4/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "common_independent_screened_sources": 3,
+      "median_wavelength_delta_um": 0.03647816181182861,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4126856760485187,
+        "signed_normalized_inner_product": 0.002159590343669741,
+        "negative_sample_counts": [
+          41,
+          36
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 3,
+        "validation": 0,
+        "confirmation": 0
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0500_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "common_independent_screened_sources": 8,
+      "median_wavelength_delta_um": 0.10709625482559204,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4127459065372527,
+        "signed_normalized_inner_product": 0.0020745017811179007,
+        "negative_sample_counts": [
+          21,
+          36
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 1,
+        "confirmation": 2
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources"
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W36_2B_0123_1/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "common_independent_screened_sources": 12,
+      "median_wavelength_delta_um": 0.06668373942375183,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.412755512499653,
+        "signed_normalized_inner_product": 0.002060930950921669,
+        "negative_sample_counts": [
+          41,
+          36
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 7,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          0.023052978632481198,
+          0.10730312339344909
+        ],
+        "coefficient_covariance": [
+          [
+            0.00012636532614409323,
+            -0.00024342252534778288
+          ],
+          [
+            -0.00024342252534778288,
+            0.0008978000499494358
+          ]
+        ],
+        "reference_color": 1.1027699,
+        "scale_at_reference_color": 1.023320752245191,
+        "excess_log_scatter": 0.0,
+        "excess_log_scatter_upper_95_profile": 0.022678823942532338,
+        "retained_training_ids": [
+          "4472838766659539712",
+          "4472832513187484544",
+          "4472885564623569408",
+          "4472841274920403712",
+          "4472833062943293952",
+          "4472884430752193664",
+          "4472844470376440448"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 7,
+        "training_rms_log_ratio": 0.014004254957930664,
+        "training_chi2": 2.521464785824076,
+        "training_dof": 5,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.02589688676740866,
+        "heldout": {
+          "source_ids": [
+            "4472833509619497984",
+            "4472832410108266368"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.02644398584133703,
+            0.018621221959013737
+          ],
+          "standardized_residual": [
+            1.3095059950840828,
+            0.6660860862050654
+          ],
+          "predictive_covariance": [
+            [
+              0.00040779213922328874,
+              8.279995658120977e-05
+            ],
+            [
+              8.279995658120977e-05,
+              0.0007815479529810535
+            ]
+          ],
+          "chi2": 1.944445066582201,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.37824144900744405,
+          "rms_log_ratio": 0.022869568146597005,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    },
+    {
+      "observation_a": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0233_2/D1",
+      "observation_b": "ivo://irsa.ipac/spherex_dr1?2026W11_1A_0539_4/D1",
+      "common_independent_screened_sources": 9,
+      "median_wavelength_delta_um": 0.09656685590744019,
+      "status": "REJECTED",
+      "representative_response_distance": {
+        "normalized_l2_distance": 1.4128200905184438,
+        "signed_normalized_inner_product": 0.001969695913728159,
+        "negative_sample_counts": [
+          21,
+          36
+        ],
+        "semantics": "Signed piecewise-linear laboratory shape distance; amplitude normalized, wavelength location retained. Not physical throughput overlap.",
+        "acceptance": "NOT_ASSESSED",
+        "systematic_uncertainty": "not estimated by this metric"
+      },
+      "split_counts": {
+        "training": 4,
+        "validation": 2,
+        "confirmation": 1
+      },
+      "reason": "insufficient independent preassigned train/validation/confirmation sources",
+      "exploratory_model_not_confirmation_eligible": {
+        "status": "EMPIRICAL_DIAGNOSTIC",
+        "model": "log flux ratio intercept plus catalog color",
+        "coefficients": [
+          -0.04111957983603773,
+          -0.4274879485640783
+        ],
+        "coefficient_covariance": [
+          [
+            0.00012919859760360036,
+            -0.0002718749151332596
+          ],
+          [
+            -0.0002718749151332596,
+            0.1398656878653344
+          ]
+        ],
+        "reference_color": 1.0303135,
+        "scale_at_reference_color": 0.9597143606000021,
+        "excess_log_scatter": 0.0,
+        "excess_log_scatter_upper_95_profile": 0.03923040056784506,
+        "retained_training_ids": [
+          "4472836906933040128",
+          "4472833062943293952",
+          "4472884430752193664",
+          "4472844470376440448"
+        ],
+        "rejected_training_ids": [],
+        "training_source_count": 4,
+        "training_rms_log_ratio": 0.019441989931585458,
+        "training_chi2": 1.6701828802459049,
+        "training_dof": 2,
+        "outlier_sigma_policy": 4.0,
+        "max_fractional_measurement_error": 0.031965273017622364,
+        "heldout": {
+          "source_ids": [
+            "4472833509619497984",
+            "4472839140318491136"
+          ],
+          "source_count": 2,
+          "residual_log_ratio": [
+            0.03424672172135595,
+            0.05161502807930615
+          ],
+          "standardized_residual": [
+            1.5340507339225027,
+            1.3719004779852824
+          ],
+          "predictive_covariance": [
+            [
+              0.0004983776570956085,
+              0.0004081661736833394
+            ],
+            [
+              0.0004081661736833395,
+              0.0014154910282915948
+            ]
+          ],
+          "chi2": 2.867013733896,
+          "dof": 2,
+          "pvalue_chi2_approximate": 0.23847116749975442,
+          "rms_log_ratio": 0.043800394246442324,
+          "coverage_95_fraction": 1.0,
+          "extrapolated_color_source_count": 0
+        },
+        "acceptance": "not automatically assessed; evidence is restricted to screened sources and tested observing regime",
+        "limitations": [
+          "References must be screened upstream; this function does not establish astrophysical constancy.",
+          "Log-flux uncertainty uses high-S/N delta approximation; fractional errors are reported.",
+          "Independent measurement noise assumed; common correction covariance is included in heldout predictions.",
+          "Intrinsic scatter is conditional on robust training selection and does not include unidentified correlated systematics.",
+          "Coefficient covariance and heldout chi-square condition on fitted scatter; scatter-estimation uncertainty is not marginalized.",
+          "Profile upper limit is asymptotic and not an exact confidence bound at the zero-scatter boundary.",
+          "No target-specific correction is justified outside reference spectral/color and observing-condition support."
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "status": "COMPLETE",
+  "scope": "Prepared native-photometry observations in a run-owned dictionary; existing science behavior preserved.",
+  "before_seconds": 71.8749828,
+  "after_seconds": [
+    37.81084499999997,
+    36.84008259999973
+  ],
+  "after_median_seconds": 37.32546379999985,
+  "observed_speedup_vs_before": 1.9256286588996192,
+  "before_native_seconds": 48.04379239969421,
+  "after_native_including_preparation_seconds": [
+    11.39473499986343,
+    9.97559070053103
+  ],
+  "before_native_fits_wcs_preparations": 2296,
+  "after_native_fits_wcs_preparations": [
+    8,
+    8
+  ],
+  "before_epsf_table_reads": 1565,
+  "after_epsf_table_reads": [
+    8,
+    8
+  ],
+  "prepared_observations": [
+    8,
+    8
+  ],
+  "prepared_epsf_zones": [
+    60,
+    60
+  ],
+  "measurement_equivalence": {
+    "accepted_measurements_compared": 520,
+    "all_accepted_measurements_exactly_equal": true,
+    "all_rejection_lists_exactly_equal": true,
+    "max_relative_numeric_difference": 0.0,
+    "same_selected_pair": true,
+    "same_confirmation": true,
+    "numeric_comparison_rtol": 1e-12,
+    "numeric_comparison_atol": 1e-12
+  },
+  "tests": {
+    "passed": 114,
+    "failed": 0,
+    "known_warnings": 2
+  },
+  "files_changed": [
+    "native_photometry.py",
+    "psf_processing.py",
+    "fits_pipeline.py",
+    "empirical_comparison.py",
+    "profile_workflow.py",
+    "test_observation_cache.py",
+    "README.md"
+  ],
+  "benchmark_limits": "One pre-change timed run and two post-change runs, same machine and cached input files, all photometry recomputed; metadata requests remained live and vary. No cold-download, peak-RAM or throughput claim."
+}

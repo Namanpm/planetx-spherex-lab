@@ -1,0 +1,106 @@
+{
+  "reference_workload": "Original78.62-second RW Aurigae reference experiment",
+  "low_overhead_total_seconds": 71.8749828,
+  "observations": 8,
+  "pairs": 26,
+  "source_attempts": 2296,
+  "scientific_result_reproduced": true,
+  "phase_timings": {
+    "archive_discovery": {
+      "seconds": 4.6511545999965165,
+      "percent_total": 6.471173165966332,
+      "calls": 1
+    },
+    "catalog_access": {
+      "seconds": 0.031798699987120926,
+      "percent_total": 0.04424168013452509,
+      "calls": 1
+    },
+    "json_output": {
+      "seconds": 0.15097770000284072,
+      "percent_total": 0.2100559807060444,
+      "calls": 18
+    },
+    "science_cache_access": {
+      "seconds": 0.09649900000658818,
+      "percent_total": 0.1342595103989203,
+      "calls": 8
+    },
+    "calibration_resolution": {
+      "seconds": 12.8289356000314,
+      "percent_total": 17.848958149637845,
+      "calls": 8
+    },
+    "response_bundle_access": {
+      "seconds": 0.22450490000483114,
+      "percent_total": 0.3123547182328246,
+      "calls": 8
+    },
+    "response_curve_sampling": {
+      "seconds": 0.5911905999964802,
+      "percent_total": 0.8225262490031234,
+      "calls": 8
+    },
+    "catalog_position_propagation": {
+      "seconds": 1.917516200352111,
+      "percent_total": 2.6678492650047785,
+      "calls": 17952
+    },
+    "native_photometry": {
+      "seconds": 48.04379239969421,
+      "percent_total": 66.8435532477014,
+      "calls": 2296
+    },
+    "response_pair_ranking": {
+      "seconds": 0.002787800010992214,
+      "percent_total": 0.003878679204347878,
+      "calls": 26
+    },
+    "empirical_model_fitting": {
+      "seconds": 0.21602260001236573,
+      "percent_total": 0.30055325454960075,
+      "calls": 27
+    },
+    "spatial_residual_diagnostics": {
+      "seconds": 0.03622639998502564,
+      "percent_total": 0.0504019598666612,
+      "calls": 24
+    },
+    "output_rendering": {
+      "seconds": 0.3944303000025684,
+      "percent_total": 0.5487727226316198,
+      "calls": 1
+    },
+    "other_orchestration": {
+      "seconds": 2.6891459999169456,
+      "percent_total": 3.741421416961989,
+      "calls": 1
+    }
+  },
+  "nested_photometry": {
+    "nested_FITS_read_and_WCS": {
+      "seconds": 28.217572400157223,
+      "percent_native_photometry": 58.733024581833014,
+      "calls": 2296
+    },
+    "nested_ePSF_extraction": {
+      "seconds": 10.000273600046057,
+      "percent_native_photometry": 20.814913021124674,
+      "calls": 1565
+    },
+    "nested_numerical_source_fit": {
+      "seconds": 0.2891567002370721,
+      "percent_native_photometry": 0.6018606895797687,
+      "calls": 1353
+    },
+    "nested_pixel_area_geometry": {
+      "seconds": 4.767545699884067,
+      "percent_native_photometry": 9.923333404284737,
+      "calls": 1352
+    }
+  },
+  "function_profile_wall_seconds": 142.82005730000674,
+  "function_profile_result_reproduced": true,
+  "function_table_warning": "The cProfile text aggregate reports 283.246s and an anomalous root attribution despite142.820s directly measured wall time. Do not use aggregate/self-time totals as end-to-end durations. Direct phase timers are the authoritative timing evidence.",
+  "science_code_changed": false
+}

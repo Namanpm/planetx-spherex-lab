@@ -1,0 +1,10 @@
+{
+  "accepted_measurements_compared": 520,
+  "all_accepted_measurements_exactly_equal": true,
+  "all_rejection_lists_exactly_equal": true,
+  "max_relative_numeric_difference": 0.0,
+  "same_selected_pair": true,
+  "same_confirmation": true,
+  "numeric_comparison_rtol": 1e-12,
+  "numeric_comparison_atol": 1e-12
+}

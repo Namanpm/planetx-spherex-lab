@@ -1,0 +1,122 @@
+{
+  "mode": "wall",
+  "total_wall_seconds": 36.84008259999973,
+  "phases": {
+    "archive_discovery": {
+      "seconds": 5.344399800000247,
+      "percent_total": 14.507024476650564,
+      "calls": 1
+    },
+    "catalog_access": {
+      "seconds": 0.03679440000269096,
+      "percent_total": 0.0998759975708937,
+      "calls": 1
+    },
+    "json_output": {
+      "seconds": 0.17237079999176785,
+      "percent_total": 0.4678892875005907,
+      "calls": 18
+    },
+    "science_cache_access": {
+      "seconds": 0.11017699999501929,
+      "percent_total": 0.29906827623404975,
+      "calls": 8
+    },
+    "observation_preparation": {
+      "seconds": 0.1402296000160277,
+      "percent_total": 0.38064409773073826,
+      "calls": 8
+    },
+    "calibration_resolution": {
+      "seconds": 14.343051799965906,
+      "percent_total": 38.93327807024518,
+      "calls": 8
+    },
+    "response_bundle_access": {
+      "seconds": 0.24185159997432493,
+      "percent_total": 0.6564903846722827,
+      "calls": 8
+    },
+    "response_curve_sampling": {
+      "seconds": 0.6884530999959679,
+      "percent_total": 1.8687610108560748,
+      "calls": 8
+    },
+    "catalog_position_propagation": {
+      "seconds": 2.183202301079291,
+      "percent_total": 5.926160168488077,
+      "calls": 17952
+    },
+    "native_photometry": {
+      "seconds": 9.835361100515001,
+      "percent_total": 26.69744584262977,
+      "calls": 2296
+    },
+    "response_pair_ranking": {
+      "seconds": 0.0035741999599849805,
+      "percent_total": 0.009701932535800033,
+      "calls": 26
+    },
+    "empirical_model_fitting": {
+      "seconds": 0.2875356999866199,
+      "percent_total": 0.7804968927692414,
+      "calls": 27
+    },
+    "spatial_residual_diagnostics": {
+      "seconds": 0.04638390002946835,
+      "percent_total": 0.12590606957398268,
+      "calls": 24
+    },
+    "output_rendering": {
+      "seconds": 0.5738522000028752,
+      "percent_total": 1.5576843467850405,
+      "calls": 1
+    },
+    "other_orchestration": {
+      "seconds": 2.8328450984845404,
+      "percent_total": 7.689573145757716,
+      "calls": 1
+    }
+  },
+  "nested_native_diagnostics": {
+    "nested_prepare_FITS_WCS": {
+      "seconds": 0.08972380000341218,
+      "contained_in": "observation_preparation",
+      "percent_of_parent": 63.983495633701516,
+      "calls": 8
+    },
+    "nested_prepare_ePSF_table": {
+      "seconds": 0.03952280002704356,
+      "contained_in": "observation_preparation",
+      "percent_of_parent": 28.18434911211774,
+      "calls": 8
+    },
+    "nested_cached_ePSF_selection": {
+      "seconds": 0.046293099789181724,
+      "contained_in": "native_photometry",
+      "percent_of_parent": 0.47068022532246134,
+      "calls": 1565
+    },
+    "nested_numerical_source_fit": {
+      "seconds": 0.2982673001824878,
+      "contained_in": "native_photometry",
+      "percent_of_parent": 3.032601417825624,
+      "calls": 1353
+    },
+    "nested_pixel_area_geometry": {
+      "seconds": 5.435688799916534,
+      "contained_in": "native_photometry",
+      "percent_of_parent": 55.26679442030765,
+      "calls": 1352
+    }
+  },
+  "native_fit_calls": 2296,
+  "prepared_observation_count": 8,
+  "prepared_epsf_zone_count": 60,
+  "observation_count": 8,
+  "pair_count": 26,
+  "same_measurement_counts_selected_pair_and_model_as_original": true,
+  "status": "REFERENCE_MODEL_CONSISTENT_ON_CONFIRMATION",
+  "cache_policy": "Existing raw science/calibration/catalog files reused; all source measurements recomputed in a new output directory. Discovery and DataLink metadata requests still performed.",
+  "timing_policy": "Nested times are contained within native photometry. cProfile mode adds instrumentation overhead. Imports precede timed run."
+}

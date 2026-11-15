@@ -1,0 +1,57 @@
+{
+  "status": "COMPLETED_RESTRICTED_EMPIRICAL_EXPERIMENT",
+  "full_image_comparison_complete": false,
+  "selected_pair": [
+    "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0446_1/D1",
+    "ivo://irsa.ipac/spherex_dr1?2026W10_1A_0445_3/D1"
+  ],
+  "training_sources": 17,
+  "validation_sources": 17,
+  "confirmation_sources": 8,
+  "confirmation_chi2": 4.797675795627929,
+  "confirmation_dof": 8,
+  "confirmation_pvalue_approximate": 0.7789657715448753,
+  "confirmation_95pct_coverage": 1.0,
+  "confirmation_fractional_rms": 0.058143208086440454,
+  "excess_log_scatter": 0.06134752247973793,
+  "excess_log_scatter_95pct_upper_asymptotic": 0.09729534932069676,
+  "ratio_at_reference_color": 1.1843653787897235,
+  "reference_color": 1.2303553,
+  "total_pair_assessments": 51,
+  "rw_runtime_seconds": 78.62264279999363,
+  "barnard_runtime_seconds": 82.83267669999623,
+  "rw_output_tree_bytes_at_run_end": 117090182,
+  "barnard_outcome": "INSUFFICIENT_OR_FAILED_REFERENCE_VALIDATION",
+  "barnard_max_common_independent_sources": 14,
+  "tests": {
+    "passed": 107,
+    "failed": 0,
+    "warnings": 2
+  },
+  "versions": {
+    "astropy": "8.0.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "fastapi": "0.162.7",
+    "requests": "2.34.2"
+  },
+  "files_created_or_modified": [
+    "empirical_comparison.py",
+    "empirical_repeatability.py",
+    "native_photometry.py",
+    "reference_catalog.py",
+    "reference_response.py",
+    "repeatability_products.py",
+    "test_empirical_comparison.py",
+    "test_empirical_repeatability.py",
+    "test_native_photometry.py",
+    "test_reference_catalog.py",
+    "test_reference_response.py",
+    "test_repeatability_products.py",
+    "scientific_pipeline.py",
+    "main.py",
+    "requirements.txt",
+    "README.md"
+  ],
+  "interpretation": "Conditional source-population repeatability, not proof of stellar constancy, response equivalence, absolute calibration or target variability. Eight confirmation sources are a small sample; scatter-estimation uncertainty is not fully marginalized."
+}

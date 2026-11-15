@@ -1,0 +1,79 @@
+{
+  "status": "PARTIAL",
+  "files_created_or_modified_this_phase": [
+    "response_calibration.py",
+    "spectral_model.py",
+    "motion_inference.py",
+    "astrometry_model.py",
+    "source_detection.py",
+    "psf_processing.py",
+    "covariance_processing.py",
+    "spacecraft_ephemeris.py",
+    "inference_validation.py",
+    "scientific_pipeline.py",
+    "comparison_engine.py",
+    "fits_pipeline.py",
+    "README.md",
+    "test_response_calibration.py",
+    "test_models.py",
+    "test_astrometry_model.py",
+    "test_source_detection.py",
+    "test_psf_processing.py",
+    "test_covariance_processing.py",
+    "test_spacecraft_ephemeris.py",
+    "test_scientific_pipeline.py",
+    "test_phase4.py"
+  ],
+  "test_command": ".venv/Scripts/python -m pytest -q",
+  "test_result": {
+    "passed": 78,
+    "failed": 0,
+    "warnings": 2
+  },
+  "live_pairs_evaluated": 9,
+  "validated_real_subtractions": 0,
+  "targets": {
+    "barnards-star": {
+      "seconds": 25.346509300012258,
+      "output_tree_bytes": 101042638,
+      "pair_statuses": [
+        "REJECTED",
+        "REJECTED",
+        "REJECTED",
+        "REJECTED",
+        "REJECTED",
+        "REJECTED"
+      ]
+    },
+    "rw-aurigae": {
+      "seconds": 115.62861990000238,
+      "output_tree_bytes": 42210060,
+      "pair_statuses": [
+        "REJECTED"
+      ]
+    },
+    "r-draconis": {
+      "seconds": 185.81078620000335,
+      "output_tree_bytes": 88204638,
+      "pair_statuses": [
+        "REJECTED",
+        "REJECTED"
+      ]
+    }
+  },
+  "remaining": [
+    "Response bundle supplies representative curves with unquantified per-pixel shape error; signed lab samples retained.",
+    "No error-budgeted full response equivalence or identifiable live spectral transformation established.",
+    "PSF projection is approximate and single-zone; real joint PSF/background/photometric systematics not controlled.",
+    "Motion/source/catalog functions tested conditionally; no validated live automatic motion inference.",
+    "Observer directions geometric and coverage diagnostic; initial discovery approximate; astrometric covariance not propagated.",
+    "Archive overflow fails explicitly; complete archive pagination not implemented."
+  ],
+  "review_fixes": [
+    "SVD replaced unstable normal equations.",
+    "Checkpoint keys include config/software; artifact hashes validated; failed attempts retried; OS output lock.",
+    "Response sampling uses shared requested sky position.",
+    "Horizons identity/frame/units/correction/epoch checked.",
+    "Memory mapping disabled during FITS validation to release Windows files on exceptions."
+  ]
+}
