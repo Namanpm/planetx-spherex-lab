@@ -480,7 +480,7 @@ def run_series(observation_ids, records, *, target=None, position=None, center, 
                use_horizons=True, progress=None):
     """Download/reuse real cutouts for a matched group and write series products."""
     from difference_imaging import load_epoch
-    from epoch_lab import CALIBRATION_CACHE, CUTOUT_SIZE_DEG, SCIENCE_CACHE, ARTIFACTS, software_sha256
+    from epoch_lab import CALIBRATION_CACHE, CUTOUT_SIZE_DEG, SCIENCE_CACHE, ARTIFACTS, science_files, software_sha256
     from scientific_pipeline import download_cutout
 
     def emit(stage, **fields):
@@ -492,11 +492,21 @@ def run_series(observation_ids, records, *, target=None, position=None, center, 
     if missing:
         raise ValueError('Observation not in the discovered archive records: ' + ', '.join(missing))
     epochs = []
+    unavailable = []
     for ident in observation_ids:
-        emit('download', observation_id=ident)
-        path = download_cutout(index[ident], center[0], center[1], SCIENCE_CACHE, size=CUTOUT_SIZE_DEG)
-        emit('calibration', observation_id=ident)
-        epochs.append(load_epoch(path, ident, CALIBRATION_CACHE, product_identity=index[ident].get('access_url')))
+        try:
+            emit('download', observation_id=ident)
+            path = download_cutout(index[ident], center[0], center[1], SCIENCE_CACHE, size=CUTOUT_SIZE_DEG)
+            emit('calibration', observation_id=ident)
+            epochs.append(load_epoch(path, ident, CALIBRATION_CACHE, product_identity=index[ident].get('access_url')))
+        except Exception as exc:
+            # One bad epoch must not discard independent, fully calibrated data.
+            # Preserve the failure and continue; never replace its calibration.
+            unavailable.append({'observation_id': ident, 'status': 'UNAVAILABLE',
+                                'stage': 'download_or_calibration',
+                                'error_type': type(exc).__name__, 'reason': str(exc)[:500]})
+            emit('observation_unavailable', observation_id=ident,
+                 reason=f'{type(exc).__name__}: {str(exc)[:300]}')
     vectors = {}
     if use_horizons and target is not None and target.get('parallax_mas'):
         emit('observer_ephemeris')
@@ -509,17 +519,35 @@ def run_series(observation_ids, records, *, target=None, position=None, center, 
                 vectors[e['id']] = None
                 emit('observer_ephemeris_unavailable', reason=str(exc))
     emit('measurement')
-    report = analyze_series(epochs, target=target, position=position, catalog_sources=catalog, observer_vectors={k: v for k, v in vectors.items() if v})
+    if len(epochs) >= 2:
+        report = analyze_series(epochs, target=target, position=position, catalog_sources=catalog, observer_vectors={k: v for k, v in vectors.items() if v})
+    else:
+        reason = f'Only {len(epochs)} of {len(observation_ids)} requested observations could be downloaded and calibrated; at least two are required for a time series.'
+        report = {'policy': POLICY, 'epoch_count': len(epochs),
+                  'detector': int(observation_ids[0][-1]), 'observations': [e['id'] for e in epochs],
+                  'field_stars_detected': 0,
+                  'photometry': {'status': 'INSUFFICIENT_EVIDENCE', 'points': [], 'reason': reason},
+                  'astrometry': {'status': 'INSUFFICIENT_EVIDENCE', 'positions': [], 'reason': reason},
+                  'epochs': [], 'limitations': [reason]}
+    report['analysis_status'] = 'PARTIAL' if unavailable else 'COMPLETE'
+    report['requested_epoch_count'] = len(observation_ids)
+    report['requested_observations'] = list(observation_ids)
+    report['unavailable_observations'] = unavailable
+    if unavailable:
+        report['limitations'].append('Unavailable observations are omitted from the fitted time series and listed with their processing errors; no calibration or measurement was inferred for them.')
     report['catalog'] = catalog_provenance
+    report['science_files'] = science_files(epochs, index)
     report['observer_ephemeris'] = {k: (v['provenance'] if v else 'UNAVAILABLE') for k, v in vectors.items()} if vectors else 'NOT_USED'
     report['software_sha256'] = software_sha256()
     report['elapsed_seconds'] = time.perf_counter()-started
     out = Path(output); out.mkdir(parents=True, exist_ok=True)
-    (out/'series.json').write_text(json.dumps(report, indent=2, allow_nan=False), encoding='utf-8')
     render(report, out/'series.png')
     rows = ['observation_id,date,mjd,status,wavelength_um,calibrated_flux_jy,flux_sigma_jy']
     for p in report['photometry'].get('points', []):
         rows.append(','.join(str(p.get(k, '')) for k in ('observation_id', 'date', 'mjd', 'status', 'wavelength_um', 'calibrated_flux_jy', 'flux_sigma_jy')))
+    for failed in unavailable:
+        rows.append(','.join([failed['observation_id'], '', '', 'UNAVAILABLE', '', '', '']))
     (out/'light_curve.csv').write_text('\n'.join(rows)+'\n', encoding='utf-8')
     report['files'] = ['series.json', 'series.png', 'light_curve.csv']
+    (out/'series.json').write_text(json.dumps(report, indent=2, allow_nan=False), encoding='utf-8')
     return report

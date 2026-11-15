@@ -238,3 +238,6 @@ artifacts/epoch_lab/*
 !artifacts/catalog_cache/
 artifacts/catalog_cache/queries/
 .gstack/
+
+# Static public copy (python build_static_demo.py); published by .github/workflows/pages.yml
+site/

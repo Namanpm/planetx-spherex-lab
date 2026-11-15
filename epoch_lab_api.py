@@ -8,6 +8,7 @@ import json
 import threading
 import uuid
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Annotated
 
@@ -30,6 +31,10 @@ _executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='epoch-lab')
 _lock = threading.RLock()
 _jobs = {}
 ObservationId = Annotated[str, StringConstraints(max_length=256)]
+
+
+def _now():
+    return datetime.now(timezone.utc).isoformat(timespec='seconds')
 
 
 class FieldRequest(BaseModel):
@@ -81,6 +86,11 @@ class SeriesRequest(FieldRequest):
         return self
 
 
+class AssistantRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    question: str = Field(min_length=1, max_length=500)
+
+
 def _job_dir(job_id):
     try:
         canonical = str(uuid.UUID(job_id))
@@ -124,7 +134,15 @@ def _error(exc):
     if isinstance(exc, requests.Timeout):
         return {'code': 'ARCHIVE_TIMEOUT', 'message': 'A NASA/IRSA request timed out after bounded retries; try again later.'}
     if isinstance(exc, requests.RequestException):
-        return {'code': 'ARCHIVE_UNAVAILABLE', 'message': f'NASA/IRSA request failed after bounded retries: {str(exc)[:300]}'}
+        detail = str(exc)
+        host = getattr(getattr(exc, 'request', None), 'url', '')
+        if 'datalink/links/spherex' in host:
+            return {'code': 'CALIBRATION_ARCHIVE_UNAVAILABLE',
+                    'message': 'IRSA DataLink did not return the calibration association after eleven bounded attempts. This observation could not be calibrated; retry later. No cached association was substituted.'}
+        if 'gea.esac.esa.int' in detail:
+            return {'code': 'GAIA_CATALOG_UNAVAILABLE',
+                    'message': 'The ESA Gaia archive did not respond after bounded retries. Catalog matching was unavailable; retry later.'}
+        return {'code': 'ARCHIVE_UNAVAILABLE', 'message': f'NASA/IRSA request failed after bounded retries: {detail[:300]}'}
     if isinstance(exc, ValueError):
         return {'code': 'ANALYSIS_REJECTED', 'message': str(exc)[:1000]}
     return {'code': type(exc).__name__, 'message': str(exc)[:1000]}
@@ -145,6 +163,7 @@ def _run(job_id, kind, body):
             _jobs[job_id].update(status='FAILED', error=_error(exc))
     finally:
         with _lock:
+            _jobs[job_id]['finished_utc'] = _now()
             _save(job_id, _jobs[job_id])
 
 
@@ -177,7 +196,8 @@ def _submit(kind, body):
         if active >= MAX_QUEUED:
             raise HTTPException(429, detail={'code': 'QUEUE_FULL', 'message': f'{active} analyses are already queued or running; try again shortly.'})
         job_id = str(uuid.uuid4())
-        _jobs[job_id] = {'id': job_id, 'kind': kind, 'status': 'QUEUED', 'request': body.model_dump(), 'progress': {'stage': 'queued'}}
+        _jobs[job_id] = {'id': job_id, 'kind': kind, 'status': 'QUEUED', 'request': body.model_dump(), 'progress': {'stage': 'queued'},
+                         'submitted_utc': _now()}
         for old in [k for k, v in _jobs.items() if v['status'] in ('COMPLETED', 'FAILED')][:-32]:
             del _jobs[old]  # bounded memory; all states remain on disk
         _save(job_id, _jobs[job_id])
@@ -238,6 +258,23 @@ def submit_series(body: SeriesRequest):
 @router.get('/jobs/{job_id}')
 def job_status(job_id: str):
     return _state(job_id)
+
+
+@router.post('/jobs/{job_id}/assistant')
+def ask_series_assistant(job_id: str, body: AssistantRequest):
+    state = _state(job_id)
+    if state.get('status') != 'COMPLETED' or state.get('kind') != 'series':
+        raise HTTPException(409, detail={'code': 'SERIES_REPORT_NOT_READY',
+                                        'message': 'The completed time-series report is not available.'})
+    report_path = _job_dir(job_id) / 'series.json'
+    if not report_path.is_file():
+        raise HTTPException(404, detail={'code': 'SERIES_REPORT_NOT_FOUND'})
+    report = json.loads(report_path.read_text(encoding='utf-8'))
+    from scientific_assistant import AssistantUnavailable, answer
+    try:
+        return answer(report, body.question)
+    except AssistantUnavailable as exc:
+        raise HTTPException(503, detail={'code': 'LOCAL_ASSISTANT_UNAVAILABLE', 'message': str(exc)}) from exc
 
 
 def _serve(directory, name):

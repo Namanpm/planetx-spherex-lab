@@ -24,12 +24,20 @@ SOFTWARE_FILES = ('epoch_lab.py', 'difference_imaging.py', 'spectral_matching.py
                   'wcs_geometry.py', 'fits_pipeline.py', 'calibration_resolver.py', 'spectral_calibration.py', 'source_detection.py')
 
 
+def science_files(epochs, index):
+    """Provenance of each science cutout used: cache path, SHA-256 of its bytes, archive URL."""
+    return {e['id']: {'path': str(Path(e['path']).relative_to(ROOT)) if Path(e['path']).is_relative_to(ROOT) else e['path'],
+                      'sha256': hashlib.sha256(Path(e['path']).read_bytes()).hexdigest(),
+                      'access_url': index[e['id']].get('access_url')} for e in epochs}
+
+
 def software_sha256():
     digest = hashlib.sha256()
     for name in SOFTWARE_FILES:
         path = ROOT / name
         if path.is_file():
-            digest.update(path.read_bytes())
+            # Hash LF-normalised text so a Windows (CRLF) and a Linux checkout of the same commit agree.
+            digest.update(path.read_bytes().replace(b'\r\n', b'\n'))
     return digest.hexdigest()
 
 
@@ -128,9 +136,7 @@ def run_comparison(observation_a, observation_b, records, *, target=None, center
     timings['comparison'] = time.perf_counter()-t0
     report = result['report']
     report['catalog'] = catalog_provenance
-    report['science_files'] = {e['id']: {'path': str(Path(e['path']).relative_to(ROOT)) if Path(e['path']).is_relative_to(ROOT) else e['path'],
-                                         'sha256': hashlib.sha256(Path(e['path']).read_bytes()).hexdigest(),
-                                         'access_url': index[e['id']].get('access_url')} for e in epochs}
+    report['science_files'] = science_files(epochs, index)
     report['software_sha256'] = software_sha256()
     report['cutout'] = {'center_deg': list(center), 'size_deg': CUTOUT_SIZE_DEG}
     report['timings_seconds'] = timings

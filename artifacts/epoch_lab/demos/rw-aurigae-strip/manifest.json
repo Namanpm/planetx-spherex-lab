@@ -3,8 +3,8 @@
   "kind": "compare",
   "title": "RW Aurigae field: six months apart, opposite orientation",
   "why": "Field rotation between visits leaves only a narrow strip where wavelengths agree; shows why whole-image differencing would be wrong.",
-  "generated_utc": "2026-11-15T09:10:16+00:00",
-  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "generated_utc": "2026-11-15T14:01:39+00:00",
+  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
   "reproduce": "python make_demos.py rw-aurigae-strip",
   "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
   "files": [
@@ -50,5 +50,5 @@
   ],
   "catalog_mode": "stored Gaia DR3 query result",
   "status": "COMPLETED",
-  "elapsed_seconds": 1.54
+  "elapsed_seconds": 2.0
 }

@@ -88,6 +88,16 @@ def test_failures_are_reported_with_specific_codes(client, monkeypatch):
     assert client.get(f"/api/lab/jobs/{sub.json()['id']}/files/report.json").status_code == 409
 
 
+def test_datalink_failure_is_reported_as_calibration_coverage_issue():
+    exc = requests.exceptions.RetryError('DataLink failed')
+    request = requests.Request('GET', 'https://irsa.ipac.caltech.edu/datalink/links/spherex?ID=x').prepare()
+    exc.request = request
+    result = api._error(exc)
+    assert result['code'] == 'CALIBRATION_ARCHIVE_UNAVAILABLE'
+    assert 'eleven bounded attempts' in result['message']
+    assert 'No cached association was substituted' in result['message']
+
+
 def test_queue_is_bounded(client, monkeypatch):
     gate = threading.Event()
 
@@ -245,3 +255,51 @@ def test_sia_disk_cache_is_used_and_never_serves_after_errors(tmp_path, monkeypa
     monkeypatch.setattr(spherex, '_get', fail)
     with pytest.raises(requests.ConnectionError):
         spherex.search(127.69444, -39.1776, 0.01)
+
+
+# ---------------------------------------------------------------- failure cases a user can hit
+
+def _fail_with(client, monkeypatch, exc):
+    def failing(kind, body, output, progress):
+        raise exc
+    monkeypatch.setattr(api, '_execute', failing)
+    return _wait(client, client.post('/api/lab/screen', json={'target_id': 'rw-aurigae'}).json()['id'])
+
+
+def test_timeout_is_reported_as_archive_timeout(client, monkeypatch):
+    state = _fail_with(client, monkeypatch, requests.Timeout('read timed out'))
+    assert state['status'] == 'FAILED' and state['error']['code'] == 'ARCHIVE_TIMEOUT'
+    assert 'timed out' in state['error']['message']
+
+
+def test_gaia_outage_is_reported_as_catalog_unavailable(client, monkeypatch):
+    from reference_catalog import GaiaArchiveUnavailable
+    state = _fail_with(client, monkeypatch, GaiaArchiveUnavailable('Gaia TAP did not answer after bounded retries'))
+    assert state['error']['code'] == 'GAIA_CATALOG_UNAVAILABLE'
+
+
+def test_rejected_analysis_keeps_its_reason(client, monkeypatch):
+    state = _fail_with(client, monkeypatch, ValueError('Observation not in the discovered archive records: x'))
+    assert state['error'] == {'code': 'ANALYSIS_REJECTED', 'message': 'Observation not in the discovered archive records: x'}
+
+
+def test_position_without_coverage_completes_with_zero_records(client, monkeypatch):
+    import pair_discovery
+    query = {'ra_deg': 10.0, 'dec_deg': -20.0, 'radius_deg': 0.05, 'collection': 'spherex_dr1'}
+    monkeypatch.setattr(pair_discovery, 'discover_pairs', lambda **kw: {'observations': [], 'rejected': [], 'query': query})
+    state = _wait(client, client.post('/api/lab/screen', json={'ra': 10.0, 'dec': -20.0}).json()['id'])
+    assert state['status'] == 'COMPLETED'
+    result = state['result']
+    assert result['observation_count'] == 0 and result['matched_pairs'] == [] and result['matched_groups'] == []
+
+
+@pytest.mark.parametrize('body', [{'ra': -1.0, 'dec': 0.0}, {'ra': 360.0, 'dec': 0.0}, {'ra': 10.0, 'dec': 90.5}, {'ra': 'abc', 'dec': 0.0}])
+def test_invalid_coordinates_explain_the_limit(client, body):
+    response = client.post('/api/lab/screen', json=body)
+    assert response.status_code == 422
+    assert all(item['msg'] for item in response.json()['detail'])
+
+
+def test_job_state_records_submission_and_finish_times(client, monkeypatch):
+    state = _fail_with(client, monkeypatch, requests.ConnectionError('502'))
+    assert state['submitted_utc'] <= state['finished_utc']

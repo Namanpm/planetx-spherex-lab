@@ -27,6 +27,7 @@ def test_real_votable_parser_and_cache(monkeypatch):
         calls.append(kwargs)
         return Response()
     monkeypatch.setattr(spherex, '_get', get)
+    monkeypatch.setattr(spherex, 'DISK_CACHE_DIR', None)
     spherex._cache.clear()
     a = spherex.search(127.69444, -39.17760, .01)
     b = spherex.search(127.69444, -39.17760, .01)

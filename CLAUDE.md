@@ -20,6 +20,8 @@ python -m venv .venv
 .\.venv\Scripts\python -m pytest test_epoch_lab_api.py::test_job_lifecycle_progress_and_files -q   # one test
 .\.venv\Scripts\python make_demos.py                  # regenerate recorded real-data demos (network)
 .\.venv\Scripts\python make_demos.py barnard-pair     # one demo
+.\.venv\Scripts\python verify_results.py              # independent re-check of recorded runs; rewrites docs/VERIFICATION.md
+.\.venv\Scripts\python build_static_demo.py           # server-free copy of recorded runs into site/ (published by .github/workflows/pages.yml)
 ```
 
 No linter or formatter is configured. Tests need no network; a few real-data tests skip when the local archive caches (`artifacts/science_cache`, `artifacts/calibration_cache`, `artifacts/rw_empirical/*`) are absent. IRSA, Gaia TAP and CDS intermittently fail (502/timeouts); network code retries a bounded number of times and otherwise fails with a specific error. Never substitute data on failure.
@@ -41,7 +43,7 @@ No linter or formatter is configured. Tests need no network; a few real-data tes
 ## Conventions worth knowing
 
 - Every policy number lives in a module-level `POLICY` dict and is copied into each report; change policies there, not inline.
-- Reports carry `software_sha256` of the processing files and SHA-256 of each science FITS; keep `epoch_lab.SOFTWARE_FILES` current when adding processing modules.
+- Reports carry `software_sha256` of the processing files (LF-normalised, so platform-independent) and SHA-256 of each science FITS; keep `epoch_lab.SOFTWARE_FILES` current when adding processing modules. Editing any of those files (even a comment) makes the recorded demos stale: `test_verify_results.py` fails until you rerun `make_demos.py` (works offline from the local caches) and `verify_results.py`.
 - Gaia DR3 query results in `artifacts/catalog_cache/*.json` are reused when their circle covers the field (DR3 is fixed); label that mode, never fabricate a catalog.
 - Direct science-vs-calibration UUID equality is explicitly unverified throughout; do not claim it.
 - `artifacts/` mostly holds ignored caches; committed items are the fixtures tests read, `artifacts/epoch_lab/demos/`, and the catalog snapshots. Don't delete those.

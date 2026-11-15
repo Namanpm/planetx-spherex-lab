@@ -172,3 +172,50 @@ For a group of ≥ 2 epochs on one detector at one wavelength:
 * Rotated revisits (e.g. six months apart) are usually matched only in a strip.
 * Bright targets (Barnard's Star, RW Aurigae) are saturated or flagged in their
   cores and cannot be measured, although their fields can.
+* Variability detection has not yet been demonstrated on a real variable star
+  (see section 7).
+
+## 7. Verification
+
+`verify_results.py` re-checks every recorded run from its saved products, using
+its own arithmetic rather than the pipeline's functions, and writes
+[VERIFICATION.md](VERIFICATION.md). A check is UNVERIFIED when its input is missing,
+never a pass. `test_verify_results.py` corrupts saved results (pixel counts,
+z-scores, gate logic, baselines, proper-motion significance, χ² p-values,
+pair membership) and asserts the checker reports each one.
+
+What is checked:
+
+* **Wavelength matching.** Every compared pixel satisfies |Δλ| ≤ 0.1 × CBAND in the
+  saved `DLAMBDA` plane, and every pixel left out sampled another wavelength or had
+  no valid data. Every screened record's wavelength is re-read from the cached
+  DataLink `CWAVE` map (SHA-256 checked) at its detector pixel.
+* **Uncertainties.** `SIGNIF = DIFF / √VARIANCE` on every pixel; blank-sky
+  significance has unit robust spread after the inflate-only null-test rescaling;
+  star uncertainties follow √(stat² + β² + (αF)²) and their z-scores have unit
+  robust spread.
+* **Significance and statistics.** Star and target z-scores, the count beyond 5σ,
+  the constant-flux χ² and p-value, and the proper-motion significance
+  √(μᵀC⁻¹μ) from the saved covariance.
+* **Status logic.** VALIDATED only when every gate passed; any UNVERIFIED gate gives
+  PARTIAL.
+* **Provenance.** Science-file and calibration SHA-256, own-calibration association
+  for each epoch, and that each recorded run was produced by the current processing
+  code. The code hash normalises line endings so Windows and Linux checkouts agree.
+
+**Known mover.** ε Indi B's proper motion measured from five SPHEREx epochs,
+(4.46 ± 0.45, −2.33 ± 0.43) ″/yr, agrees with the independent SIMBAD value
+(3.98, −2.47) ″/yr at 1.1σ and is detected at 11.3σ. This validates the motion
+workflow on one object; it is not a discovery and does not validate other parts of
+the pipeline.
+
+**Known variable star: not yet verified.** The variable presets cannot be measured:
+RW Aurigae's core is flagged as saturated, and R Draconis (a Mira) is far brighter
+in the infrared than Barnard's Star, which already saturates. All R Draconis series
+attempts also failed because IRSA DataLink returned HTTP 502. In the Barnard field the
+8 Gaia DR3 `VARIABLE` stars changed by at most |z| = 1.7 over 31 days. That is
+consistent with small optical amplitudes, but it does not demonstrate sensitivity.
+Sensitivity is currently shown only by injection–recovery in the real difference
+image and by the exact-truth synthetic tests. The planned check is an unsaturated,
+large-amplitude variable with three or more same-wavelength epochs, run while IRSA
+is available, compared against its published period and amplitude.

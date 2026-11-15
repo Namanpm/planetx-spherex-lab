@@ -9,83 +9,90 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><strong>SPHEREx Epoch Lab</strong><span>Planet X × SPHEREx · same sky, same wavelength, different time</span></div>
+  <a class="brand" href="#explore" data-goto="explore" aria-label="SPHEREx Epoch Lab, start page">
+    <svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="11" cy="14" r="7.5"/><circle cx="17" cy="14" r="7.5"/></svg>
+    <span>SPHEREx Epoch Lab</span>
+  </a>
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" data-view="explore" aria-selected="true">Explore</button>
     <button role="tab" data-view="runs" aria-selected="false">Recorded runs</button>
     <button role="tab" data-view="method" aria-selected="false">Method</button>
-    <a href="/docs" target="_blank" rel="noopener">API</a>
   </nav>
+  <a class="toplink" href="/docs" target="_blank" rel="noopener">API docs</a>
 </header>
 
 <main>
   <!-- Explore -->
-  <section id="view-explore" class="layout">
-    <aside class="sidebar">
-      <div class="panel stack">
-        <h3>Field</h3>
-        <label class="field">Preset target
-          <select id="preset"><option value="">Choose a preset…</option></select>
-        </label>
-        <div class="divider">or</div>
-        <label class="field">Object name
-          <div class="row"><input id="name" type="text" placeholder="e.g. Vega, M31, TW Hya" autocomplete="off"><button class="btn" id="resolve" style="flex:0">Resolve</button></div>
-        </label>
-        <div class="row">
-          <label class="field">RA (deg)<input id="ra" type="number" step="any" min="0" max="360" placeholder="0–360"></label>
-          <label class="field">Dec (deg)<input id="dec" type="number" step="any" min="-90" max="90" placeholder="−90–90"></label>
-        </div>
-        <p id="field-label" class="small secondary" aria-live="polite">No field selected.</p>
-        <button class="btn primary" id="screen" disabled>Find same-wavelength epochs</button>
-        <p class="small muted">Queries the NASA/IRSA SPHEREx DR1 archive, estimates the wavelength each observation sampled at this position and lists epochs that can be compared.</p>
-      </div>
-      <div class="panel" id="job-panel" hidden>
-        <div class="progress" aria-live="polite">
-          <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="job-title">Working…</h3><span id="job-badge"></span></div>
-          <ol id="job-steps"></ol>
-          <div id="job-error"></div>
-        </div>
-      </div>
-      <div class="panel stack" id="selection-panel" hidden>
-        <h3>Manual selection</h3>
-        <p class="small secondary" id="selection-text">Select observations in the table.</p>
-        <div class="row">
-          <button class="btn" id="compare-selected" disabled>Compare 2</button>
-          <button class="btn" id="series-selected" disabled>Time series</button>
-        </div>
-      </div>
-    </aside>
+  <section id="view-explore">
+    <div id="welcome" class="hero">
+      <p class="eyebrow">Planet X × SPHEREx</p>
+      <h1>Same sky. Same wavelength. Different time.</h1>
+      <p class="lede">SPHEREx sees a star through a different colour on almost every visit. Pick a field and the lab finds the visits that match in wavelength, then compares only those.</p>
+    </div>
 
-    <div class="content">
-      <div id="welcome" class="panel">
-        <header><div><h2>Compare real SPHEREx epochs without comparing different colours</h2>
-        <p>SPHEREx maps the sky through linear variable filters, so every pixel sees a slightly different wavelength. Two visits to the same star are only comparable where they sampled the same wavelength.</p></div></header>
-        <div class="tiles">
-          <div class="tile"><div class="label">1 · Screen</div><div class="sub">Every archive record → wavelength at your target</div></div>
-          <div class="tile"><div class="label">2 · Match</div><div class="sub">Same detector, same wavelength, different date</div></div>
-          <div class="tile"><div class="label">3 · Compare</div><div class="sub">Register, PSF-match, difference, validate</div></div>
-          <div class="tile"><div class="label">4 · Inspect</div><div class="sub">Residuals, light curves, trajectories, limits</div></div>
-        </div>
-        <p class="small muted" style="margin-top:14px">Pick a preset or coordinates to begin, or open a <a href="#runs" data-goto="runs">recorded run</a> to see finished analyses of real data.</p>
+    <div id="static-note" class="notice info static-note" hidden>
+      <p><b>This public copy shows recorded analyses of real SPHEREx data.</b> They were produced by the same code as live runs and include full provenance. Live analysis of other targets needs the Python server, which runs locally; see the README.</p>
+      <div class="notice-foot"><a class="btn small primary" href="#runs">Open the recorded runs</a></div>
+    </div>
+
+    <div class="finder">
+      <div class="finder-bar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+        <input id="query" type="text" autocomplete="off" spellcheck="false" placeholder="Object name, or RA Dec in degrees" aria-label="Object name, or RA and Dec in degrees">
+        <button class="btn primary" id="screen" type="button" disabled>Find epochs</button>
       </div>
-      <div id="screening" hidden></div>
-      <div id="result" hidden></div>
+      <div class="chips" id="presets" role="group" aria-label="Preset targets"></div>
+      <p id="field-label" class="field-status" aria-live="polite"></p>
+    </div>
+
+    <div id="job-panel" class="job" hidden aria-live="polite">
+      <div class="job-head"><h3 id="job-title">Working</h3><span id="job-badge"></span></div>
+      <div class="job-bar"><i id="job-fill"></i></div>
+      <p id="job-now" class="job-now"></p>
+      <details class="job-details"><summary>All steps</summary><ol id="job-steps"></ol></details>
+      <div id="job-error"></div>
+    </div>
+
+    <div id="start" class="start">
+      <ol class="steps">
+        <li><b>Screen</b><span>Every archive record is mapped to the wavelength it sampled at your target.</span></li>
+        <li><b>Match</b><span>Same detector, same wavelength, different date.</span></li>
+        <li><b>Compare</b><span>Register, match the PSFs, difference, validate.</span></li>
+        <li><b>Inspect</b><span>Residuals, light curves, trajectories and limits.</span></li>
+      </ol>
+      <div id="shortcuts" class="shortcuts" hidden>
+        <h4>Or open a finished run. No network needed.</h4>
+        <div id="quick-runs"></div>
+      </div>
+    </div>
+
+    <div id="screening" class="content" hidden></div>
+    <div id="result" class="content" hidden></div>
+
+    <div id="selection-panel" class="actionbar" hidden>
+      <span id="selection-text"></span>
+      <button class="btn primary small" id="compare-selected" type="button" disabled>Compare</button>
+      <button class="btn small" id="series-selected" type="button" disabled>Time series</button>
+      <button class="btn ghost small" id="clear-selected" type="button">Clear</button>
     </div>
   </section>
 
   <!-- Recorded runs -->
   <section id="view-runs" hidden>
-    <div class="panel" style="margin-bottom:20px">
-      <header><div><h2>Recorded runs on real SPHEREx data</h2>
-      <p>Each run was produced by <span class="mono">make_demos.py</span> with the same code the Explore tab uses, from live NASA/IRSA archive records. Provenance (software hash, files, catalog mode) is recorded with every run.</p></div></header>
+    <div id="runs-index">
+      <div class="page-head">
+        <p class="eyebrow">Recorded runs</p>
+        <h1>Finished analyses of real SPHEREx data</h1>
+        <p class="lede">Produced by <span class="mono">make_demos.py</span> with the same code as Explore, from live NASA/IRSA archive records. They open instantly and work offline.</p>
+      </div>
+      <div id="run-cards" class="cards"></div>
     </div>
-    <div id="runs" class="cards"></div>
-    <div id="run-result" style="margin-top:20px" class="content"></div>
+    <div id="run-result" class="content" hidden></div>
   </section>
 
   <!-- Method -->
   <section id="view-method" hidden>
-    <article class="prose panel" id="method"></article>
+    <article class="prose" id="method-body"></article>
   </section>
 </main>
 <div class="tooltip" id="tooltip" hidden></div>

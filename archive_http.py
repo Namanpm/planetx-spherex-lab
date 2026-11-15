@@ -28,9 +28,9 @@ class BoundedRetry(Retry):
 
 
 def retry_session(*, total=3, backoff=0.5, pool_connections=4, pool_maxsize=8):
-    """Finite retries for idempotent GET/HEAD requests (max 4 attempts)."""
-    if not isinstance(total, int) or not 0 <= total <= 8:
-        raise ValueError('total retries must be between 0 and 8')
+    """Finite retries for idempotent GET/HEAD requests (at most 11 attempts)."""
+    if not isinstance(total, int) or not 0 <= total <= 10:
+        raise ValueError('total retries must be between 0 and 10')
     if not math.isfinite(backoff) or backoff<0:raise ValueError('backoff must be finite and nonnegative')
     retry = BoundedRetry(total=total, connect=total, read=total, status=total,
                   backoff_factor=backoff, backoff_max=4, backoff_jitter=.25,

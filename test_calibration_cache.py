@@ -94,25 +94,19 @@ def test_array_lru_evicts_to_budget(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize('body, valid', [(xml(row(URL)), True), (b'malformed', False)])
-def test_datalink_transport_fallback_preserves_id(body, valid):
-    from urllib.parse import parse_qs, urlparse
+def test_datalink_transport_error_is_not_replayed_by_resolver(body, valid):
     import requests
-    class FallbackClient:
+    class GatewayClient:
         def __init__(self): self.calls = []
         def get(self, url, **kwargs):
             self.calls.append((url, kwargs))
-            if len(self.calls) == 1:
-                response = requests.Response()
-                response.status_code = 502
-                raise requests.HTTPError(response=response)
-            assert parse_qs(urlparse(url).query)['ID'] == [PID]
-            return Client(body).get(url)
-    client = FallbackClient()
-    if valid:
-        assert resolver.discover(PID, 1, client) == URL
-    else:
-        with pytest.raises(Exception): resolver.discover(PID, 1, client)
-    assert len(client.calls) == 2
+            response = requests.Response()
+            response.status_code = 502
+            raise requests.HTTPError(response=response)
+    client = GatewayClient()
+    with pytest.raises(requests.HTTPError): resolver.discover(PID, 1, client)
+    assert len(client.calls) == 1
+    assert client.calls[0][0] == resolver.DATALINK
     assert client.calls[0][1]['params'] == {'ID': PID}
 
 
@@ -127,26 +121,24 @@ def test_datalink_normal_request_not_repeated():
     assert client.calls == 1
 
 
-@pytest.mark.parametrize('failures', [2, 3])
-def test_three_equivalent_transport_variants_bounded(failures):
-    from urllib.parse import parse_qs, urlparse
+def test_datalink_adapter_stops_after_eleven_attempts(monkeypatch):
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from threading import Thread
     import requests
-    class GatewayClient:
-        calls = 0
-        def get(self, url, **kwargs):
-            self.calls += 1
-            actual_id = kwargs.get('params', {}).get('ID')
-            if actual_id is None:
-                actual_id = parse_qs(urlparse(url).query)['ID'][0]
-            assert actual_id == PID
-            if self.calls <= failures:
-                response = requests.Response()
-                response.status_code = 503
-                raise requests.HTTPError(response=response)
-            return Client(xml(row(URL))).get(url)
-    client = GatewayClient()
-    if failures == 2:
-        assert resolver.discover(PID, 1, client) == URL
-    else:
-        with pytest.raises(requests.HTTPError): resolver.discover(PID, 1, client)
-    assert client.calls == 3
+    monkeypatch.setattr('archive_http.BoundedRetry.sleep', lambda self, response=None: None)
+    calls = []
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            calls.append(self.path)
+            self.send_response(502); self.end_headers()
+        def log_message(self, *args): pass
+    server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+    thread = Thread(target=server.serve_forever, daemon=True); thread.start()
+    monkeypatch.setattr(resolver, 'DATALINK', f'http://127.0.0.1:{server.server_port}/datalink')
+    try:
+        with resolver.session() as client:
+            with pytest.raises(requests.exceptions.RetryError): resolver.discover(PID, 1, client)
+        assert len(calls) == 11
+        assert all(path.startswith('/datalink?ID=') for path in calls)
+    finally:
+        server.shutdown(); thread.join(); server.server_close()

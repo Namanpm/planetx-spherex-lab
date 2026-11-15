@@ -25,15 +25,31 @@ const short = (id) => (id || '').split('?').pop();
 const mjdToDate = (mjd) => new Date((mjd - 40587) * 86400000);
 const isoDay = (mjd) => mjdToDate(mjd).toISOString().slice(0, 10);
 
+/* A static copy (build_static_demo.py) has no server: recorded runs are plain files and live analysis is unavailable. */
+const STATIC = document.documentElement.getAttribute('data-static') === 'true';
+function staticPath(path) {
+  if (path === '/api/lab/targets') return 'data/targets.json';
+  if (path === '/api/lab/demos') return 'data/demos.json';
+  const m = /^\/api\/lab\/demos\/([\w-]+)\/files\/(.+)$/.exec(path);
+  return m ? `data/demos/${m[1]}/${m[2]}` : null;
+}
+const demoBase = (name) => (STATIC ? `data/demos/${name}/` : `/api/lab/demos/${name}/files/`);
+function apiError(message, code, status) { const err = new Error(message); err.code = code; err.status = status; return err; }
+
 async function api(path, options = {}) {
-  const response = await fetch(path, options);
+  if (STATIC && path.startsWith('/api/')) {
+    path = staticPath(path);
+    if (!path) throw apiError('Live analysis needs the Epoch Lab server; this public copy shows recorded runs only.', 'STATIC_DEMO');
+  }
+  let response;
+  try { response = await fetch(path, options); } catch (e) { throw apiError(`Could not reach ${STATIC ? 'the page files' : 'the Epoch Lab server'} (${e.message}).`, 'SERVER_UNREACHABLE'); }
   let body = null;
   try { body = await response.json(); } catch (_) { /* non-JSON */ }
   if (!response.ok) {
     const d = body && body.detail;
     let message = typeof d === 'string' ? d : (d && (d.message || d.code)) || `HTTP ${response.status}`;
     if (Array.isArray(d)) message = d.map((e) => e.msg).join('; ');
-    const err = new Error(message); err.status = response.status; err.code = d && d.code; throw err;
+    throw apiError(message, (d && d.code) || (response.status === 422 ? 'INVALID_INPUT' : `HTTP_${response.status}`), response.status);
   }
   return body;
 }
@@ -44,57 +60,121 @@ function showTip(evt, html) { tip.innerHTML = html; tip.hidden = false; moveTip(
 function moveTip(evt) { const pad = 14; let x = evt.clientX + pad, y = evt.clientY + pad; const r = tip.getBoundingClientRect(); if (x + r.width > innerWidth - 8) x = evt.clientX - r.width - pad; if (y + r.height > innerHeight - 8) y = evt.clientY - r.height - pad; tip.style.left = x + 'px'; tip.style.top = y + 'px'; }
 function hideTip() { tip.hidden = true; }
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const human = (s) => { const t = String(s || '').replaceAll('_', ' ').toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1); };
+const count = (n) => (typeof n === 'number' ? n.toLocaleString('en-US') : n);
+const microns = (s) => String(s || '').replace(/(\d) um\b/g, '$1 µm');
+
+/* ------------------------------------------------------------------ shared parts */
+function tabset(defs) {
+  const bar = el('div', { class: 'tabbar', role: 'tablist' }), body = el('div', {});
+  const show = (id) => { for (const d of defs) { d.button.setAttribute('aria-selected', String(d.id === id)); d.node.hidden = d.id !== id; } };
+  for (const d of defs) {
+    d.button = el('button', { role: 'tab', type: 'button', onclick: () => show(d.id) }, d.label, d.count === undefined ? null : el('span', { class: 'count' + (d.flag ? ' flag' : '') }, count(d.count)));
+    bar.append(d.button); body.append(d.node);
+  }
+  show(defs[0].id);
+  return { bar, body, show };
+}
+function tableOf(heads, numeric, rows, bodyAttrs = {}) {
+  return el('div', { class: 'table-wrap' }, el('table', {}, el('thead', {}, el('tr', {}, heads.map((h, i) => el('th', { class: numeric.includes(i) ? 'num' : null }, h)))), el('tbody', bodyAttrs, rows)));
+}
+function backBar(back) { return el('button', { class: 'back', type: 'button', onclick: back.go }, '← ' + back.label); }
+function clearHost(host) { if (host.viewer) clearInterval(host.viewer.timer); host.viewer = null; host.token = null; host.replaceChildren(); }
+/* Plain-language meaning of each error code; the server's own message is shown underneath. */
+const ERROR_HELP = {
+  ARCHIVE_UNAVAILABLE: 'NASA’s IRSA archive is not answering right now. The outage is on their side and usually clears within hours.',
+  ARCHIVE_TIMEOUT: 'A NASA/IRSA request took too long and was stopped after a limited number of retries.',
+  CALIBRATION_ARCHIVE_UNAVAILABLE: 'IRSA could not supply the wavelength calibration for an observation, so it cannot be compared safely.',
+  GAIA_CATALOG_UNAVAILABLE: 'The ESA Gaia archive, used to check the comparison against catalog stars, is not answering.',
+  QUEUE_FULL: 'Several analyses are already running. Wait for one to finish, then try again.',
+  WORKER_RESTARTED: 'The server restarted before this analysis finished. Run it again.',
+  ANALYSIS_REJECTED: 'The analysis stopped because the data did not meet one of its requirements.',
+  INVALID_INPUT: 'The request was not valid.',
+  SERVER_UNREACHABLE: 'The Epoch Lab server is not responding. Check that it is still running in its terminal window.',
+  STATIC_DEMO: 'This public copy shows recorded runs only.',
+};
+const OUTAGES = new Set(['ARCHIVE_UNAVAILABLE', 'ARCHIVE_TIMEOUT', 'CALIBRATION_ARCHIVE_UNAVAILABLE', 'GAIA_CATALOG_UNAVAILABLE']);
+function errorNotice(message, code) {
+  const help = ERROR_HELP[code] || 'The analysis could not be completed.';
+  const outage = OUTAGES.has(code);
+  return el('div', { class: 'notice error' },
+    el('p', {}, el('b', {}, help), outage ? ' Nothing was substituted for the missing data. Recorded runs work without the network.' : ''),
+    message && message !== help ? el('p', { class: 'detail' }, message) : null,
+    el('div', { class: 'notice-foot' }, el('code', {}, code || ''),
+      state.retry ? el('button', { class: 'btn small', type: 'button', onclick: () => state.retry() }, 'Try again') : null,
+      outage ? el('a', { class: 'btn small', href: '#runs' }, 'Open a recorded run') : null,
+      el('button', { class: 'btn ghost small', type: 'button', onclick: () => { $('job-panel').hidden = true; } }, 'Dismiss')));
+}
 
 /* ------------------------------------------------------------------ navigation */
-function showView(name) {
+const VIEWS = ['explore', 'runs', 'method'];
+function activate(name) {
   for (const b of document.querySelectorAll('.tabs [data-view]')) b.setAttribute('aria-selected', String(b.dataset.view === name));
-  for (const v of ['explore', 'runs', 'method']) $('view-' + v).hidden = v !== name;
-  if (name === 'runs') loadRuns();
+  for (const v of VIEWS) $('view-' + v).hidden = v !== name;
   if (name === 'method') renderMethod();
-  history.replaceState(null, '', '#' + name);
 }
-document.querySelectorAll('.tabs [data-view]').forEach((b) => b.addEventListener('click', () => showView(b.dataset.view)));
-document.addEventListener('click', (e) => { const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); showView(g.dataset.goto); } });
+function route() {
+  const [view, arg] = (location.hash || '#explore').slice(1).split('/');
+  const name = VIEWS.includes(view) ? view : 'explore';
+  activate(name);
+  if (name === 'runs') showRuns(arg); else window.scrollTo({ top: 0 });
+}
+function go(hash) { if (location.hash === '#' + hash) route(); else location.hash = hash; }
+document.querySelectorAll('.tabs [data-view]').forEach((b) => b.addEventListener('click', () => go(b.dataset.view)));
+document.addEventListener('click', (e) => { const g = e.target.closest('[data-goto]'); if (g) { e.preventDefault(); go(g.dataset.goto); } });
 
 /* ------------------------------------------------------------------ field selection */
-const state = { field: null, screening: null, selected: new Set(), targets: [] };
+const state = { field: null, screening: null, selected: new Set(), targets: [], stage: 'start', retry: null, resolving: false };
+const HINT = 'Pick a preset, type a name such as Vega, or enter coordinates in degrees such as 269.452 4.693.';
+const PRESET_NOTE = 'preset, proper motion applied';
+const COORDS = /^\s*([+-]?\d+(?:\.\d+)?)\s*°?\s*[,\s]\s*([+-]?\d+(?:\.\d+)?)\s*°?\s*$/;
+let targetsReady = Promise.resolve();
+const targetName = (id) => (state.targets.find((t) => t.id === id) || {}).name || id;
 
+function fieldStatus(text, tone) { const p = $('field-label'); p.className = 'field-status' + (tone ? ' ' + tone : ''); p.textContent = text; }
+function syncFinder(busy = !!activeJob) { $('screen').disabled = busy || !(state.field || $('query').value.trim()); }
 function setField(field) {
   state.field = field;
-  $('field-label').textContent = field ? `${field.label} · RA ${field.ra.toFixed(5)}°, Dec ${field.dec.toFixed(5)}°` : 'No field selected.';
-  $('screen').disabled = !field;
+  for (const c of document.querySelectorAll('#presets .chip')) c.setAttribute('aria-pressed', String(!!field && c.dataset.id === field.target_id));
+  if (!field) fieldStatus(HINT);
+  else { fieldStatus('', 'set'); $('field-label').append(el('b', {}, field.label), ` · RA ${field.ra.toFixed(5)}°, Dec ${field.dec.toFixed(5)}°${field.note ? ' · ' + field.note : ''}`); }
+  syncFinder();
 }
 async function loadTargets() {
   try {
     state.targets = await api('/api/lab/targets');
-    for (const t of state.targets) $('preset').append(el('option', { value: t.id }, t.name));
-  } catch (e) { $('field-label').textContent = 'Could not load presets: ' + e.message; }
+    $('presets').replaceChildren(...state.targets.map((t) => el('button', { class: 'chip', type: 'button', 'data-id': t.id, 'aria-pressed': 'false', onclick: () => pickPreset(t) }, t.name)));
+  } catch (e) { fieldStatus('Could not load presets: ' + e.message, 'error'); }
 }
-$('preset').addEventListener('change', () => {
-  const t = state.targets.find((x) => x.id === $('preset').value);
-  if (!t) return setField(null);
-  $('ra').value = ''; $('dec').value = ''; $('name').value = '';
-  setField({ target_id: t.id, ra: t.ra_deg, dec: t.dec_deg, label: `${t.name} (preset, proper motion applied)` });
+function pickPreset(t) {
+  $('query').value = t.name;
+  setField({ target_id: t.id, ra: t.ra_deg, dec: t.dec_deg, label: t.name, note: PRESET_NOTE });
+  $('screen').focus();
+}
+function parseCoords(text) {
+  const m = COORDS.exec(text.replace(/[−–]/g, '-')); if (!m) return null;
+  const ra = parseFloat(m[1]), dec = parseFloat(m[2]);
+  return { ra, dec, valid: ra >= 0 && ra < 360 && dec >= -90 && dec <= 90 };
+}
+$('query').addEventListener('input', () => {
+  const text = $('query').value.trim(); const c = parseCoords(text);
+  if (c && c.valid) return setField({ ra: c.ra, dec: c.dec, label: 'Fixed coordinates' });
+  setField(null);
+  if (c) fieldStatus('RA must be between 0 and 360°, Dec between −90 and 90°.', 'error');
+  else if (text) fieldStatus(`Press Enter to look up “${text}”.`);
 });
-function coordsChanged() {
-  const ra = parseFloat($('ra').value), dec = parseFloat($('dec').value);
-  $('preset').value = '';
-  if (Number.isFinite(ra) && Number.isFinite(dec) && ra >= 0 && ra < 360 && dec >= -90 && dec <= 90) setField({ ra, dec, label: 'Fixed coordinates' });
-  else setField(null);
-}
-$('ra').addEventListener('input', coordsChanged); $('dec').addEventListener('input', coordsChanged);
-async function resolveName() {
-  const name = $('name').value.trim(); if (!name) return;
-  $('resolve').disabled = true; $('field-label').textContent = `Resolving “${name}”…`;
+async function resolveQuery() {
+  if (state.field) return true;
+  const name = $('query').value.trim(); if (!name || parseCoords(name)) return false;
+  fieldStatus(`Looking up “${name}”…`);
   try {
     const r = await api('/api/lab/resolve?name=' + encodeURIComponent(name));
-    if (r.target_id) { $('preset').value = r.target_id; $('preset').dispatchEvent(new Event('change')); }
-    else { $('preset').value = ''; $('ra').value = r.ra_deg.toFixed(6); $('dec').value = r.dec_deg.toFixed(6); setField({ ra: r.ra_deg, dec: r.dec_deg, label: `${r.name} (${r.source})` }); }
-  } catch (e) { $('field-label').textContent = e.message; } finally { $('resolve').disabled = false; }
+    setField(r.target_id ? { target_id: r.target_id, ra: r.ra_deg, dec: r.dec_deg, label: r.name, note: PRESET_NOTE } : { ra: r.ra_deg, dec: r.dec_deg, label: r.name, note: r.source });
+    return true;
+  } catch (e) { fieldStatus(e.message, 'error'); return false; }
 }
-$('resolve').addEventListener('click', resolveName);
-$('name').addEventListener('keydown', (e) => { if (e.key === 'Enter') resolveName(); });
-function fieldBody() { const f = state.field; return f.target_id ? { target_id: f.target_id } : { ra: f.ra, dec: f.dec }; }
+$('query').addEventListener('keydown', (e) => { if (e.key === 'Enter') findEpochs(); });
+function fieldBody(f = state.field) { return f.target_id ? { target_id: f.target_id } : { ra: f.ra, dec: f.dec }; }
 
 /* ------------------------------------------------------------------ jobs */
 const STAGES = {
@@ -102,136 +182,179 @@ const STAGES = {
   compare: [['archive_discovery', 'Query archive records'], ['catalog', 'Gaia DR3 field catalog'], ['download', 'Retrieve real FITS cutouts'], ['calibration', 'Own-calibration wavelength maps'], ['comparison', 'Background, PSF match, register, difference, validate'], ['products', 'Write FITS / PNG / report'], ['completed', 'Done']],
   series: [['archive_discovery', 'Query archive records'], ['catalog', 'Gaia DR3 field catalog'], ['download', 'Retrieve real FITS cutouts'], ['calibration', 'Own-calibration wavelength maps'], ['observer_ephemeris', 'JPL Horizons SPHEREx position'], ['measurement', 'ePSF photometry + astrometry'], ['completed', 'Done']],
 };
+const JOB_TITLE = { screen: 'Screening the archive', compare: 'Comparing two epochs', series: 'Building the time series' };
+const JOB_BADGE = { COMPLETED: ['good', 'Completed'], PARTIAL: ['warning', 'Partial result'], FAILED: ['critical', 'Failed'], INTERRUPTED: ['critical', 'Interrupted'], RUNNING: ['neutral', 'Running'], QUEUED: ['neutral', 'Queued'] };
 let activeJob = null;
 function renderProgress(kind, job) {
-  $('job-panel').hidden = false;
-  $('job-title').textContent = { screen: 'Screening archive', compare: 'Comparing two epochs', series: 'Building time series' }[kind];
-  const stage = job.progress && job.progress.stage;
-  const steps = STAGES[kind]; let reached = steps.findIndex((s) => s[0] === stage);
-  if (job.status === 'COMPLETED') reached = steps.length;
-  const list = $('job-steps'); list.replaceChildren();
-  steps.forEach(([key, text], i) => {
-    const cls = i < reached ? 'done' : (i === reached && job.status !== 'FAILED' ? 'active' : '');
-    let label = text;
-    if (i === reached && job.progress && job.progress.observation_id) label += ` · ${short(job.progress.observation_id)}`;
-    list.append(el('li', { class: cls }, label));
-  });
-  const badge = { COMPLETED: ['good', 'Completed'], FAILED: ['critical', 'Failed'], INTERRUPTED: ['critical', 'Interrupted'], RUNNING: ['neutral', 'Running'], QUEUED: ['neutral', 'Queued'] }[job.status] || ['neutral', job.status];
+  const steps = STAGES[kind]; const failed = ['FAILED', 'INTERRUPTED'].includes(job.status); const done = ['COMPLETED', 'PARTIAL'].includes(job.status);
+  let reached = steps.findIndex((s) => s[0] === (job.progress && job.progress.stage)); if (done) reached = steps.length;
+  const panel = $('job-panel'); panel.hidden = false; panel.className = 'job' + (failed ? ' failed' : done ? '' : ' running');
+  $('job-title').textContent = JOB_TITLE[kind];
+  const badge = JOB_BADGE[job.status] || ['neutral', job.status];
   $('job-badge').replaceChildren(el('span', { class: 'badge ' + badge[0] }, badge[1]));
-  $('job-error').replaceChildren(job.error ? el('div', { class: 'notice error' }, el('b', {}, job.error.code + ': '), job.error.message) : '');
+  $('job-fill').style.width = Math.round(100 * Math.max(reached, 0.25) / steps.length) + '%';
+  const step = steps[Math.min(Math.max(reached, 0), steps.length - 1)];
+  const obs = job.progress && job.progress.observation_id ? ` · ${short(job.progress.observation_id)}` : '';
+  $('job-now').textContent = done ? 'Finished.' : reached < 0 ? (failed ? 'Stopped before the first step.' : 'Waiting for the worker…')
+    : `${failed ? 'Stopped at step' : 'Step'} ${reached + 1} of ${steps.length} · ${step[1]}${obs}`;
+  $('job-steps').replaceChildren(...steps.map(([, text], i) => el('li', { class: i < reached ? 'done' : (i === reached && !failed ? 'active' : null) }, text)));
+  $('job-error').replaceChildren(...(job.error ? [errorNotice(job.error.message || String(job.error), job.error.code)] : []));
 }
 async function runJob(kind, body) {
-  if (activeJob) return;
-  setBusy(true);
+  if (activeJob) return null;
+  activeJob = 'submitting'; setBusy(true);
   try {
     const sub = await api('/api/lab/' + kind, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     activeJob = sub.id;
     renderProgress(kind, { status: 'QUEUED', progress: { stage: 'queued' } });
-    for (;;) {
+    let last = { status: 'QUEUED', progress: { stage: 'queued' } };
+    for (let misses = 0; ;) {
       await new Promise((r) => setTimeout(r, 1200));
       let job;
-      try { job = await api('/api/lab/jobs/' + sub.id); } catch (e) { continue; }
-      renderProgress(kind, job);
-      if (job.status === 'COMPLETED') return { job, base: `/api/lab/jobs/${sub.id}/files/` };
+      try { job = await api('/api/lab/jobs/' + sub.id); misses = 0; } catch (e) {
+        // Tolerate a few dropped polls; after ~15 s of silence report it instead of spinning forever.
+        if (++misses < 12) continue;
+        renderProgress(kind, { ...last, status: 'FAILED', error: { message: e.message, code: e.code } });
+        return null;
+      }
+      last = job; renderProgress(kind, job);
+      if (job.status === 'COMPLETED') { $('job-panel').hidden = true; return { job, base: `/api/lab/jobs/${sub.id}/files/` }; }
       if (['FAILED', 'INTERRUPTED'].includes(job.status)) return null;
     }
   } catch (e) {
-    $('job-panel').hidden = false; $('job-steps').replaceChildren();
-    $('job-error').replaceChildren(el('div', { class: 'notice error' }, e.message));
+    renderProgress(kind, { status: 'FAILED', progress: {}, error: { message: e.message, code: e.code } });
+    $('job-badge').replaceChildren(el('span', { class: 'badge critical' }, 'Not started'));
     return null;
   } finally { activeJob = null; setBusy(false); }
 }
-function setBusy(busy) { $('screen').disabled = busy || !state.field; updateSelection(busy); }
+function setBusy(busy) { document.body.classList.toggle('busy', busy); syncFinder(busy); updateSelection(busy); }
 
 /* ------------------------------------------------------------------ screening */
-$('screen').addEventListener('click', async () => {
-  const out = await runJob('screen', fieldBody());
-  if (out) { state.selected.clear(); renderScreening(out.job.result, $('screening'), true); }
-});
+function showStage(stage) {
+  state.stage = stage;
+  $('welcome').hidden = $('start').hidden = stage !== 'start';
+  $('screening').hidden = stage !== 'epochs';
+  $('result').hidden = stage !== 'result';
+  updateSelection();
+}
+async function findEpochs() {
+  if (activeJob || state.resolving) return;
+  state.resolving = true; syncFinder(true);
+  const ok = await resolveQuery();
+  state.resolving = false; syncFinder();
+  if (!ok) return;
+  state.retry = findEpochs;
+  const field = state.field;
+  const out = await runJob('screen', fieldBody(field));
+  if (!out) return;
+  state.screenedField = field;
+  state.selected.clear(); showStage('epochs');
+  renderScreening(out.job.result, $('screening'), true);
+  window.scrollTo({ top: 0 });
+}
+$('screen').addEventListener('click', findEpochs);
 
 function renderScreening(s, host, interactive) {
-  $('welcome').hidden = interactive ? true : $('welcome').hidden;
   host.hidden = false; host.replaceChildren();
-  state.screening = s;
+  if (interactive) state.screening = s;
   const screened = s.observations.filter((o) => o.status === 'SCREENED');
   const groups3 = s.matched_groups.filter((g) => g.epoch_count >= 3);
-  const panel = el('section', { class: 'panel' },
-    el('header', {}, el('div', {}, el('h2', {}, 'Archive coverage at this position'),
-      el('p', {}, `SPHEREx DR1 records whose footprint contains RA ${fmt(s.query.ra_deg, 5)}°, Dec ${fmt(s.query.dec_deg, 5)}° (search radius ${s.query.radius_deg}°). Wavelengths are screening estimates (footprint model, ≤6 px); every comparison re-checks them on the downloaded cutouts.`))),
-    el('div', { class: 'tiles' },
-      tile(s.observation_count, 'archive records', `${s.rejected_records.length} outside footprint`),
-      tile(s.screened_count, 'wavelength screened', 'detectors D1–D6'),
-      tile(s.matched_pairs.length, 'same-wavelength pairs', `|Δλ| ≤ ${s.policy.tolerance_fraction} × bandwidth`),
-      tile(groups3.length, 'groups with ≥3 epochs', 'light-curve candidates')));
-  const chartHost = el('div', { class: 'chart', style: 'margin-top:16px' });
-  panel.append(chartHost);
-  panel.append(el('div', { class: 'legend' }, el('span', {}, el('i', { style: 'background:var(--series-1)' }), 'Observation (wavelength sampled at the target)'),
-    el('span', {}, el('i', { style: 'background:var(--series-2)' }), 'Member of a same-wavelength pair'),
-    el('span', { class: 'muted' }, 'Bands D1–D6 are the six detectors; click points to select')));
-  host.append(panel);
-  coverageChart(chartHost, screened, s.matched_pairs, interactive);
-
-  const pairs = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Same-wavelength pairs'),
-    el('p', {}, 'Same detector, distinct dates, wavelength at the target agreeing within the tolerance. Ranked by the predicted fraction of the 0.3° field that is spectrally matched.'))));
-  if (!s.matched_pairs.length) pairs.append(el('div', { class: 'empty' }, 'No same-wavelength pair at this position in the searched records. Different-wavelength epochs are not compared.'));
-  else {
-    const rows = s.matched_pairs.slice(0, 60).map((p) => el('tr', {},
-      el('td', { class: 'mono' }, short(p.observation_a)), el('td', { class: 'mono' }, short(p.observation_b)), el('td', { class: 'num' }, 'D' + p.detector),
-      el('td', { class: 'num' }, fmt(p.wavelength_um, 4)), el('td', { class: 'num' }, fmt(p.delta_over_bandwidth, 3)), el('td', { class: 'num' }, fmt(p.separation_days, 1)),
-      el('td', { class: 'num' }, p.predicted_matched_fraction === undefined ? '—' : (100 * p.predicted_matched_fraction).toFixed(0) + '%'),
-      el('td', {}, interactive ? el('button', { class: 'btn small primary', onclick: () => startCompare(p.observation_a, p.observation_b) }, 'Compare') : '')));
-    pairs.append(el('div', { class: 'table-wrap' }, el('table', {}, el('thead', {}, el('tr', {}, ...['Epoch A', 'Epoch B', 'Det.', 'λ (µm)', '|Δλ|/band', 'Δt (days)', 'Matched area', ''].map((h, i) => el('th', { class: i >= 2 && i < 7 ? 'num' : '' }, h)))), el('tbody', {}, rows))));
+  const name = s.target_id ? targetName(s.target_id) : (interactive && state.screenedField ? state.screenedField.label : 'Fixed coordinates');
+  host.append(el('header', { class: 'page-head' }, el('p', { class: 'eyebrow' }, 'Archive coverage'), el('h2', {}, name),
+    el('p', { class: 'sub' }, `RA ${fmt(s.query.ra_deg, 5)}°, Dec ${fmt(s.query.dec_deg, 5)}° · search radius ${s.query.radius_deg}° · SPHEREx DR1`)),
+  el('div', { class: 'stats' },
+    stat(s.observation_count, 'archive records', `${s.rejected_records.length} outside the footprint`),
+    stat(s.screened_count, 'wavelength screened', 'detectors D1 to D6'),
+    stat(s.matched_pairs.length, 'same-wavelength pairs', `|Δλ| ≤ ${s.policy.tolerance_fraction} × bandwidth`),
+    stat(groups3.length, 'groups of 3 or more epochs', 'light-curve candidates')));
+  if (!s.observation_count) {
+    host.append(el('div', { class: 'notice info' }, el('p', {}, el('b', {}, 'SPHEREx DR1 has no observation covering this position. '),
+      `The archive search found no record whose footprint contains RA ${fmt(s.query.ra_deg, 4)}°, Dec ${fmt(s.query.dec_deg, 4)}°, so there is nothing to compare. `,
+      'This describes the archive’s current coverage, not the sky: try another position or open a recorded run.')));
+    return;
   }
-  host.append(pairs);
-
-  const gp = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Same-wavelength groups'),
-    el('p', {}, 'Several epochs on one detector at one wavelength: a light curve and an astrometric trajectory become possible with three or more.'))));
-  if (!s.matched_groups.length) gp.append(el('div', { class: 'empty' }, 'No multi-epoch group at a common wavelength.'));
-  else gp.append(el('div', { class: 'table-wrap' }, el('table', {}, el('thead', {}, el('tr', {}, ...['Detector', 'λ (µm)', 'Epochs', 'Dates', ''].map((h) => el('th', {}, h)))),
-    el('tbody', {}, s.matched_groups.slice(0, 40).map((g) => el('tr', {}, el('td', { class: 'num' }, 'D' + g.detector), el('td', { class: 'num' }, fmt(g.wavelength_um, 4)), el('td', { class: 'num' }, g.epoch_count),
-      el('td', { class: 'mono small' }, g.mjd.map(isoDay).join(', ')),
-      el('td', {}, interactive ? el('button', { class: 'btn small', onclick: () => startSeries(g.observation_ids.slice(0, 8)) }, 'Time series') : '')))))));
-  host.append(gp);
-
-  const obs = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'All observations'),
-    el('p', {}, interactive ? 'Tick observations to compare two of them or build a time series from several on one detector.' : 'Screened archive records.'))));
-  obs.append(el('div', { class: 'table-wrap' }, el('table', {}, el('thead', {}, el('tr', {}, ...['', 'Date', 'Observation', 'Det.', 'λ at target (µm)', 'Bandwidth (µm)', '± screening (µm)', 'Status'].map((h, i) => el('th', { class: i >= 3 && i <= 6 ? 'num' : '' }, h)))),
-    el('tbody', { id: interactive ? 'obs-body' : null }, s.observations.map((o) => {
-      const box = interactive && o.status === 'SCREENED' ? el('input', { type: 'checkbox', 'data-id': o.observation_id, 'aria-label': 'select ' + short(o.observation_id) }) : '';
-      if (box) box.addEventListener('change', () => toggleSelect(o.observation_id, box.checked));
-      return el('tr', { 'data-row': o.observation_id }, el('td', {}, box), el('td', { class: 'mono' }, o.mjd ? isoDay(o.mjd) : '—'), el('td', { class: 'mono' }, short(o.observation_id)),
-        el('td', { class: 'num' }, o.detector ? 'D' + o.detector : '—'), el('td', { class: 'num' }, fmt(o.wavelength_um, 4)), el('td', { class: 'num' }, fmt(o.bandwidth_um, 4)),
-        el('td', { class: 'num' }, fmt(o.wavelength_uncertainty_um, 4)), el('td', { class: 'small secondary' }, o.status === 'SCREENED' ? 'screened' : (o.reason || o.status)));
-    })))));
-  host.append(obs);
-  if (interactive) { $('selection-panel').hidden = false; updateSelection(); }
+  const chartHost = el('div', { class: 'chart' });
+  host.append(el('section', { class: 'panel' },
+    el('div', { class: 'panel-head' }, el('h3', {}, 'Wavelength sampled at the target, by date'),
+      el('div', { class: 'legend' }, el('span', {}, el('i', { style: 'background:var(--series-1)' }), 'Observation'), el('span', {}, el('i', { style: 'background:var(--series-2)' }), 'In a same-wavelength pair'))),
+    chartHost,
+    el('p', { class: 'footnote' }, `Bands D1 to D6 are the six detectors.${interactive ? ' Click points to select observations.' : ''} Wavelengths are screening estimates from the footprint model (≤${s.policy.footprint_error_px} px); every comparison re-checks them on the downloaded cutouts.`)));
+  coverageChart(chartHost, screened, s.matched_pairs, interactive);
+  const tabs = tabset([
+    { id: 'pairs', label: 'Pairs', count: s.matched_pairs.length, node: pairsPanel(s, interactive) },
+    { id: 'groups', label: 'Groups', count: s.matched_groups.length, node: groupsPanel(s, interactive) },
+    { id: 'all', label: 'All observations', count: s.observations.length, node: observationsPanel(s, interactive) },
+  ]);
+  host.append(tabs.bar, tabs.body);
+  if (interactive) updateSelection();
 }
-function tile(value, label, sub) { return el('div', { class: 'tile' }, el('div', { class: 'value' }, value), el('div', { class: 'label' }, label), sub ? el('div', { class: 'sub' }, sub) : ''); }
+function stat(value, label, sub) { return el('div', { class: 'stat' }, el('div', { class: 'value' }, count(value)), el('div', { class: 'label' }, label), sub ? el('div', { class: 'sub' }, sub) : null); }
+function pairsPanel(s, interactive) {
+  const shown = s.matched_pairs.slice(0, 60);
+  const panel = el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, 'Same detector, different dates, wavelength at the target within the tolerance. Ranked by the predicted share of the 0.3° field that matches.'));
+  if (!shown.length) { panel.append(el('div', { class: 'empty' }, 'No same-wavelength pair at this position in the searched records. Different-wavelength epochs are not compared.')); return panel; }
+  panel.append(tableOf(['Epoch A', 'Epoch B', 'Det.', 'λ (µm)', '|Δλ|/band', 'Δt (days)', 'Matched area', ''], [2, 3, 4, 5, 6], shown.map((p) => {
+    const pct = p.predicted_matched_fraction == null ? null : Math.round(100 * p.predicted_matched_fraction);
+    return el('tr', {}, el('td', { class: 'mono' }, short(p.observation_a)), el('td', { class: 'mono' }, short(p.observation_b)), el('td', { class: 'num' }, 'D' + p.detector),
+      el('td', { class: 'num' }, fmt(p.wavelength_um, 4)), el('td', { class: 'num' }, fmt(p.delta_over_bandwidth, 3)), el('td', { class: 'num' }, fmt(p.separation_days, 1)),
+      el('td', { class: 'num' }, pct === null ? '—' : el('span', { class: 'meter' }, el('i', {}, el('b', { style: `width:${pct}%` })), pct + '%')),
+      el('td', { class: 'num' }, interactive ? el('button', { class: 'btn small needs-idle', type: 'button', onclick: () => startCompare(p.observation_a, p.observation_b) }, 'Compare') : null));
+  })));
+  if (s.matched_pairs.length > shown.length) panel.append(el('p', { class: 'footnote' }, `Showing the ${shown.length} best of ${s.matched_pairs.length} pairs.`));
+  return panel;
+}
+function groupsPanel(s, interactive) {
+  const shown = s.matched_groups.slice(0, 40);
+  const panel = el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, 'Several epochs on one detector at one wavelength. Three or more make a light curve and an astrometric trajectory possible.'));
+  if (!shown.length) { panel.append(el('div', { class: 'empty' }, 'No multi-epoch group at a common wavelength.')); return panel; }
+  panel.append(tableOf(['Det.', 'λ (µm)', 'Epochs', 'Dates', ''], [0, 1, 2], shown.map((g) => el('tr', {},
+    el('td', { class: 'num' }, 'D' + g.detector), el('td', { class: 'num' }, fmt(g.wavelength_um, 4)), el('td', { class: 'num' }, g.epoch_count), el('td', { class: 'mono small' }, g.mjd.map(isoDay).join(', ')),
+    el('td', { class: 'num' }, interactive ? el('button', { class: 'btn small needs-idle', type: 'button', onclick: () => startSeries(g.observation_ids.slice(0, 8)) }, 'Time series') : null)))));
+  if (s.matched_groups.length > shown.length) panel.append(el('p', { class: 'footnote' }, `Showing ${shown.length} of ${s.matched_groups.length} groups.`));
+  return panel;
+}
+function observationsPanel(s, interactive) {
+  const rows = s.observations.map((o) => {
+    const box = interactive && o.status === 'SCREENED' ? el('input', { type: 'checkbox', 'data-id': o.observation_id, 'aria-label': 'Select ' + short(o.observation_id) }) : null;
+    if (box) box.addEventListener('change', () => toggleSelect(o.observation_id, box.checked));
+    return el('tr', { 'data-row': o.observation_id }, el('td', {}, box), el('td', { class: 'mono' }, o.mjd ? isoDay(o.mjd) : '—'), el('td', { class: 'mono' }, short(o.observation_id)),
+      el('td', { class: 'num' }, o.detector ? 'D' + o.detector : '—'), el('td', { class: 'num' }, fmt(o.wavelength_um, 4)), el('td', { class: 'num' }, fmt(o.bandwidth_um, 4)),
+      el('td', { class: 'num' }, fmt(o.wavelength_uncertainty_um, 4)), el('td', { class: 'small secondary' }, o.status === 'SCREENED' ? 'screened' : (o.reason || o.status)));
+  });
+  return el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, interactive ? 'Tick two observations on one detector to compare them, or up to eight for a time series.' : 'Every screened archive record.'),
+    tableOf(['', 'Date', 'Observation', 'Det.', 'λ at target (µm)', 'Bandwidth (µm)', '± screening (µm)', 'Status'], [3, 4, 5, 6], rows, { id: interactive ? 'obs-body' : null }));
+}
 
 function toggleSelect(id, on) {
   if (on) state.selected.add(id); else state.selected.delete(id);
-  const box = document.querySelector(`#obs-body input[data-id="${CSS.escape(id)}"]`); if (box) box.checked = on;
+  const box = document.querySelector(`#obs-body input[data-id="${CSS.escape(id)}"]`);
+  if (box) { box.checked = on; box.closest('tr').classList.toggle('selected', on); }
   document.querySelectorAll('.cov-point').forEach((c) => c.setAttribute('stroke', state.selected.has(c.dataset.id) ? '#ffffff' : 'none'));
   updateSelection();
 }
 function updateSelection(busy = !!activeJob) {
   const ids = [...state.selected]; const dets = new Set(ids.map((i) => i.slice(-1)));
-  $('selection-text').textContent = ids.length ? `${ids.length} selected${dets.size > 1 ? ' — mixed detectors (not comparable)' : ' on D' + [...dets][0]}` : 'Select observations in the table or chart.';
+  $('selection-panel').hidden = !ids.length || state.stage !== 'epochs';
+  $('selection-text').textContent = dets.size > 1 ? `${ids.length} selected on different detectors, which cannot be compared` : `${ids.length} selected on D${[...dets][0]}`;
   $('compare-selected').disabled = busy || ids.length !== 2 || dets.size !== 1;
   $('series-selected').disabled = busy || ids.length < 2 || ids.length > 8 || dets.size !== 1;
 }
 $('compare-selected').addEventListener('click', () => { const [a, b] = [...state.selected]; startCompare(a, b); });
 $('series-selected').addEventListener('click', () => startSeries([...state.selected]));
+$('clear-selected').addEventListener('click', () => { for (const id of [...state.selected]) toggleSelect(id, false); });
 
+const backToEpochs = { label: 'Back to epochs', go: () => { showStage('epochs'); window.scrollTo({ top: 0 }); } };
 async function startCompare(a, b) {
   const s = state.screening; const ord = (id) => (s.observations.find((o) => o.observation_id === id) || {}).mjd || 0;
   const [first, second] = ord(a) <= ord(b) ? [a, b] : [b, a];
-  const out = await runJob('compare', { ...fieldBody(), observation_a: first, observation_b: second });
-  if (out) renderComparison(out.job.result, out.base, $('result'));
+  state.retry = () => startCompare(a, b);
+  const out = await runJob('compare', { ...fieldBody(state.screenedField), observation_a: first, observation_b: second });
+  if (out) { showStage('result'); renderComparison(out.job.result, out.base, $('result'), backToEpochs, liveSource(out.job)); }
 }
 async function startSeries(ids) {
-  const out = await runJob('series', { ...fieldBody(), observation_ids: ids });
-  if (out) renderSeries(out.job.result, out.base, $('result'));
+  state.retry = () => startSeries(ids);
+  const out = await runJob('series', { ...fieldBody(state.screenedField), observation_ids: ids });
+  if (out) { showStage('result'); renderSeries(out.job.result, out.base, $('result'), backToEpochs, liveSource(out.job)); }
 }
 
 /* ------------------------------------------------------------------ chart helpers */
@@ -289,33 +412,51 @@ const CLASS_TEXT = {
 };
 const INTERESTING = new Set(['CANDIDATE_VARIABLE', 'UNCATALOGED_VARIABLE_CANDIDATE', 'TRANSIENT_CANDIDATE']);
 
-async function renderComparison(report, base, host) {
-  host.hidden = false; host.replaceChildren();
-  const r = report; const ea = r.epochs.a, eb = r.epochs.b;
-  const head = el('section', { class: 'panel' },
-    el('header', {}, el('div', {}, el('h2', {}, `${short(r.observation_a)}  →  ${short(r.observation_b)}`),
-      el('p', {}, `${ea.date.slice(0, 10)} → ${eb.date.slice(0, 10)} · ${fmt(r.separation_days, 1)} days · detector D${ea.detector} · matched λ ${r.spectral.wavelength_range_um ? fmt(r.spectral.wavelength_range_um[0], 4) + '–' + fmt(r.spectral.wavelength_range_um[1], 4) + ' µm' : 'none'}`)),
-      el('span', { class: 'badge ' + (STATUS_BADGE[r.status] || 'neutral') }, r.status)),
-    el('p', { class: 'secondary small', style: 'margin:0 0 12px' }, r.reason || ''),
-    el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap' }, Object.entries(r.gates || {}).map(([k, v]) => el('span', { class: 'badge ' + (STATUS_BADGE[v] || 'neutral'), title: k }, `${GATE_TEXT[k] || k}: ${v}`))));
-  host.append(head);
-  const viewerPanel = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Images'), el('p', {}, 'Background-subtracted, PSF-matched images on epoch A’s pixel grid. Pixels outside the spectrally matched region are dimmed: the two epochs sampled different wavelengths there.'))));
+async function renderComparison(report, base, host, back, source) {
+  clearHost(host); host.hidden = false;
+  const token = host.token = {};
+  const r = report; const ea = r.epochs.a, eb = r.epochs.b; const range = r.spectral.wavelength_range_um;
+  const cands = r.candidates || [], vs = r.variability_summary || {};
+  if (back) host.append(backBar(back));
+  host.append(el('header', { class: 'verdict' },
+    el('div', { class: 'verdict-top' }, el('span', { class: 'badge big ' + (STATUS_BADGE[r.status] || 'neutral') }, r.status), el('p', { class: 'verdict-reason' }, r.reason || ''), sourceChip(source)),
+    el('h2', {}, el('span', {}, short(r.observation_a)), el('span', { class: 'arrow' }, '→'), el('span', {}, short(r.observation_b))),
+    el('p', { class: 'sub' }, `${ea.date.slice(0, 10)} to ${eb.date.slice(0, 10)} · ${fmt(r.separation_days, 1)} days apart · detector D${ea.detector} · matched λ ${range ? fmt(range[0], 4) + '–' + fmt(range[1], 4) + ' µm' : 'none'}`),
+    el('div', { class: 'gates' }, Object.entries(r.gates || {}).map(([k, v]) => el('span', { class: 'gate ' + (STATUS_BADGE[v] || 'neutral') }, GATE_TEXT[k] || k, el('em', {}, v))))));
+  const target = targetStrip(r); if (target) host.append(target);
   const viewerHost = el('div', {}, el('div', { class: 'empty' }, 'Loading image data…'));
-  viewerPanel.append(viewerHost); host.append(viewerPanel);
-  host.append(validationPanel(r));
-  host.append(targetPanel(r));
-  const candHost = el('section', { class: 'panel' }); host.append(candHost);
-  host.append(variabilityPanel(r));
-  host.append(el('section', { class: 'panel' }, el('header', {}, el('h2', {}, 'Limitations')), el('ul', { class: 'plain' }, (r.limitations || []).map((l) => el('li', {}, l)))));
-  host.append(downloadsPanel(base, [['comparison.fits', 'FITS products'], ['report.json', 'Full report (JSON)'], ['candidates.csv', 'Residual table (CSV)'], ['comparison.png', 'Summary figure (PNG)']], r));
+  const residuals = el('div', { class: 'tabpanel' });
+  const tabs = tabset([
+    { id: 'images', label: 'Images', node: el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, 'Background-subtracted, PSF-matched images on epoch A’s pixel grid. Dimmed pixels sampled different wavelengths in the two epochs and are not compared.'), viewerHost) },
+    { id: 'validation', label: 'Validation', node: validationPanel(r) },
+    { id: 'residuals', label: 'Residuals', count: cands.length, flag: cands.some((c) => INTERESTING.has(c.classification)), node: residuals },
+    { id: 'stars', label: 'Star fluxes', count: vs.beyond_threshold || 0, flag: (vs.passed_vetting || 0) > 0, node: variabilityPanel(r) },
+    { id: 'details', label: 'Provenance and files', node: el('div', { class: 'tabpanel' }, provenancePanel(r, source),
+      el('h3', {}, 'Limitations'), el('ul', { class: 'plain' }, (r.limitations || []).map((l) => el('li', {}, l))),
+      downloadsPanel(base, [['comparison.fits', 'FITS products'], ['report.json', 'Full report (JSON)'], ['candidates.csv', 'Residual table (CSV)'], ['comparison.png', 'Summary figure (PNG)']])) },
+  ]);
+  host.append(tabs.bar, tabs.body);
+  host.scrollIntoView({ block: 'start' });
   let viewer = null;
   try {
     const data = await api(base + 'viewer.json');
+    if (host.token !== token) return;
     viewerHost.replaceChildren();
-    viewer = new ImageViewer(viewerHost, data, r);
-  } catch (e) { viewerHost.replaceChildren(el('div', { class: 'notice error' }, 'Image data unavailable: ' + e.message)); }
-  candidatesPanel(candHost, r, viewer);
-  host.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    viewer = host.viewer = new ImageViewer(viewerHost, data, r);
+  } catch (e) {
+    if (host.token !== token) return;
+    viewerHost.replaceChildren(el('div', { class: 'notice error' }, 'Image data unavailable: ' + e.message));
+  }
+  candidatesPanel(residuals, r, viewer && ((c) => { tabs.show('images'); viewer.focus(c.x, c.y); }));
+}
+
+function targetStrip(r) {
+  const t = r.target; if (!t) return null;
+  if (t.status !== 'MEASURED') return el('div', { class: 'notice' }, el('b', {}, human(t.status) + '. '), t.reason || '');
+  return el('div', { class: 'target' }, el('h4', {}, 'Target'), el('dl', { class: 'facts' },
+    el('div', {}, el('dt', {}, 'Flux change (B/A − 1)'), el('dd', {}, `${fmt(t.fractional_change, 4)} ± ${fmt(t.fractional_change_sigma, 4)}`)),
+    el('div', {}, el('dt', {}, 'Significance'), el('dd', {}, `${fmt(t.change_z, 2)} σ`)),
+    el('div', {}, el('dt', {}, 'S/N in A'), el('dd', {}, fmt(t.snr_a, 1)))));
 }
 
 function check(title, status, metric, text) {
@@ -331,52 +472,74 @@ function validationPanel(r) {
     check('Source noise model', g.source_noise_model, sf.alpha_fractional !== undefined && sf.alpha_fractional !== null ? `α ${(100 * sf.alpha_fractional).toFixed(1)}% · β ${fmt(sf.beta_aperture_mjy_sr_px, 3)}` : '—', `${sf.stars} calibration sources; calibrated z-scatter ${fmt(sf.calibration_check && sf.calibration_check.all && sf.calibration_check.all.robust_std_z, 2)} (1 = calibrated). α multiplicative, β additive (MJy/sr·px).`),
     check('Injection recovery', null, inj.completeness !== undefined && inj.completeness !== null ? `${inj.recovered}/${inj.injected} = ${(100 * inj.completeness).toFixed(0)}%` : '—', inj.status === 'COMPLETED' ? `Synthetic PSF sources at aperture S/N ${inj.aperture_snr} added to the real difference image; detection rerun with the ${r.policy.detection_sigma}σ production threshold.` : (inj.reason || '')));
   const bg = r.difference_background || {};
-  return el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Validation'), el('p', {}, 'Each gate is computed from this pair’s own data. UNVERIFIED means the data could not test it, not that it passed.'))), cards,
-    el('p', { class: 'small muted', style: 'margin:12px 0 0' }, `PSF: ${r.psf.method}; zones ${r.psf.zone_a}/${r.psf.zone_b}; interpolation smoothing ${r.psf.interpolation_smoothing_variance_px2 ? r.psf.interpolation_smoothing_variance_px2.map((v) => fmt(v, 3)).join('/') : '—'} px² matched on A. Difference pedestal ${bg.applied ? fmt(bg.median_mjy_sr, 4) + ' MJy/sr removed' : 'not fitted'}. Catalog: ${(r.catalog && r.catalog.mode) || 'none'}. Calibration sources: ${r.calibration_sources || '—'}.`));
+  return el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, 'Each gate is computed from this pair’s own data. UNVERIFIED means the data could not test it, not that it passed.'), cards,
+    el('p', { class: 'footnote' }, `PSF: ${r.psf.method}; zones ${r.psf.zone_a}/${r.psf.zone_b}; interpolation smoothing ${r.psf.interpolation_smoothing_variance_px2 ? r.psf.interpolation_smoothing_variance_px2.map((v) => fmt(v, 3)).join('/') : '—'} px² matched on A. Difference pedestal ${bg.applied ? fmt(bg.median_mjy_sr, 4) + ' MJy/sr removed' : 'not fitted'}. Catalog: ${(r.catalog && r.catalog.mode) || 'none'}. Calibration sources: ${r.calibration_sources || '—'}.`));
 }
-function targetPanel(r) {
-  const t = r.target; const p = el('section', { class: 'panel' }, el('header', {}, el('h2', {}, 'Target')));
-  if (!t) { p.append(el('p', { class: 'secondary' }, 'Fixed-coordinate field: no target measurement requested.')); return p; }
-  if (t.status === 'MEASURED') p.append(el('dl', { class: 'kv' }, el('dt', {}, 'Fractional flux change (B/A − 1)'), el('dd', {}, `${fmt(t.fractional_change, 4)} ± ${fmt(t.fractional_change_sigma, 4)}`), el('dt', {}, 'Significance'), el('dd', {}, `${fmt(t.change_z, 2)} σ`), el('dt', {}, 'S/N in A'), el('dd', {}, fmt(t.snr_a, 1))));
-  else p.append(el('div', { class: 'notice' }, el('b', {}, t.status.replaceAll('_', ' ') + ': '), t.reason || ''));
-  return p;
-}
-function candidatesPanel(host, r, viewer) {
-  const cands = r.candidates || [];
-  host.append(el('header', {}, el('div', {}, el('h2', {}, 'Residuals in the difference image'), el('p', {}, `Connected ≥${r.policy.detection_min_pixels}-pixel components at ≥${r.policy.detection_sigma}σ, classified against the propagated Gaia catalog and the calibrated noise model. Click a row to centre it.`))));
+function candidatesPanel(host, r, focus) {
+  const cands = r.candidates || []; const follow = cands.filter((c) => INTERESTING.has(c.classification));
+  host.append(el('p', { class: 'intro' }, `Connected groups of at least ${r.policy.detection_min_pixels} pixels at ≥${r.policy.detection_sigma}σ in the difference image, classified against the propagated Gaia catalog and the calibrated noise model.${focus ? ' Click a row to centre it in the image.' : ''}`));
   const summary = Object.entries(r.candidate_summary || {}).sort((a, b) => b[1] - a[1]);
-  host.append(el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px' }, summary.length ? summary.map(([k, n]) => el('span', { class: 'badge ' + (INTERESTING.has(k) ? 'warning' : 'neutral') }, `${CLASS_TEXT[k] || k}: ${n}`)) : el('span', { class: 'muted' }, 'No residual components above threshold.')));
-  if (!cands.length) return;
-  const filter = el('select', { style: 'width:auto;margin-bottom:10px' }, el('option', { value: 'interesting' }, 'Candidates needing follow-up'), el('option', { value: 'all' }, 'All residuals'));
-  const wrap = el('div', { class: 'table-wrap' });
-  const draw = () => {
-    const rows = cands.filter((c) => filter.value === 'all' || INTERESTING.has(c.classification));
-    wrap.replaceChildren(rows.length ? el('table', {}, el('thead', {}, el('tr', {}, ...['#', 'Classification', 'Peak σ', 'RA', 'Dec', 'Gaia G', 'ΔF/F', 'Reason'].map((h, i) => el('th', { class: [2, 3, 4, 5, 6].includes(i) ? 'num' : '' }, h)))),
-      el('tbody', {}, rows.map((c) => el('tr', { class: 'clickable', onclick: () => viewer && viewer.focus(c.x, c.y) },
-        el('td', { class: 'num' }, c.id), el('td', {}, CLASS_TEXT[c.classification] || c.classification), el('td', { class: 'num' }, fmt(c.peak_sigma, 1)),
-        el('td', { class: 'num' }, fmt(c.ra_deg, 5)), el('td', { class: 'num' }, fmt(c.dec_deg, 5)), el('td', { class: 'num' }, fmt(c.catalog_g_mag, 2)),
-        el('td', { class: 'num' }, c.fractional_change === undefined ? '—' : `${fmt(c.fractional_change, 3)} ± ${fmt(c.fractional_change_sigma, 3)}`), el('td', { class: 'small secondary' }, c.reason || '')))))
-      : el('div', { class: 'empty' }, 'No residual needs follow-up: every component is explained by known motion, PSF/registration dipoles, the calibrated systematic floor or a persistent unchanged source.'));
+  if (!cands.length) { host.append(el('div', { class: 'empty' }, 'No residual components above threshold.')); return; }
+  host.append(el('div', { class: 'badge-row' }, summary.map(([k, n]) => el('span', { class: 'badge ' + (INTERESTING.has(k) ? 'warning' : 'neutral') }, `${CLASS_TEXT[k] || k}: ${n}`))));
+  const seg = el('div', { class: 'seg', role: 'group', 'aria-label': 'Residual filter' }), wrap = el('div', {});
+  const draw = (mode) => {
+    [...seg.children].forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    const rows = mode === 'all' ? cands : follow;
+    wrap.replaceChildren(rows.length ? tableOf(['#', 'Classification', 'Peak σ', 'RA', 'Dec', 'Gaia G', 'ΔF/F', 'Reason'], [0, 2, 3, 4, 5, 6], rows.map((c) => el('tr', { class: focus ? 'clickable' : null, onclick: focus ? () => focus(c) : null },
+      el('td', { class: 'num' }, c.id), el('td', {}, CLASS_TEXT[c.classification] || c.classification), el('td', { class: 'num' }, fmt(c.peak_sigma, 1)),
+      el('td', { class: 'num' }, fmt(c.ra_deg, 5)), el('td', { class: 'num' }, fmt(c.dec_deg, 5)), el('td', { class: 'num' }, fmt(c.catalog_g_mag, 2)),
+      el('td', { class: 'num' }, c.fractional_change === undefined ? '—' : `${fmt(c.fractional_change, 3)} ± ${fmt(c.fractional_change_sigma, 3)}`), el('td', { class: 'small secondary' }, c.reason || ''))))
+      : el('div', { class: 'empty' }, 'No residual needs follow-up. Every component is explained by known motion, a PSF or registration dipole, the calibrated systematic floor, or a persistent unchanged source.'));
   };
-  filter.addEventListener('change', draw); draw();
-  host.append(filter, wrap);
+  seg.append(el('button', { type: 'button', 'data-mode': 'follow', onclick: () => draw('follow') }, `Needs follow-up · ${follow.length}`), el('button', { type: 'button', 'data-mode': 'all', onclick: () => draw('all') }, `All · ${cands.length}`));
+  host.append(seg, wrap); draw('follow');
 }
 function variabilityPanel(r) {
   const v = r.variability_candidates || []; const s = r.variability_summary || {};
-  const p = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Source-level flux comparison'),
-    el('p', {}, `${s.stars_tested || 0} Gaia stars measured in matched 5×5 apertures in both epochs; ${s.beyond_threshold || 0} exceed ${r.policy.detection_sigma}σ under the calibrated noise model; ${s.passed_vetting || 0} pass vetting (isolation from flagged pixels, distance from region edge, no catalog blend, PSF-shaped residual).`))));
+  const p = el('div', { class: 'tabpanel' }, el('p', { class: 'intro' }, `${s.stars_tested || 0} Gaia stars measured in matched 5×5 apertures in both epochs. ${s.beyond_threshold || 0} exceed ${r.policy.detection_sigma}σ under the calibrated noise model and ${s.passed_vetting || 0} pass vetting (clear of flagged pixels, away from the region edge, no catalog blend, PSF-shaped residual).`));
   if (!v.length) { p.append(el('div', { class: 'empty' }, 'No star changed beyond the calibrated noise model.')); return p; }
-  p.append(el('div', { class: 'table-wrap' }, el('table', {}, el('thead', {}, el('tr', {}, ...['Gaia DR3 source', 'G', 'ΔF/F', 'z', 'Verdict', 'Failed checks'].map((h, i) => el('th', { class: [1, 2, 3].includes(i) ? 'num' : '' }, h)))),
-    el('tbody', {}, v.map((c) => el('tr', {}, el('td', { class: 'mono' }, c.source_id), el('td', { class: 'num' }, fmt(c.g_mag, 2)), el('td', { class: 'num' }, `${fmt(c.fractional_change, 3)} ± ${fmt(c.fractional_change_sigma, 3)}`),
-      el('td', { class: 'num' }, fmt(c.change_z, 1)), el('td', {}, el('span', { class: 'badge ' + (c.classification === 'SOURCE_LEVEL_VARIABILITY_CANDIDATE' ? 'warning' : 'neutral') }, c.classification === 'SOURCE_LEVEL_VARIABILITY_CANDIDATE' ? 'Candidate' : 'Rejected')),
-      el('td', { class: 'small secondary' }, (c.vetting && c.vetting.failed.length) ? c.vetting.failed.join(', ').replaceAll('_', ' ') : '—')))))));
+  p.append(tableOf(['Gaia DR3 source', 'G', 'ΔF/F', 'z', 'Verdict', 'Failed checks'], [1, 2, 3], v.map((c) => {
+    const pass = c.classification === 'SOURCE_LEVEL_VARIABILITY_CANDIDATE';
+    return el('tr', {}, el('td', { class: 'mono' }, c.source_id), el('td', { class: 'num' }, fmt(c.g_mag, 2)), el('td', { class: 'num' }, `${fmt(c.fractional_change, 3)} ± ${fmt(c.fractional_change_sigma, 3)}`),
+      el('td', { class: 'num' }, fmt(c.change_z, 1)), el('td', {}, el('span', { class: 'badge ' + (pass ? 'warning' : 'neutral') }, pass ? 'Candidate' : 'Rejected')),
+      el('td', { class: 'small secondary' }, (c.vetting && c.vetting.failed.length) ? c.vetting.failed.join(', ').replaceAll('_', ' ') : '—'));
+  })));
   return p;
 }
-function downloadsPanel(base, files, report) {
-  const p = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Downloads & provenance'))));
-  p.append(el('div', { class: 'downloads' }, files.map(([f, label]) => el('a', { class: 'btn small', href: base + f, download: f }, label))));
-  if (report && report.software_sha256) p.append(el('p', { class: 'small muted', style: 'margin:12px 0 0' }, `Software SHA-256 ${report.software_sha256.slice(0, 16)}… · science files: ${Object.entries(report.science_files || {}).map(([k, v]) => short(k) + ' (' + (v.sha256 || '').slice(0, 10) + '…)').join(', ') || 'see report'}`));
-  return p;
+/* Where a result came from: a saved run made by make_demos.py, or a job this server just ran. */
+const recordedSource = (run) => ({ kind: 'recorded', label: 'Recorded run', detail: `generated ${(run.generated_utc || '').replace('T', ' ').slice(0, 16)} UTC by make_demos.py`, reproduce: run.reproduce });
+const liveSource = (job) => ({ kind: 'live', label: 'Live run', detail: `job ${String(job.id || '').slice(0, 8)}${job.finished_utc ? ` · finished ${job.finished_utc.replace('T', ' ').slice(0, 16)} UTC` : ''}` });
+function sourceChip(source) { return source ? el('span', { class: 'source ' + source.kind, title: source.detail }, source.label) : null; }
+const hash = (v) => (v ? el('span', { class: 'mono', title: v }, v.slice(0, 12) + '…') : '—');
+const fileName = (url) => (url ? String(url).split('?')[0].split('/').pop() : '—');
+
+function provenancePanel(report, source) {
+  const r = report; const cat = r.catalog || {};
+  const epochs = r.epochs ? (Array.isArray(r.epochs) ? r.epochs : [r.epochs.a, r.epochs.b]) : [];
+  const files = r.science_files || {};
+  const rows = epochs.map((e) => {
+    const cal = e.calibration || {};
+    return el('tr', {}, el('td', { class: 'mono' }, String(e.date || '').slice(0, 10)), el('td', { class: 'mono' }, short(e.observation_id)), el('td', { class: 'num' }, 'D' + e.detector),
+      el('td', { class: 'mono small' }, fileName(cal.calibration_url || e.calibration_url)), el('td', {}, hash(cal.calibration_sha256)), el('td', {}, hash((files[e.observation_id] || {}).sha256)));
+  });
+  for (const u of r.unavailable_observations || []) {
+    rows.push(el('tr', {}, el('td', {}, '—'), el('td', { class: 'mono' }, short(u.observation_id)), el('td', { class: 'num' }, 'D' + String(u.observation_id).slice(-1)),
+      el('td', { class: 'small secondary', colspan: '3' }, `Not used: ${u.reason || u.status}`)));
+  }
+  const facts = [
+    ['Source', source ? `${source.label} · ${source.detail}` : 'Not recorded'],
+    source && source.reproduce ? ['Reproduce', el('code', {}, source.reproduce)] : null,
+    ['Processing code', r.software_sha256 ? el('span', { class: 'mono' }, `SHA-256 ${r.software_sha256.slice(0, 16)}…`) : '—'],
+    ['Star catalog', cat.mode ? `${cat.catalog || 'Gaia DR3'} · ${cat.mode === 'UNAVAILABLE' ? 'unavailable, so image-detected sources were used' : cat.mode}${cat.retrieved_utc ? ` · retrieved ${cat.retrieved_utc.slice(0, 10)}` : ''}` : 'none'],
+    r.cutout ? ['Cutout', `${fmt(r.cutout.size_deg, 2)}° centred on RA ${fmt(r.cutout.center_deg[0], 5)}°, Dec ${fmt(r.cutout.center_deg[1], 5)}°`] : null,
+  ].filter(Boolean);
+  return [el('h3', {}, 'Provenance'),
+    el('dl', { class: 'kv wide' }, facts.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, v)])),
+    el('div', { style: 'margin-top:14px' }, tableOf(['Date', 'Observation', 'Det.', 'Calibration (own, via DataLink)', 'Calibration SHA-256', 'Science file SHA-256'], [2], rows)),
+    el('p', { class: 'footnote' }, 'Each observation is calibrated with the wavelength map IRSA DataLink associates with it; no other epoch’s calibration is substituted. Direct equality of science and calibration UUIDs is not verified.')];
+}
+function downloadsPanel(base, files) {
+  return [el('h3', {}, 'Downloads'), el('div', { class: 'downloads' }, files.map(([f, label]) => el('a', { class: 'btn small', href: base + f, download: f }, label)))];
 }
 
 /* ------------------------------------------------------------------ image viewer */
@@ -430,8 +593,8 @@ class ImageViewer {
     this.seg = el('div', { class: 'seg', role: 'group', 'aria-label': 'View mode' }, modes.map(([m, label]) => el('button', { 'aria-pressed': String(m === this.mode), onclick: () => this.setMode(m) }, label)));
     this.slider = el('input', { type: 'range', min: 0, max: 100, value: 50, 'aria-label': 'Overlay opacity of epoch B', style: 'width:140px' });
     this.slider.addEventListener('input', () => { this.alpha = this.slider.value / 100; this.render(); });
-    this.sliderWrap = el('label', { class: 'small secondary', style: 'display:none;align-items:center;gap:6px' }, 'A', this.slider, 'B');
-    const marks = el('label', { class: 'small secondary', style: 'display:flex;align-items:center;gap:6px;margin-left:auto' }, el('input', { type: 'checkbox', checked: true, onchange: (e) => { this.showMarks = e.target.checked; this.render(); } }), 'Residual markers');
+    this.sliderWrap = el('label', { style: 'display:none' }, 'A', this.slider, 'B');
+    const marks = el('label', { class: 'push' }, el('input', { type: 'checkbox', checked: true, onchange: (e) => { this.showMarks = e.target.checked; this.render(); } }), 'Residual markers');
     const reset = el('button', { class: 'btn small', onclick: () => { this.zoom = 1; this.cx = this.w / 2; this.cy = this.h / 2; this.render(); } }, 'Reset view');
     this.stage = el('div', { class: 'stage split' });
     this.canvas = el('canvas', {}); this.stage.append(this.canvas);
@@ -513,36 +676,128 @@ class ImageViewer {
 }
 
 /* ------------------------------------------------------------------ series result */
-function renderSeries(r, base, host) {
-  host.hidden = false; host.replaceChildren();
+function renderSeries(r, base, host, back, source) {
+  clearHost(host); host.hidden = false;
   const ph = r.photometry, as = r.astrometry; const pts = ph.points || [];
   const phBadge = { CONSISTENT_WITH_CONSTANT: 'good', VARIABILITY_CANDIDATE: 'warning' }[ph.status] || 'neutral';
   const asBadge = { MOTION_MEASURED: 'good', NO_SIGNIFICANT_MOTION: 'neutral' }[as.status] || 'neutral';
-  host.append(el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, `Time series · ${r.epoch_count} epochs on D${r.detector}`),
-    el('p', {}, 'Same-wavelength photometry and astrometry of the target from measured-ePSF fits on native pixels. Photometry and motion are analysed separately.')),
-    el('div', { style: 'display:flex;gap:8px' }, el('span', { class: 'badge ' + phBadge }, 'Light curve: ' + ph.status.replaceAll('_', ' ')), el('span', { class: 'badge ' + asBadge }, 'Motion: ' + as.status.replaceAll('_', ' '))))));
-  const lc = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Same-wavelength light curve'), el('p', {}, ph.interpretation || ph.reason || ''))));
-  const used = pts.filter((p) => p.status === 'USED');
+  const wave = (pts.find((p) => Number.isFinite(p.wavelength_um)) || {}).wavelength_um;
+  if (back) host.append(backBar(back));
+  host.append(el('header', { class: 'verdict' },
+    el('div', { class: 'verdict-top' }, el('span', { class: 'badge big ' + phBadge }, 'Light curve: ' + human(ph.status)), el('span', { class: 'badge big ' + asBadge }, 'Motion: ' + human(as.status)), sourceChip(source)),
+    el('h2', {}, `Time series of ${r.epoch_count} epochs`),
+    el('p', { class: 'sub' }, `Detector D${r.detector}${wave ? ` · ${fmt(wave, 3)} µm` : ''} · measured-ePSF fits on native pixels · brightness and motion are analysed separately`)));
+  if (r.analysis_status === 'PARTIAL') {
+    host.append(el('div', { class: 'notice info' }, el('p', {}, el('b', {}, `Partial result: ${r.epoch_count} of ${r.requested_epoch_count} observations calibrated. `), 'Failed epochs are listed here and were not assigned a substitute calibration.'),
+      el('ul', { class: 'plain', style: 'margin-top:10px' }, (r.unavailable_observations || []).map((o) => el('li', {}, el('span', { class: 'mono' }, short(o.observation_id)), ` · ${o.stage}: ${o.reason}`)))));
+  }
+  const measured = (r.epochs || []).filter((e) => e.target && e.target.status === 'MEASURED').length;
+  if (!pts.length && !(as.positions || []).length) host.append(el('div', { class: 'notice' }, el('p', {}, el('b', {}, 'Nothing to plot for this target. '),
+    `The target was measured in ${measured} of ${(r.epochs || []).length} epochs, so there is no light curve or trajectory to draw. The reason for each epoch is listed in the light-curve section.`)));
+  host.append(seriesAssistant(r, base));
+
+  const lc = el('section', { class: 'panel' }, el('div', { class: 'panel-head' }, el('div', {}, el('h3', {}, 'Same-wavelength light curve'), el('p', {}, ph.interpretation || ph.reason || ''))));
   host.append(lc);
-  if (used.length) { const c = el('div', { class: 'chart' }); lc.append(c); lightCurve(c, pts, ph); }
-  lc.append(el('div', { class: 'table-wrap', style: 'margin-top:12px' }, el('table', {}, el('thead', {}, el('tr', {}, ...['Date', 'Observation', 'Status', 'λ (µm)', 'Flux (mJy)', 'σ (mJy)', 'Zero point', 'Note'].map((h, i) => el('th', { class: [3, 4, 5, 6].includes(i) ? 'num' : '' }, h)))),
-    el('tbody', {}, pts.map((p) => el('tr', {}, el('td', { class: 'mono' }, p.date.slice(0, 10)), el('td', { class: 'mono' }, short(p.observation_id)), el('td', {}, el('span', { class: 'badge ' + (p.status === 'USED' ? 'good' : 'neutral') }, p.status)),
-      el('td', { class: 'num' }, fmt(p.wavelength_um, 4)), el('td', { class: 'num' }, p.calibrated_flux_jy ? fmt(p.calibrated_flux_jy * 1e3, 3) : '—'), el('td', { class: 'num' }, p.flux_sigma_jy ? fmt(p.flux_sigma_jy * 1e3, 3) : '—'),
-      el('td', { class: 'num' }, fmt(p.zero_point, 4)), el('td', { class: 'small secondary' }, p.reason || '')))))));
-  if (ph.constant_flux_test) lc.append(el('p', { class: 'small muted', style: 'margin:10px 0 0' }, `Constant-flux test: χ² = ${fmt(ph.constant_flux_test.chi2_constant, 2)} for ${ph.constant_flux_test.dof} dof (p = ${fmt(ph.constant_flux_test.pvalue, 3)}); weighted mean ${fmt(ph.constant_flux_test.constant_flux * 1e3, 3)} mJy. Field-star floor ${fmt(ph.fractional_floor, 3)}.`));
-  const ap = el('section', { class: 'panel' }, el('header', {}, el('div', {}, el('h2', {}, 'Astrometric trajectory'), el('p', {}, as.reason || 'Target positions corrected by the per-epoch frame offset of image-detected field stars; error bars include the empirical field-star floor.'))));
+  if (pts.some((p) => p.status === 'USED')) { const c = el('div', { class: 'chart' }); lc.append(c); lightCurve(c, pts, ph); }
+  if (!pts.length) lc.append(el('div', { class: 'empty' }, 'No light curve to draw: no epoch has a usable measurement of the target.'), epochTable(r));
+  else lc.append(el('div', { style: 'margin-top:14px' }, tableOf(['Date', 'Observation', 'Status', 'λ (µm)', 'Flux (mJy)', 'σ (mJy)', 'Zero point', 'Note'], [3, 4, 5, 6], pts.map((p) => el('tr', {},
+    el('td', { class: 'mono' }, p.date.slice(0, 10)), el('td', { class: 'mono' }, short(p.observation_id)), el('td', {}, el('span', { class: 'badge ' + (p.status === 'USED' ? 'good' : 'neutral') }, human(p.status))),
+    el('td', { class: 'num' }, fmt(p.wavelength_um, 4)), el('td', { class: 'num' }, p.calibrated_flux_jy ? fmt(p.calibrated_flux_jy * 1e3, 3) : '—'), el('td', { class: 'num' }, p.flux_sigma_jy ? fmt(p.flux_sigma_jy * 1e3, 3) : '—'),
+    el('td', { class: 'num' }, fmt(p.zero_point, 4)), el('td', { class: 'small secondary' }, p.reason || ''))))));
+  const test = ph.constant_flux_test;
+  if (test) lc.append(el('p', { class: 'footnote' }, `Constant-flux test: χ² = ${fmt(test.chi2_constant, 2)} for ${test.dof} dof (p = ${fmt(test.pvalue, 3)}); weighted mean ${fmt(test.constant_flux * 1e3, 3)} mJy. Field-star floor ${fmt(ph.fractional_floor, 3)}.`));
+
+  const ap = el('section', { class: 'panel' }, el('div', { class: 'panel-head' }, el('div', {}, el('h3', {}, 'Astrometric trajectory'), el('p', {}, as.reason || 'Target positions corrected by the per-epoch frame offset of image-detected field stars. Error bars include the empirical field-star floor.'))));
   host.append(ap);
   if ((as.positions || []).length) { const c = el('div', { class: 'chart' }); ap.append(c); trajectory(c, as); }
+  else ap.append(el('div', { class: 'empty' }, 'No trajectory to draw: the target position was not measured in enough epochs.'));
   const sol = as.astrometric_solution;
-  if (sol && sol.status === 'SOLVED') ap.append(el('div', { class: 'check-grid', style: 'margin-top:12px' },
+  if (sol && sol.status === 'SOLVED') ap.append(el('div', { class: 'check-grid' },
     check('Proper motion (measured)', null, `${fmt(sol.pm_east_arcsec_per_year, 2)}, ${fmt(sol.pm_north_arcsec_per_year, 2)} ″/yr`, `± ${fmt(sol.pm_sigma_arcsec_per_year[0], 2)}, ${fmt(sol.pm_sigma_arcsec_per_year[1], 2)} (Birge ratio ${fmt(sol.birge_ratio_applied, 2)} applied); detected at ${fmt(sol.pm_significance, 1)}σ.`),
     check('Catalog proper motion', null, sol.catalog_pm_arcsec_per_year ? `${fmt(sol.catalog_pm_arcsec_per_year[0], 2)}, ${fmt(sol.catalog_pm_arcsec_per_year[1], 2)} ″/yr` : '—', `Difference ${fmt(sol.pm_difference_from_catalog_sigma, 2)}σ. SIMBAD values; a known-mover test, not a discovery.`),
     check('Parallax', null, `${fmt(sol.parallax_arcsec, 3)} ± ${fmt(sol.parallax_sigma_arcsec, 3)}″`, `Catalog ${fmt(sol.catalog_parallax_arcsec, 3)}″ (${fmt(sol.parallax_difference_from_catalog_sigma, 1)}σ apart). Observer: JPL Horizons SPHEREx vectors.`),
     check('Astrometric floor', null, `${fmt(as.astrometric_floor_arcsec, 3)}″`, `Epoch-to-epoch repeatability of ${as.field_stars} field stars beyond fit errors.`)));
-  host.append(el('section', { class: 'panel' }, el('header', {}, el('h2', {}, 'Limitations')), el('ul', { class: 'plain' }, (r.limitations || []).map((l) => el('li', {}, l)))));
-  host.append(downloadsPanel(base, [['series.json', 'Full report (JSON)'], ['light_curve.csv', 'Light curve (CSV)'], ['series.png', 'Summary figure (PNG)']], r));
-  host.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  host.append(el('section', { class: 'panel tabpanel' }, provenancePanel(r, source),
+    el('h3', {}, 'Limitations'), el('ul', { class: 'plain' }, (r.limitations || []).map((l) => el('li', {}, l))),
+    downloadsPanel(base, [['series.json', 'Full report (JSON)'], ['light_curve.csv', 'Light curve (CSV)'], ['series.png', 'Summary figure (PNG)']])));
+  host.scrollIntoView({ block: 'start' });
 }
+
+function epochTable(r) {
+  return tableOf(['Date', 'Observation', 'Target', 'Reason'], [], (r.epochs || []).map((e) => {
+    const t = e.target || {};
+    return el('tr', {}, el('td', { class: 'mono' }, (e.date || '').slice(0, 10)), el('td', { class: 'mono' }, short(e.observation_id)),
+      el('td', {}, el('span', { class: 'badge ' + (t.status === 'MEASURED' ? 'good' : 'neutral') }, human(t.status || 'unknown'))), el('td', { class: 'small secondary' }, t.reason || ''));
+  }));
+}
+
+function seriesAssistant(report, base) {
+  const input = el('input', { type: 'text', maxlength: '240', placeholder: 'Ask about flux, motion, uncertainty or excluded epochs', 'aria-label': 'Ask about this time series' });
+  const ask = el('button', { class: 'btn primary', type: 'button' }, 'Ask');
+  const response = el('div', { class: 'notice info answer', 'aria-live': 'polite', hidden: true });
+  const jobId = (base.match(/\/jobs\/([^/]+)\/files\//) || [])[1];
+  const submit = async (question = input.value) => {
+    response.hidden = false;
+    if (!question.trim()) { response.textContent = 'Type a question first.'; return; }
+    input.value = question;
+    ask.disabled = true; response.textContent = 'Asking the local model…';
+    try {
+      if (!jobId) throw new Error('This result has no live job record.');
+      const result = await api(`/api/lab/jobs/${jobId}/assistant`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      response.textContent = `${result.answer}\n\nSource: ${result.model} · ${result.source}`;
+    } catch (error) {
+      response.textContent = `Local LLM unavailable; report-based fallback: ${explainSeries(report, question)} (${error.message})`;
+    } finally { ask.disabled = false; }
+  };
+  const quick = el('div', { class: 'assistant-quick' },
+    ...['Summarize this run', 'Did the brightness change?', 'What was excluded?', 'What does the motion show?'].map((q) => el('button', { class: 'btn small', type: 'button', onclick: () => submit(q) }, q)));
+  const submitInput = () => submit(input.value);
+  ask.addEventListener('click', submitInput);
+  input.addEventListener('keydown', (event) => { if (event.key === 'Enter') submitInput(); });
+  return el('section', { class: 'panel ask' },
+    el('div', { class: 'panel-head' }, el('div', {}, el('h3', {}, 'Ask about this run'), el('p', {}, 'A small local model explains this run’s measured report. It cannot fill missing epochs or make new detections.'))),
+    el('div', { class: 'row' }, input, ask), quick, response);
+}
+
+function explainSeries(report, question) {
+  const q = String(question || '').toLowerCase();
+  const phot = report.photometry || {}, ast = report.astrometry || {};
+  const used = (phot.points || []).filter((p) => p.status === 'USED');
+  const excluded = (phot.points || []).filter((p) => p.status !== 'USED');
+  const missing = report.unavailable_observations || [];
+  const test = phot.constant_flux_test;
+  if (!q.trim()) return 'Type a question about the results first.';
+  if (/excluded|missing|fail|unavailable|skip/.test(q)) {
+    const rows = [...missing.map((x) => `${short(x.observation_id)} unavailable during ${x.stage}: ${x.reason}`),
+      ...excluded.map((x) => `${short(x.observation_id)} excluded: ${x.reason || x.status}`)];
+    return rows.length ? rows.join(' ') : 'No unavailable or excluded epochs were recorded in this report.';
+  }
+  if (/motion|moving|position|astrom/.test(q)) {
+    const fit = ast.astrometric_solution;
+    if (fit && fit.status === 'SOLVED') return `The measured motion is ${fmt(fit.pm_east_arcsec_per_year, 2)} east and ${fmt(fit.pm_north_arcsec_per_year, 2)} north arcsec/year. The fit significance is ${fmt(fit.pm_significance, 1)}σ. Catalog motion differs by ${fmt(fit.pm_difference_from_catalog_sigma, 2)}σ. This is a known-target consistency check, not a new-object discovery.`;
+    return `Astrometry status: ${ast.status || 'not available'}. ${ast.reason || 'The report has no solved motion fit.'}`;
+  }
+  if (/uncertain|error bar|precision|sigma|σ/.test(q)) {
+    const values = used.map((p) => `${short(p.observation_id)}: ${fmt(p.flux_sigma_jy * 1e3, 3)} mJy (total reported uncertainty)`);
+    if (values.length) return `Reported flux uncertainties for used epochs: ${values.join('; ')}. They include the statistical term and available zero-point/floor terms in the pipeline report.`;
+    return 'No used photometric points have uncertainty estimates in this report.';
+  }
+  if (/bright|flux|variab|constant|change/.test(q)) {
+    if (test) return `${phot.interpretation || phot.status}. ${used.length} epochs were used; weighted mean flux is ${fmt(test.constant_flux * 1e3, 3)} mJy. Constant-flux test: χ²=${fmt(test.chi2_constant, 2)} for ${test.dof} degrees of freedom, p=${fmt(test.pvalue, 3)}. This test applies only to the wavelength-matched, calibrated points.`;
+    return `Photometry status: ${phot.status || 'not available'}. ${phot.reason || `Only ${used.length} usable same-wavelength epochs are available; no constant-flux test was produced.`}`;
+  }
+  if (/summar|result|overall|what happened|explain/.test(q)) {
+    const coverage = `${report.epoch_count} of ${report.requested_epoch_count ?? report.epoch_count} requested epochs were calibrated`;
+    const variability = test ? ` The ${used.length} usable points are ${phot.status === 'CONSISTENT_WITH_CONSTANT' ? 'consistent with constant flux' : phot.status === 'VARIABILITY_CANDIDATE' ? 'flagged as a variability candidate' : phot.status}; p=${fmt(test.pvalue, 3)}.` : ` Photometry: ${phot.status || 'not available'}.`;
+    const motion = ast.astrometric_solution?.status === 'SOLVED' ? ` Motion fit: ${fmt(ast.astrometric_solution.pm_significance, 1)}σ.` : ` Astrometry: ${ast.status || 'not available'}.`;
+    return `${report.analysis_status === 'PARTIAL' ? 'Partial run: ' : ''}${coverage}.${variability}${motion} A variability candidate is not a discovery; review the limitations and unavailable-epoch list.`;
+  }
+  return 'I can answer from this report about the light curve/flux, astrometric motion, uncertainty, and excluded or unavailable epochs. Ask one of those directly; I do not query new data or infer missing measurements.';
+}
+
 function lightCurve(host, pts, ph) {
   const used = pts.filter((p) => p.status === 'USED'); const W = chartWidth(host, 900), H = 280, m = { l: 70, r: 20, t: 14, b: 40 };
   const xs = pts.map((p) => p.mjd); const x0 = Math.min(...xs) - 15, x1 = Math.max(...xs) + 15;
@@ -598,44 +853,76 @@ function trajectory(host, as) {
 }
 
 /* ------------------------------------------------------------------ recorded runs */
-let runsLoaded = false;
-async function loadRuns() {
-  if (runsLoaded) return; const host = $('runs');
-  try {
-    const runs = await api('/api/lab/demos'); runsLoaded = true; host.replaceChildren();
-    if (!runs.length) { host.append(el('div', { class: 'empty' }, 'No recorded runs yet. Generate them with: python make_demos.py')); return; }
-    for (const run of runs) {
-      const ok = run.status === 'COMPLETED'; const s = run.summary || {};
-      const facts = run.kind === 'compare' && ok ? [['Status', s.status], ['Matched pixels', s.matched_pixels], ['Δt (days)', fmt(s.separation_days, 1)], ['Target', (s.target_status || '').replaceAll('_', ' ')]]
-        : run.kind === 'series' && ok ? [['Light curve', s.photometry_status], ['Motion', s.astrometry_status], ['PM (″/yr)', s.proper_motion_arcsec_per_year ? s.proper_motion_arcsec_per_year.map((v) => fmt(v, 2)).join(', ') : '—'], ['Catalog PM', s.catalog_proper_motion ? s.catalog_proper_motion.map((v) => fmt(v, 2)).join(', ') : '—']]
-        : run.kind === 'screen' && ok ? Object.entries(s).map(([t, v]) => [t, `${v.matched_pairs} pairs · ${v.groups_3plus} groups`]) : [['Error', run.error || '—']];
-      host.append(el('article', { class: 'card' },
-        el('div', { style: 'display:flex;justify-content:space-between;gap:8px;align-items:start' }, el('h3', {}, run.title), el('span', { class: 'badge ' + (ok ? 'good' : 'critical') }, ok ? run.kind : 'failed')),
-        el('p', {}, run.why), el('dl', { class: 'kv' }, facts.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, v === undefined ? '—' : v)])),
-        el('p', { class: 'small muted' }, `Generated ${run.generated_utc} · ${run.elapsed_seconds}s · ${run.catalog_mode || ''}`),
-        ok ? el('button', { class: 'btn primary', onclick: () => openRun(run) }, 'Open') : ''));
-    }
-  } catch (e) { host.replaceChildren(el('div', { class: 'notice error' }, 'Could not load recorded runs: ' + e.message)); }
+const KIND = { compare: 'Comparison', series: 'Time series', screen: 'Screening' };
+const perYear = (v) => (v ? v.map((x) => fmt(x, 2)).join(', ') + ' ″/yr' : '—');
+let runsRequest = null;
+function fetchRuns() { if (!runsRequest) runsRequest = api('/api/lab/demos').catch((e) => { runsRequest = null; throw e; }); return runsRequest; }
+function runCard(run) {
+  const ok = run.status === 'COMPLETED'; const s = run.summary || {};
+  let badge = ['critical', 'Failed'], facts = [['Error', run.error]];
+  if (ok && run.kind === 'compare') {
+    badge = [STATUS_BADGE[s.status] || 'neutral', s.status];
+    facts = [['Matched pixels', count(s.matched_pixels)], ['Baseline', fmt(s.separation_days, 0) + ' days'], ['Matched λ', s.wavelength_range_um ? `${fmt(s.wavelength_range_um[0], 2)}–${fmt(s.wavelength_range_um[1], 2)} µm` : '—'], ['Target', human(s.target_status)]];
+  } else if (ok && run.kind === 'series') {
+    badge = ['neutral', `${(run.observations || []).length} epochs`];
+    facts = [['Light curve', human(s.photometry_status)], ['Motion', human(s.astrometry_status)], ['Measured motion', perYear(s.proper_motion_arcsec_per_year)], ['Catalog motion', perYear(s.catalog_proper_motion)]];
+  } else if (ok && run.kind === 'screen') {
+    badge = ['neutral', `${Object.keys(s).length} targets`];
+    facts = Object.entries(s).map(([t, v]) => [targetName(t), `${v.matched_pairs} pairs · ${v.groups_3plus} groups`]);
+  } else if (ok) { badge = ['good', 'Completed']; facts = []; }
+  const catalog = run.catalog_mode === 'UNAVAILABLE' ? 'Gaia catalog unavailable' : run.catalog_mode;
+  return el(ok ? 'a' : 'article', { class: 'card', href: ok ? '#runs/' + run.name : null },
+    el('div', { class: 'card-top' }, el('p', { class: 'eyebrow' }, KIND[run.kind] || 'Run'), el('span', { class: 'badge ' + badge[0] }, badge[1])),
+    el('h3', {}, microns(run.title || run.name)), run.why ? el('p', {}, run.why) : null,
+    el('dl', { class: 'kv' }, facts.flatMap(([k, v]) => [el('dt', {}, k), el('dd', {}, v || '—')])),
+    el('div', { class: 'card-foot' }, el('span', {}, [(run.generated_utc || '').slice(0, 10), catalog].filter(Boolean).join(' · ')), ok ? el('b', {}, 'Open →') : null));
 }
-async function openRun(run) {
-  const base = `/api/lab/demos/${run.name}/files/`; const host = $('run-result'); host.replaceChildren(el('div', { class: 'empty' }, 'Loading…'));
+async function showRuns(open) {
+  const index = $('runs-index'), result = $('run-result'), cards = $('run-cards');
+  let runs;
+  try { await targetsReady; runs = await fetchRuns(); } catch (e) {
+    index.hidden = false; result.hidden = true;
+    cards.replaceChildren(el('div', { class: 'notice error' }, 'Could not load recorded runs: ' + e.message)); return;
+  }
+  if (!cards.querySelector('.card')) cards.replaceChildren(...(runs.length ? runs.map(runCard) : [el('div', { class: 'empty' }, 'No recorded runs yet. Generate them with: python make_demos.py')]));
+  const run = open && runs.find((r) => r.name === open && r.status === 'COMPLETED');
+  index.hidden = !!run; result.hidden = !run;
+  window.scrollTo({ top: 0 });
+  if (run) await openRun(run, result); else clearHost(result);
+}
+async function openRun(run, host) {
+  const base = demoBase(run.name), source = recordedSource(run); const back = { label: 'All recorded runs', go: () => go('runs') };
+  clearHost(host); host.append(el('div', { class: 'empty' }, 'Loading…'));
   try {
-    if (run.kind === 'compare') await renderComparison(await api(base + 'report.json'), base, host);
-    else if (run.kind === 'series') renderSeries(await api(base + 'series.json'), base, host);
+    if (run.kind === 'compare') await renderComparison(await api(base + 'report.json'), base, host, back, source);
+    else if (run.kind === 'series') renderSeries(await api(base + 'series.json'), base, host, back, source);
     else {
-      host.replaceChildren(); const pick = el('div', { class: 'seg', style: 'margin-bottom:14px' }); const inner = el('div', { class: 'content' });
-      const files = run.files.filter((f) => f.startsWith('screening_'));
-      const show = async (f, btn) => { [...pick.children].forEach((b) => b.setAttribute('aria-pressed', String(b === btn))); inner.replaceChildren(el('div', { class: 'empty' }, 'Loading…')); const data = await api(base + f); inner.replaceChildren(); renderScreening(data, inner, false); };
-      files.forEach((f, i) => { const b = el('button', { 'aria-pressed': 'false' }, f.replace('screening_', '').replace('.json', '')); b.addEventListener('click', () => show(f, b)); pick.append(b); if (i === 0) setTimeout(() => show(f, b)); });
-      host.append(pick, inner);
+      const pick = el('div', { class: 'seg', role: 'group', 'aria-label': 'Target' }), inner = el('div', { class: 'content' });
+      const show = async (file, button) => {
+        [...pick.children].forEach((b) => b.setAttribute('aria-pressed', String(b === button)));
+        inner.replaceChildren(el('div', { class: 'empty' }, 'Loading…'));
+        try { renderScreening(await api(base + file), inner, false); } catch (e) { inner.replaceChildren(el('div', { class: 'notice error' }, 'Could not load this screening: ' + e.message)); }
+      };
+      for (const file of (run.files || []).filter((f) => f.startsWith('screening_'))) pick.append(el('button', { type: 'button', 'aria-pressed': 'false', onclick: (e) => show(file, e.currentTarget) }, targetName(file.replace('screening_', '').replace('.json', ''))));
+      clearHost(host); host.append(backBar(back), el('p', { class: 'sub' }, microns(run.title)), pick, inner);
+      if (pick.firstChild) pick.firstChild.click();
     }
-  } catch (e) { host.replaceChildren(el('div', { class: 'notice error' }, 'Could not open run: ' + e.message)); }
+  } catch (e) { clearHost(host); host.append(backBar(back), el('div', { class: 'notice error' }, 'Could not open run: ' + e.message)); }
+}
+async function loadQuickRuns() {
+  try {
+    const runs = (await fetchRuns()).filter((r) => r.status === 'COMPLETED' && r.title);
+    $('quick-runs').replaceChildren(...runs.map((run) => el('a', { class: 'quick', href: '#runs/' + run.name }, el('span', { class: 'kind' }, KIND[run.kind] || 'Run'), el('span', {}, microns(run.title)), el('span', { class: 'go' }, '→'))));
+    $('shortcuts').hidden = !runs.length;
+  } catch (_) { $('shortcuts').hidden = true; }
 }
 
 /* ------------------------------------------------------------------ method */
 function renderMethod() {
-  const m = $('method'); if (m.childElementCount) return;
+  const m = $('method-body'); if (m.childElementCount) return;
   m.innerHTML = `
+  <p class="eyebrow">Method</p>
+  <h1>Compare like with like</h1>
   <h2>The problem</h2>
   <p>NASA's SPHEREx maps the whole sky in 102 colours between 0.75 and 5.0 µm by sweeping linear variable filters across the sky. The same star is therefore observed many times, but almost always <em>through a different colour</em>. Comparing two SPHEREx images pixel by pixel compares different wavelengths unless that is explicitly ruled out, and a star's colour difference can then masquerade as variability.</p>
   <h2>What the Epoch Lab does</h2>
@@ -648,7 +935,7 @@ function renderMethod() {
     <li><b>Builds time series.</b> For three or more same-wavelength epochs: a light curve with field-star zero points, and an astrometric trajectory compared with catalog proper motion and parallax using JPL Horizons positions of SPHEREx.</li>
   </ol>
   <h2>What it will not claim</h2>
-  <p>A residual is not a discovery. Moving-object identification requires a measured multi-epoch trajectory; catalog-forced positions are not detections; different-wavelength epochs are rejected rather than corrected with an invented spectral model. Saturated or flagged targets are reported as unmeasurable. When an external service (IRSA, Gaia, JPL) fails, the job fails with that reason — nothing is substituted.</p>
+  <p>A residual is not a discovery. Moving-object identification requires a measured multi-epoch trajectory; catalog-forced positions are not detections; different-wavelength epochs are rejected rather than corrected with an invented spectral model. Saturated or flagged targets are reported as unmeasurable. When an external service (IRSA, Gaia, JPL) fails, the job fails with that reason. Nothing is substituted.</p>
   <h2>Policies</h2>
   <p>Spectral tolerance 0.10 × CBAND; detection 5σ with ≥2 connected pixels; registration tolerance 0.3 px; aperture 5×5 native pixels; null test needs ≥200 source-free pixels; source noise model needs ≥30 stars. These are analysis choices recorded in every report, not mission calibration constants.</p>
   <h2>Data</h2>
@@ -656,7 +943,14 @@ function renderMethod() {
 }
 
 /* ------------------------------------------------------------------ boot */
-loadTargets();
-const routeFromHash = () => { const v = (location.hash || '#explore').slice(1); showView(['explore', 'runs', 'method'].includes(v) ? v : 'explore'); };
-window.addEventListener('hashchange', routeFromHash);
-routeFromHash();
+if (STATIC) {
+  // No server behind a static copy: show the note instead of the search, and drop the API docs link.
+  $('static-note').hidden = false;
+  document.querySelector('.finder').hidden = true;
+  document.querySelector('.toplink').hidden = true;
+}
+targetsReady = loadTargets();
+loadQuickRuns();
+setField(null);
+window.addEventListener('hashchange', route);
+route();

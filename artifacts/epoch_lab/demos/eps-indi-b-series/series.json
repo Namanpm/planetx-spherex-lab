@@ -586,12 +586,49 @@
     "Expected positions use SIMBAD astrometry; light-time, aberration and gravitational deflection are omitted.",
     "A trajectory consistent with catalog motion validates the method on a known mover; it is not a discovery."
   ],
+  "analysis_status": "COMPLETE",
+  "requested_epoch_count": 5,
+  "requested_observations": [
+    "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2",
+    "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2"
+  ],
+  "unavailable_observations": [],
   "catalog": {
     "mode": "UNAVAILABLE",
     "errors": [
       "GaiaArchiveUnavailable: Gaia DR3 catalog service did not respond after bounded retries; retry later, or select saved replay data."
     ],
     "consequence": "Residuals cannot be associated with catalog sources; classification is limited."
+  },
+  "science_files": {
+    "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2": {
+      "path": "artifacts\\science_cache\\38ca08a89910beec56017066923d9c2df788031b3bcb0fd9daabff35d23def94.fits",
+      "sha256": "cd974a0ecab2a3f8296345230a27698aab27150093ab902370012ff07681baae",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/2/level2_2025W17_4B_0027_3D2_spx_l2b-v27-2026-196.fits"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0241_2/D2": {
+      "path": "artifacts\\science_cache\\b4e805ef9c62a0f04183d9ec4a9e58dbe38656d5738cc826e3e94f8a7fc4a2bc.fits",
+      "sha256": "d3bcdaa2dec1a6faf8f3b2157af44082f6711a00d18cd3cf2a2dd36a7121b3ea",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0241_2D2_spx_l2b-v27-2026-201.fits"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W40_2B_0304_1/D2": {
+      "path": "artifacts\\science_cache\\a10cf5916c5c3cd15a99bb341d1802db0b9ef3223737cbf4065ee6281dd6bf3f.fits",
+      "sha256": "ec7506b26952187fd59c42039f6c06e161480ab02800143438d74c214e797b9c",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W40_2B/l2b-v27-2026-241/2/level2_2025W40_2B_0304_1D2_spx_l2b-v27-2026-241.fits"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2025W41_2B_0173_1/D2": {
+      "path": "artifacts\\science_cache\\33f983ad52daa65f1e419cf1442f95227a59aaff502811105daffdbf04a7c736.fits",
+      "sha256": "9aa5aea319b3dc6196d3a9f9433a43747af99a3d438982f90c7d0b6df8b9ad11",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W41_2B/l2b-v27-2026-242/2/level2_2025W41_2B_0173_1D2_spx_l2b-v27-2026-242.fits"
+    },
+    "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0308_3/D2": {
+      "path": "artifacts\\science_cache\\8de7e5a9a2828f138c69bbb6865c1cbd7f3912fce1eeda42582902a65cb79aeb.fits",
+      "sha256": "74078e585924957cd136052aa2806f52f06307d3040415e7c837be925424f864",
+      "access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W17_2A/l2b-v27-2026-243/2/level2_2026W17_2A_0308_3D2_spx_l2b-v27-2026-243.fits"
+    }
   },
   "observer_ephemeris": {
     "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0027_3/D2": {
@@ -645,6 +682,11 @@
       "response_sha256": "83d46e6754a36c6d9ad0942a19edbff438b4a8b39e728d5bef97b89980f04567"
     }
   },
-  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
-  "elapsed_seconds": 3.73629620000429
+  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
+  "elapsed_seconds": 4.961218500000541,
+  "files": [
+    "series.json",
+    "series.png",
+    "light_curve.csv"
+  ]
 }

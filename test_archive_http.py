@@ -86,6 +86,6 @@ def test_exponential_jitter_is_bounded_and_survives_policy_cloning():
     assert high.get_backoff_time()==4.
 
 
-@pytest.mark.parametrize('total,backoff',[(9,.5),(-1,.5),(1,-1),(1,float('inf'))])
+@pytest.mark.parametrize('total,backoff',[(11,.5),(-1,.5),(1,-1),(1,float('inf'))])
 def test_invalid_retry_limits_rejected(total,backoff):
     with pytest.raises(ValueError):retry_session(total=total,backoff=backoff)

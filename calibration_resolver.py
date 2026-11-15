@@ -9,12 +9,11 @@ import time
 import threading
 from collections import OrderedDict, Counter
 from pathlib import Path
-from urllib.parse import urlparse, quote
+from urllib.parse import urlparse
 
 import numpy as np
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
+from archive_http import retry_session
 from astropy.io import fits
 from astropy.io.votable import parse
 from spectral_calibration import sample_calibration
@@ -23,34 +22,18 @@ DATALINK = 'https://irsa.ipac.caltech.edu/datalink/links/spherex'
 MAX_BYTES = 80 * 1024 * 1024
 
 def session():
-    s = requests.Session()
-    s.mount('https://', HTTPAdapter(max_retries=Retry(total=3, connect=3, read=3, backoff_factor=0.5, status_forcelist=[429, 500, 502, 503, 504], allowed_methods=['GET'])))
-    return s
+    """Use a finite, slightly larger budget for intermittent DataLink 5xxs."""
+    return retry_session(total=10, backoff=0.5)
 
 def discover(publisher_id, detector, client=None):
     if not re.fullmatch(r'ivo://irsa\.ipac/spherex_dr1\?[A-Za-z0-9_]+/D[1-6]', publisher_id) or not publisher_id.endswith('/D' + str(detector)):
         raise ValueError('invalid publisher ID or detector mismatch')
     client = client or session()
-    # Equivalent URI encodings accommodate intermittent gateway failures without
-    # changing the ID or trying a different scientific association. Each request
-    # has bounded adapter retries; response parsing is deliberately outside this
-    # loop so malformed archive responses are never retried as transport errors.
-    variants = [
-        (DATALINK, {'params': {'ID': publisher_id}}),
-        (DATALINK + '?ID=' + quote(publisher_id, safe=':/?'), {}),
-        (DATALINK + '?ID=' + quote(publisher_id, safe='/'), {}),
-    ]
-    for index, (request_url, kwargs) in enumerate(variants):
-        try:
-            r = client.get(request_url, timeout=(10, 60), **kwargs)
-            r.raise_for_status()
-            break
-        except (requests.exceptions.RetryError, requests.exceptions.HTTPError) as exc:
-            response = getattr(exc, 'response', None)
-            gateway_error = isinstance(exc, requests.exceptions.RetryError) or (
-                response is not None and response.status_code in (502, 503, 504))
-            if not gateway_error or index == len(variants) - 1:
-                raise
+    # Publisher IDs are query values. Requests performs the required escaping;
+    # retrying equivalent encodings after a gateway error only multiplies load.
+    # One call uses the finite policy from session() (at most eleven network attempts).
+    r = client.get(DATALINK, params={'ID': publisher_id}, timeout=(10, 60))
+    r.raise_for_status()
     v = parse(io.BytesIO(r.content))
     infos = [i for resource in v.resources for i in resource.infos if i.name == 'QUERY_STATUS']
     if any(i.value != 'OK' for i in infos): raise ValueError('DataLink returned an error or incomplete result')

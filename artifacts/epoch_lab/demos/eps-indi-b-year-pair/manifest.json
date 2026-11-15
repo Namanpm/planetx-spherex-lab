@@ -3,8 +3,8 @@
   "kind": "compare",
   "title": "Epsilon Indi B: same pointing one year apart at 2.03 um",
   "why": "A 364-day full-field match; the brown dwarf moves ~4.7 arcsec, so its residual must be recognised as known motion, not change.",
-  "generated_utc": "2026-11-15T09:09:30+00:00",
-  "software_sha256": "d3a7d2825b4066848fdc6b00f31d0e136fc815cc8f9ad28157eb719145489935",
+  "generated_utc": "2026-11-15T14:00:53+00:00",
+  "software_sha256": "0f38955889da6314ed15b1c7092fd536c909efce9c36c79a04d5dd3580460f5c",
   "reproduce": "python make_demos.py eps-indi-b-year-pair",
   "data_source": "NASA/IPAC IRSA SPHEREx DR1 (spherex_dr1) via SIA, cutout service and DataLink",
   "files": [
@@ -52,5 +52,5 @@
   ],
   "catalog_mode": "UNAVAILABLE",
   "status": "COMPLETED",
-  "elapsed_seconds": 45.65
+  "elapsed_seconds": 46.11
 }

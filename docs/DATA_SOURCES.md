@@ -20,7 +20,7 @@ is simulated in the archive pipeline; `synthetic_sky.py` is used only by the tes
 | `barnards-star` | Barnard's Star | Large proper motion; field has a stored Gaia snapshot; the star itself is saturated |
 | `epsilon-indi-b` | ε Indi B (brown-dwarf binary) | Large proper motion and parallax, unsaturated at 1.1 µm: a known-mover test |
 | `rw-aurigae` | RW Aurigae (T Tauri star) | Rotated six-month revisits match only in strips; the target core is flagged |
-| `r-draconis` | R Draconis (Mira) | Many same-wavelength groups near the ecliptic pole |
+| `r-draconis` | R Draconis (Mira) | Many same-wavelength groups (18 with ≥3 epochs); very bright in the infrared and expected to saturate; no series has completed because IRSA DataLink returned HTTP 502 |
 | `wise-0855` | WISE 0855−0714 | Coldest known brown dwarf; long same-pointing revisits |
 
 ## Availability during development
@@ -30,3 +30,10 @@ Gaia TAP and CDS TAP services timed out from this machine. The code retries
 idempotent requests a bounded number of times and otherwise fails the job with a
 specific error. `make_demos.py` was retried until the archive responded. The
 recorded demonstrations use only data actually returned by the archives.
+
+Later on 2026-11-15 the recorded runs were regenerated with the current processing
+code from the local caches of those same archive files (science cutouts, DataLink
+calibration maps and the stored Gaia DR3 queries). Their scientific values were
+identical to the first recording. At that time IRSA SIA returned HTTP 502, the
+AAVSO VSX API refused scripted access (HTTP 403) and Gaia TAP timed out, so no new
+target could be analysed.

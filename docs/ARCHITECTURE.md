@@ -73,8 +73,36 @@ Every product records the SHA-256 of the processing source files
 * Job state is written atomically (`job.tmp` → `job.json`). A job left `RUNNING` by
   a restarted server is reported `INTERRUPTED`, never completed.
 * Upstream failures map to specific codes (`ARCHIVE_UNAVAILABLE`, `ARCHIVE_TIMEOUT`,
-  `GAIA_CATALOG_UNAVAILABLE`, `ANALYSIS_REJECTED`) and HTTP statuses on the legacy
-  routes (502/503/504, 409 for a busy output directory, 422 for invalid input).
+  `CALIBRATION_ARCHIVE_UNAVAILABLE`, `GAIA_CATALOG_UNAVAILABLE`, `ANALYSIS_REJECTED`,
+  `WORKER_RESTARTED`, `QUEUE_FULL`) and HTTP statuses on the legacy routes
+  (502/503/504, 409 for a busy output directory, 422 for invalid input). The front
+  end shows each code as a plain-language explanation, with the server's message
+  underneath and, for archive outages, a link to the recorded runs. It stops
+  polling after about 15 s without an answer from the server instead of spinning.
+* A position with no SPHEREx coverage is a valid, empty screening result (zero
+  records), not an error, and the page says so.
+* Job state records `submitted_utc` and `finished_utc`, so a live result can be told
+  apart from a recorded one.
+
+## Provenance
+
+Comparison and series reports carry the SHA-256 of each science cutout, each
+observation's own DataLink calibration file and its SHA-256, the catalog mode and
+retrieval time, and `software_sha256` over `epoch_lab.SOFTWARE_FILES`. That hash is
+taken over LF-normalised text, so identical code gives the same hash on every
+platform. The result page labels each result **Recorded run** (with its
+`make_demos.py` command) or **Live run** (job ID and finish time) and lists these
+fields under *Provenance and files*.
+
+## Static public copy
+
+`build_static_demo.py` writes `site/`: the same `index.html` (marked
+`data-static="true"`, with relative asset paths), `app.js`, `app.css`,
+`data/targets.json`, `data/demos.json` and every file of every completed recorded
+run. In static mode `api()` maps `/api/lab/...` reads to those files and refuses
+anything else. The search bar is replaced by a note that live analysis needs the
+server. `.github/workflows/pages.yml` re-runs `verify_results.py`, builds the copy
+and publishes it to GitHub Pages on every push to `main`.
 
 ## Front end
 
